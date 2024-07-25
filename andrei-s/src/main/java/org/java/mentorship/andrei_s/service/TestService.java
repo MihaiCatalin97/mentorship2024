@@ -1,16 +1,14 @@
 package org.java.mentorship.andrei_s.service;
 
-import lombok.Data;
 import org.java.mentorship.andrei_s.domain.Song;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 @Service
 public class TestService {
 
-    private LinkedList<Song> songs;
+    private final LinkedList<Song> songs;
 
     TestService()
     {
@@ -44,11 +42,18 @@ public class TestService {
 
     public boolean createNewSong(Song song)
     {
-        if (this.songs.isEmpty()) song.setId(0);
-        else song.setId(this.songs.getLast().getId() + 1);
+        int songId = 0;
+        if (!this.songs.isEmpty()) songId = this.songs.getLast().getId() + 1;
         // 100% sigur există o metodă mai bună =))
         if (song.getAlbumId() != 0 && song.getStyle() != null && song.getArtistId() != 0)
-            return songs.add(song);
+            // fac asta aici ca sa ma asigur ca songId este mereu id-ul ultimului element + 1
+            // si sa nu poti seta ce ID vrei
+            return songs.add(new Song(
+                    songId,
+                    song.getStyle(),
+                    song.getArtistId(),
+                    song.getAlbumId())
+            );
         else
             return false;
     }
