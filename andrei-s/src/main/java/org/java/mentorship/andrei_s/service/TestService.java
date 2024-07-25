@@ -23,8 +23,19 @@ public class TestService {
         return null;
     }
 
-    public LinkedList<Song> getSongs()
-    { return this.songs; }
+    public LinkedList<Song> getSongs(String style)
+    {
+        if (style == null) return this.songs;
+
+        LinkedList<Song> filteredSongs = new LinkedList<>();
+
+        for (Song song : this.songs)
+        {
+            if (song.getStyle().equals(style)) filteredSongs.add(song);
+        }
+
+        return filteredSongs;
+    }
 
     public boolean createNewSong(Song song)
     {
