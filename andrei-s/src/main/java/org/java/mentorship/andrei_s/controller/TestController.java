@@ -4,6 +4,8 @@ import org.java.mentorship.andrei_s.domain.Song;
 import org.java.mentorship.andrei_s.service.TestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.LinkedList;
@@ -23,13 +25,15 @@ public class TestController {
     @GetMapping("/songs")
     public ResponseEntity<List<Song>> getAllSongs()
     {
-        List<Song> songs = new LinkedList<>();
+        return ResponseEntity.ok(testService.getSongs());
+    }
 
-        Song song = new Song();
-        song.setId(1);
-
-        songs.add(song);
-
-        return ResponseEntity.ok(songs);
+    @PostMapping("/songs")
+    public ResponseEntity<String> createNewSong(@RequestBody Song song)
+    {
+        if (testService.createNewSong(song))
+            return ResponseEntity.ok("Created new song");
+        else
+            return ResponseEntity.badRequest().body("Missing values");
     }
 }

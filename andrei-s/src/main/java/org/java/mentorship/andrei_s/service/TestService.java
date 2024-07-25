@@ -25,4 +25,15 @@ public class TestService {
 
     public LinkedList<Song> getSongs()
     { return this.songs; }
+
+    public boolean createNewSong(Song song)
+    {
+        if (this.songs.isEmpty()) song.setId(0);
+        else song.setId(this.songs.getLast().getId() + 1);
+        // 100% sigur există o metodă mai bună =))
+        if (song.getAlbumId() != 0 && song.getStyle() != null && song.getArtistId() != 0)
+            return songs.add(song);
+        else
+            return false;
+    }
 }
