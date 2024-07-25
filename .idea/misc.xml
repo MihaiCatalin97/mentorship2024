@@ -5,11 +5,18 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/ionut/pom.xml" />
       </list>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="21" project-jdk-type="JavaSDK">
+=======
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="21" project-jdk-type="JavaSDK">
+>>>>>>> 96c70b26113e8c95128fff6593e2f23036f41df6
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
