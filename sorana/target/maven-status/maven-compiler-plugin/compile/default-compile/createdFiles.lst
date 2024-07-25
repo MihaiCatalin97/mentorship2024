@@ -1,0 +1,4 @@
+org/java/mentorship/config/TestConfiguration.class
+org/java/mentorship/service/TestService.class
+org/java/mentorship/controller/TestController.class
+org/java/mentorship/Application.class
