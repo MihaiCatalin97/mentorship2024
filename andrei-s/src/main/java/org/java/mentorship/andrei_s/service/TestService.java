@@ -1,5 +1,6 @@
 package org.java.mentorship.andrei_s.service;
 
+import lombok.Data;
 import org.java.mentorship.andrei_s.domain.Song;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,13 @@ public class TestService {
     TestService()
     {
         this.songs = new LinkedList<>();
+
+        // adaug niste melodii de test
+        this.songs.add(new Song(1, "Pop", 10, 10));
+        this.songs.add(new Song(2, "Pop", 10, 10));
+        this.songs.add(new Song(3, "Rock", 10, 11));
+        this.songs.add(new Song(4, "Rock", 10, 11));
+        this.songs.add(new Song(4, "Rock", 10, 12));
     }
 
     public Song getSong(int songId)
@@ -28,11 +36,8 @@ public class TestService {
         if (style == null) return this.songs;
 
         LinkedList<Song> filteredSongs = new LinkedList<>();
-
         for (Song song : this.songs)
-        {
             if (song.getStyle().equals(style)) filteredSongs.add(song);
-        }
 
         return filteredSongs;
     }

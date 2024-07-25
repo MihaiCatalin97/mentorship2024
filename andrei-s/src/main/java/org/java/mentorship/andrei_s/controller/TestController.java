@@ -25,6 +25,14 @@ public class TestController {
         return ResponseEntity.ok(testService.getSongs(style));
     }
 
+    @GetMapping("/songs/{id}")
+    public ResponseEntity<Song> getSongById(@PathVariable(name = "id") int id)
+    {
+        Song song = testService.getSong(id);
+        if (song != null) return ResponseEntity.ok(song);
+        else return ResponseEntity.notFound().build();
+    }
+
     @PostMapping("/songs")
     public ResponseEntity<String> createNewSong(@RequestBody Song song)
     {
