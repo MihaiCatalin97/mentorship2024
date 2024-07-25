@@ -4,8 +4,7 @@ import org.java.mentorship.domain.Song;
 import org.java.mentorship.service.TestService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +22,31 @@ public class TestController {
 
     @GetMapping("/songs")
     public ResponseEntity<List<Song>> getAllSongs(){
-        Song song = new Song();
-        song.setId(1);
 
-        List<Song> songs = new ArrayList<>();
-        songs.add(song);
+        return ResponseEntity.ok(testService.getSongs());
 
-        return ResponseEntity.ok(songs);
+    }
+
+
+    @GetMapping("/songs/{style}")
+    public ResponseEntity<List<Song>> getSongByStyle(@PathVariable("style") String style){
+           return ResponseEntity.ok(testService.getSongsByStyle(style));
+    }
+
+    @GetMapping("/songs/{id}")
+    public ResponseEntity<Song> getSongById(@PathVariable("id") int id){
+        return ResponseEntity.ok(testService.getSongById(id));
+    }
+
+
+    @PostMapping("/songs")
+    public ResponseEntity<String> addSong(@RequestBody Song song){
+        if(testService.addSong1(song)){
+            return  ResponseEntity.ok("song added");
+        }
+        else {
+            return  ResponseEntity.badRequest().body("song not added");
+        }
     }
 
 }
