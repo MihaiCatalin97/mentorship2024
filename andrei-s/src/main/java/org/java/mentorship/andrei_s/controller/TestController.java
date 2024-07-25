@@ -3,10 +3,7 @@ package org.java.mentorship.andrei_s.controller;
 import org.java.mentorship.andrei_s.domain.Song;
 import org.java.mentorship.andrei_s.service.TestService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -23,9 +20,9 @@ public class TestController {
     }
 
     @GetMapping("/songs")
-    public ResponseEntity<List<Song>> getAllSongs()
+    public ResponseEntity<List<Song>> getAllSongs(@RequestParam(required = false, name = "style") String style)
     {
-        return ResponseEntity.ok(testService.getSongs());
+        return ResponseEntity.ok(testService.getSongs(style));
     }
 
     @PostMapping("/songs")
