@@ -5,7 +5,6 @@ import org.java.mentorship.andrei_s.service.TestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ public class TestController {
     @GetMapping("/songs/{id}")
     public ResponseEntity<Song> getSongById(@PathVariable(name = "id") int id)
     {
-        Song song = testService.getSong(id);
+        Song song = testService.getSongById(id);
         if (song != null) return ResponseEntity.ok(song);
         else return ResponseEntity.notFound().build();
     }
@@ -40,5 +39,22 @@ public class TestController {
             return ResponseEntity.ok("Created new song");
         else
             return ResponseEntity.badRequest().body("Missing values");
+    }
+
+    @DeleteMapping("/songs/{id}") ResponseEntity<String> deleteSong(@PathVariable(name = "id") int id)
+    {
+        if (testService.deleteSong(id))
+            return ResponseEntity.ok("Deleted song");
+        else
+            return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/songs/{id}") ResponseEntity<Song> modifySong(@PathVariable(name = "id") int id, @RequestBody Song song)
+    {
+        Song modifiedSong = testService.modifySong(id, song);
+        if (modifiedSong != null)
+            return ResponseEntity.ok(modifiedSong);
+        else
+            return ResponseEntity.notFound().build();
     }
 }
