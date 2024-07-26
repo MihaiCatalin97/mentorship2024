@@ -6,20 +6,20 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedList;
 
 @Service
-public class TestService {
+public class SongService {
 
     private final LinkedList<Song> songs;
 
-    TestService()
+    SongService()
     {
         this.songs = new LinkedList<>();
 
         // adaug niste melodii de test
-        this.songs.add(new Song(1, "Pop", 10, 10));
-        this.songs.add(new Song(2, "Pop", 10, 10));
-        this.songs.add(new Song(3, "Rock", 10, 11));
-        this.songs.add(new Song(4, "Rock", 10, 11));
-        this.songs.add(new Song(4, "Rock", 10, 12));
+        this.createNewSong(new Song(1, "Pop", 10, 10));
+        this.createNewSong(new Song(2, "Pop", 10, 10));
+        this.createNewSong(new Song(3, "Rock", 10, 11));
+        this.createNewSong(new Song(4, "Rock", 10, 11));
+        this.createNewSong(new Song(5, "Rock", 10, 12));
     }
 
     public Song getSongById(int songId)

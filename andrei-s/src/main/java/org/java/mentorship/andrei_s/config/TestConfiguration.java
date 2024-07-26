@@ -1,6 +1,6 @@
 package org.java.mentorship.andrei_s.config;
 
-import org.java.mentorship.andrei_s.service.TestService;
+import org.java.mentorship.andrei_s.service.SongService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -13,7 +13,7 @@ public class TestConfiguration {
 
     @Bean
     @Primary
-    Map<String, String> mapOfConfiguration(TestService testService)
+    Map<String, String> mapOfConfiguration(SongService songService)
     {
         Map<String, String> map = new HashMap<>();
 
