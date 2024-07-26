@@ -44,18 +44,22 @@ public class TestController {
     @PostMapping("/songs")
     public ResponseEntity<List<Song>> addSong(@RequestParam(name ="id") int id, @RequestParam(name = "style") String style, @RequestParam(name = "artistId") int artistId, @RequestParam(name = "albumId") int albumId){
         Song song =new Song(id, style, artistId, albumId);
-        if(testService.addSong1(song)!=null){
-            return  ResponseEntity.ok(testService.getSongs());
-        }
-        return null;
+        testService.addSong1(song);
+       return ResponseEntity.ok(testService.getSongs());
     }
 
     //sterge o melodie
-//    @DeleteMapping("/songs")
-//    public ResponseEntity<List<Song>> deleteSongById(int id){
-//
-//        return  ResponseEntity.ok(testService.deleteSongById(id));
-//    }
+    @DeleteMapping("/songs/{id}")
+    public ResponseEntity<List<Song>> deleteSongById(@PathVariable(name = "id") int id){
+        return  ResponseEntity.ok(testService.deleteSongById(id));
+    }
+
+    //update a song
+    @PutMapping("/songs{id}")
+    public ResponseEntity<Song> updateSong(@PathVariable(name = "id") int id, @RequestBody Song song){
+       Song songMod = testService.updateSongById(id, song);
+       return ResponseEntity.ok(songMod);
+    }
 
 
 }
