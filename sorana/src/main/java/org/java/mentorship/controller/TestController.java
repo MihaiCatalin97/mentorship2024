@@ -36,13 +36,14 @@ public class TestController {
 
     //afiseaza melodia cu un id specific
     @GetMapping("/songs/{id}")
-    public ResponseEntity<Song> getSongById(@PathVariable("id") int id){
+    public ResponseEntity<Song> getSongById(@PathVariable(name = "id") int id){
         return ResponseEntity.ok(testService.getSongById(id));
     }
 
     //adauga o melodie
     @PostMapping("/songs")
-    public ResponseEntity<List<Song>> addSong(@RequestBody Song song){
+    public ResponseEntity<List<Song>> addSong(@RequestParam(name ="id") int id, @RequestParam(name = "style") String style, @RequestParam(name = "artistId") int artistId, @RequestParam(name = "albumId") int albumId){
+        Song song =new Song(id, style, artistId, albumId);
         if(testService.addSong1(song)!=null){
             return  ResponseEntity.ok(testService.getSongs());
         }
