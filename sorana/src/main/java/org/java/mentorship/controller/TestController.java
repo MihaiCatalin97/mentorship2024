@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +19,7 @@ public class TestController {
         this.testService = testService;
     }
 
+    // afiseaza toate melodiile
     @GetMapping("/songs")
     public ResponseEntity<List<Song>> getAllSongs(){
 
@@ -27,26 +27,33 @@ public class TestController {
 
     }
 
-
+    //afiseaza melodiile dupa un anumit style
     @GetMapping("/songs/{style}")
     public ResponseEntity<List<Song>> getSongByStyle(@PathVariable("style") String style){
            return ResponseEntity.ok(testService.getSongsByStyle(style));
     }
 
+    //afiseaza melodia cu un id specific
     @GetMapping("/songs/{id}")
     public ResponseEntity<Song> getSongById(@PathVariable("id") int id){
         return ResponseEntity.ok(testService.getSongById(id));
     }
 
-
+    //adauga o melodie
     @PostMapping("/songs")
-    public ResponseEntity<String> addSong(@RequestBody Song song){
-        if(testService.addSong1(song)){
-            return  ResponseEntity.ok("song added");
+    public ResponseEntity<List<Song>> addSong(@RequestBody Song song){
+        if(testService.addSong1(song)!=null){
+            return  ResponseEntity.ok(testService.getSongs());
         }
-        else {
-            return  ResponseEntity.badRequest().body("song not added");
-        }
+        return null;
     }
+
+    //sterge o melodie
+    @DeleteMapping("/songs")
+    public ResponseEntity<List<Song>> deleteSongById(int id){
+
+        return  ResponseEntity.ok(testService.deleteSongById(id));
+    }
+
 
 }
