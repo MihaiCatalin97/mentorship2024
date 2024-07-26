@@ -51,21 +51,21 @@ public class TestService {
         return null;
     }
 
-    public Song addSong1(Song song){
+    public boolean addSong1(Song song){
 
         int songId = 0;
         if(!this.songs.isEmpty())
             songId = this.songs.getLast().getId() + 1;
 
         if(song.getArtistId() != 0 && song.getStyle() != null && song.getAlbumId()!=0){
-            return new Song(
+            return this.songs.add(new Song(
                     songId,
                     song.getStyle(),
                     song.getArtistId(),
                     song.getAlbumId()
-            );
+            ));
         }
-        return null;
+        return false;
     }
 
     public List<Song> deleteSongById(int id){
@@ -73,10 +73,12 @@ public class TestService {
         return this.songs;
     }
 
-    public void updateSongById(int id, Song song){
+    public Song  updateSongById(int id, Song song){
+
         this.songs.get(id).setStyle(song.getStyle());
         this.songs.get(id).setArtistId(song.getArtistId());
         this.songs.get(id).setAlbumId(song.getAlbumId());
+        return this.songs.get(id);
     }
 
 
