@@ -1,8 +1,14 @@
 package org.java.mentorship.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.extern.jackson.Jacksonized;
 
 @Data
+@Jacksonized
+@Builder
+@AllArgsConstructor
 public class Song {
 
     private int id;
@@ -10,10 +16,5 @@ public class Song {
     private int artistId;
     private int albumId;
 
-    public Song(int id, String style, int artistId, int albumId) {
-        this.id = id;
-        this.style = style;
-        this.artistId = artistId;
-        this.albumId = albumId;
-    }
+
 }

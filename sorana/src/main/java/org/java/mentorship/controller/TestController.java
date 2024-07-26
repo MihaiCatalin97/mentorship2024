@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 import java.util.Map;
 
@@ -27,11 +28,11 @@ public class TestController {
 
     }
 
-    //afiseaza melodiile dupa un anumit style
-    @GetMapping("/songs/{style}")
-    public ResponseEntity<List<Song>> getSongByStyle(@PathVariable("style") String style){
-           return ResponseEntity.ok(testService.getSongsByStyle(style));
-    }
+//    //afiseaza melodiile dupa un anumit style
+//    @GetMapping("/songs")
+//    public ResponseEntity<List<Song>> getSongByStyle(@RequestParam(required = true, value = "sortby") String style){
+//           return ResponseEntity.ok(testService.getSongsByStyle(style));
+//    }
 
     //afiseaza melodia cu un id specific
     @GetMapping("/songs/{id}")
@@ -49,11 +50,11 @@ public class TestController {
     }
 
     //sterge o melodie
-    @DeleteMapping("/songs")
-    public ResponseEntity<List<Song>> deleteSongById(int id){
-
-        return  ResponseEntity.ok(testService.deleteSongById(id));
-    }
+//    @DeleteMapping("/songs")
+//    public ResponseEntity<List<Song>> deleteSongById(int id){
+//
+//        return  ResponseEntity.ok(testService.deleteSongById(id));
+//    }
 
 
 }
