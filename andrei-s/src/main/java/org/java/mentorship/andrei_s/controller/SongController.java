@@ -33,12 +33,13 @@ public class SongController {
     }
 
     @PostMapping("/songs")
-    public ResponseEntity<String> createNewSong(@RequestBody Song song)
+    public ResponseEntity<Song> createNewSong(@RequestBody Song song)
     {
-        if (songService.createNewSong(song))
-            return ResponseEntity.ok("Created new song");
+        Song newSong = songService.createNewSong(song);
+        if (newSong != null)
+            return ResponseEntity.ok(newSong);
         else
-            return ResponseEntity.badRequest().body("Missing values");
+            return ResponseEntity.badRequest().body(null);
     }
 
     @DeleteMapping("/songs/{id}") ResponseEntity<String> deleteSong(@PathVariable(name = "id") int id)

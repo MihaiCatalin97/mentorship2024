@@ -40,32 +40,28 @@ public class SongService {
         return filteredSongs;
     }
 
-    public boolean createNewSong(Song song)
+    public Song createNewSong(Song song)
     {
         int songId = 0;
         if (!this.songs.isEmpty()) songId = this.songs.getLast().getId() + 1;
         // 100% sigur există o metodă mai bună =))
         if (song.getAlbumId() == 0 || song.getStyle() == null || song.getArtistId() == 0)
-            // fac asta aici ca sa ma asigur ca songId este mereu id-ul ultimului element + 1
-            // si sa nu poti seta ce ID vrei
-            return false;
-
-        return songs.add(new Song(
-            songId,
-            song.getStyle(),
-            song.getArtistId(),
-            song.getAlbumId())
-        );
+            return null;
+        // fac asta aici ca sa ma asigur ca songId este mereu id-ul ultimului element + 1
+        // si sa nu poti seta ce ID vrei
+        Song newSong = new Song(
+                songId,
+                song.getStyle(),
+                song.getArtistId(),
+                song.getAlbumId());
+        songs.add(newSong);
+        return newSong;
     }
 
     public boolean deleteSong(int songId)
     {
-        for (Song song : this.songs)
-        {
-            if (song.getId() == songId)
-            { songs.remove(song); return true; }
-        }
-        return false;
+        Song song = this.getSongById(songId);
+        return this.songs.remove(song);
     }
 
     public Song modifySong(int songId, Song modified_song)
