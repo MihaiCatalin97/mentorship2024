@@ -15,11 +15,6 @@ public class TestService {
     TestService(){
         this.songs = new ArrayList<>();
 
-        this.songs.add(new Song(1, "Pop", 10, 10));
-        this.songs.add(new Song(2, "Pop", 10, 10));
-        this.songs.add(new Song(3, "Rock", 10, 11));
-        this.songs.add(new Song(4, "Rock", 10, 11));
-        this.songs.add(new Song(4, "Rock", 10, 12));
     }
 
 
