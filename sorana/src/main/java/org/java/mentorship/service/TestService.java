@@ -1,22 +1,20 @@
 package org.java.mentorship.service;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.java.mentorship.domain.Song;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
+@AllArgsConstructor
 public class TestService {
 
-    List<Song> songs;
-
-    TestService(){
-        this.songs = new ArrayList<>();
-
-    }
-
+    private List<Song> songs;
 
     public List<Song> getSongs(){
         return this.songs;
@@ -28,22 +26,17 @@ public class TestService {
 
         List<Song> songsByStyle = new ArrayList<>();
 
-        for(Song song: this.songs){
-            if(song.getStyle().equals(style)){
-                songsByStyle.add(song);
-            }
-        }
+        songsByStyle.stream()
+                .filter(song -> song.getStyle().equals(style))
+                .collect(Collectors.toList());
         return songsByStyle;
     }
 
     public Song getSongById(int id){
         if(id == 0) return null;
-        for(Song song: this.songs){
-            if(song.getId() == id){
-                return song;
-            }
-        }
-        return null;
+        return this.songs.stream()
+                .filter(it-> it.getId() == id)
+                .findFirst().get();
     }
 
     public boolean addSong1(Song song){
@@ -60,6 +53,8 @@ public class TestService {
                     song.getAlbumId()
             ));
         }
+
+
         return false;
     }
 
@@ -68,13 +63,12 @@ public class TestService {
         return this.songs;
     }
 
-    public Song  updateSongById(int id, Song song){
-
+    public Song updateSongById(int id, Song song){
         this.songs.get(id).setStyle(song.getStyle());
         this.songs.get(id).setArtistId(song.getArtistId());
         this.songs.get(id).setAlbumId(song.getAlbumId());
         return this.songs.get(id);
-    }
 
+    }
 
 }
