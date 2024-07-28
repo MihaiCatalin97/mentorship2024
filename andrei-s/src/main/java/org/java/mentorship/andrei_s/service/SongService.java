@@ -32,11 +32,10 @@ public class SongService {
 
     public LinkedList<Song> getSongs(String style)
     {
-        if (style == null) return this.songs;
-
         LinkedList<Song> filteredSongs = new LinkedList<>();
+
         for (Song song : this.songs)
-            if (song.getStyle().equals(style)) filteredSongs.add(song);
+            if (song.getStyle().equals(style) || style == null) filteredSongs.add(song);
 
         return filteredSongs;
     }
