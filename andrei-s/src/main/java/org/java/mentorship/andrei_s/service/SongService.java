@@ -9,12 +9,12 @@ import java.util.LinkedList;
 public class SongService {
 
     private final LinkedList<Song> songs;
+    private int currentId = 0;
 
     SongService()
     {
         this.songs = new LinkedList<>();
 
-        // adaug niste melodii de test
         this.createNewSong(new Song(1, "Pop", 10, 10));
         this.createNewSong(new Song(2, "Pop", 10, 10));
         this.createNewSong(new Song(3, "Rock", 10, 11));
@@ -26,6 +26,7 @@ public class SongService {
     {
         for (Song song : songs)
             if (song.getId() == songId) return song;
+
         return null;
     }
 
@@ -42,35 +43,33 @@ public class SongService {
 
     public Song createNewSong(Song song)
     {
-        int songId = 0;
-        if (!this.songs.isEmpty()) songId = this.songs.getLast().getId() + 1;
-        // 100% sigur există o metodă mai bună =))
-        if (song.getAlbumId() == 0 || song.getStyle() == null || song.getArtistId() == 0)
-            return null;
-        // fac asta aici ca sa ma asigur ca songId este mereu id-ul ultimului element + 1
-        // si sa nu poti seta ce ID vrei
+        if (song.getStyle() == null) return null;
+
         Song newSong = new Song(
-                songId,
-                song.getStyle(),
-                song.getArtistId(),
-                song.getAlbumId());
+            currentId++,
+            song.getStyle(),
+            song.getArtistId(),
+            song.getAlbumId()
+        );
         songs.add(newSong);
+
         return newSong;
     }
 
     public boolean deleteSong(int songId)
     {
-        Song song = this.getSongById(songId);
-        return this.songs.remove(song);
+        return this.songs.remove(this.getSongById(songId));
     }
 
-    public Song modifySong(int songId, Song modified_song)
+    public Song modifySong(int songId, Song modifiedSong)
     {
         Song song = this.getSongById(songId);
         if (song == null) return null;
-        song.setStyle(modified_song.getStyle());
-        song.setArtistId(modified_song.getArtistId());
-        song.setAlbumId(modified_song.getAlbumId());
+
+        song.setStyle(modifiedSong.getStyle());
+        song.setArtistId(modifiedSong.getArtistId());
+        song.setAlbumId(modifiedSong.getAlbumId());
+
         return song;
     }
 }
