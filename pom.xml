@@ -6,16 +6,22 @@
 
     <groupId>org.java.mentorship</groupId>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <artifactId>maven-test</artifactId>
     <version>1.0-SNAPSHOT</version>
 =======
+=======
+>>>>>>> Done
     <artifactId>mentorship-application</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>ionut</module>
     </modules>
+<<<<<<< HEAD
 >>>>>>> am adaugat chestii
+=======
+>>>>>>> Done
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -28,11 +34,13 @@
             <artifactId>lombok</artifactId>
             <version>1.18.34</version>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             <scope>provided</scope>
 >>>>>>> am adaugat chestii
+=======
+>>>>>>> Done
         </dependency>
-
     </dependencies>
 
 </project>
