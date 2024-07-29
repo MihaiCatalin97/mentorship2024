@@ -3,7 +3,10 @@ target/
 
 ### IntelliJ IDEA ###
 .idea/
+<<<<<<< HEAD
 *.iml
+=======
+>>>>>>> Done
 
 ### Eclipse ###
 .apt_generated
