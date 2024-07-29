@@ -5,11 +5,15 @@ import lombok.Data;
 @Data
 public class Song {
 
-    private int id;
+    private Integer id;
+
+    private String name;
 
     private String style;
 
-    private int artistId;
+    private Integer duration;
 
-    private Album album;
+    private Integer artistId;
+
+    private Integer albumId;
 }
