@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,36 +14,32 @@ public class SongController {
     private final SongService songService;
 
     @GetMapping("/songs")
-    public ResponseEntity<List<Song>> getAllSongs(@RequestParam(required = false, name = "style") String style)
+    public ResponseEntity<List<Song>> getAll(@RequestParam(required = false, name = "style") String style)
     {
         return ResponseEntity.ok(songService.findAll(style));
     }
 
     @GetMapping("/songs/{id}")
-    public ResponseEntity<Song> getSongById(@PathVariable(name = "id") int id)
+    public ResponseEntity<Song> getById(@PathVariable(name = "id") int id)
     {
-        Song song = songService.getSongById(id);
-        if (song != null) return ResponseEntity.ok(song);
-        else return ResponseEntity.notFound().build();
+        Song song = songService.getById(id);
+        return ResponseEntity.ok(song);
     }
 
     @PostMapping("/songs")
-    public ResponseEntity<Song> createNewSong(@RequestBody Song song)
+    public ResponseEntity<Song> createNew(@RequestBody Song song)
     {
         Song newSong = songService.createNew(song);
-        if (newSong != null)
-            return ResponseEntity.ok(newSong);
-        else
-            return ResponseEntity.badRequest().body(null);
+        return ResponseEntity.ok(newSong);
     }
 
-    @DeleteMapping("/songs/{id}") ResponseEntity<String> deleteSong(@PathVariable(name = "id") int id)
+    @DeleteMapping("/songs/{id}") ResponseEntity<String> delete(@PathVariable(name = "id") int id)
     {
         songService.deleteById(id);
         return ResponseEntity.ok("Deleted song");
     }
 
-    @PutMapping("/songs/{id}") ResponseEntity<Song> modifySong(@PathVariable(name = "id") int id, @RequestBody Song song)
+    @PutMapping("/songs/{id}") ResponseEntity<Song> modify(@PathVariable(name = "id") int id, @RequestBody Song song)
     {
         return ResponseEntity.ok(songService.updateById(id, song));
     }

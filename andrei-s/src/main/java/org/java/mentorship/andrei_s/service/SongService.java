@@ -14,33 +14,31 @@ import java.util.Objects;
 public class SongService {
     SongRepository repo;
 
-    public Song getSongById(int songId)
-    {
-        Song foundSong = repo.getById(songId);
-        if (Objects.isNull(foundSong)) throw new EntityNotFound(songId);
+    public Song getById(int id) {
+        Song foundSong = repo.getById(id);
+        if (Objects.isNull(foundSong)) throw new EntityNotFound(id);
         return foundSong;
     }
 
-    public List<Song> findAll(String style)
-    {
+    public List<Song> findAll(String style) {
         return repo.findAll();
     }
 
-    public Song createNew(Song song)
-    {
+    public Song createNew(Song song) {
         Song.validate(song);
         return repo.createNew(song);
     }
 
-    public boolean deleteById(int songId)
-    {
-        return repo.deleteById(songId);
-
+    public void deleteById(int id) {
+        repo.deleteById(id);
     }
 
-    public Song updateById(int id, Song modifiedSong)
-    {
-        Song.validate(modifiedSong);
-        return repo.updateById(id, modifiedSong);
+    public Song updateById(int id, Song modified) {
+        Song.validate(modified);
+        return repo.updateById(id, modified);
+    }
+
+    public List<Song> getArtistSongs(int artist_id) {
+        return repo.findArtistSongs(artist_id);
     }
 }

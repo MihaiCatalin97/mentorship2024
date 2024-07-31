@@ -1,6 +1,7 @@
 package org.java.mentorship.andrei_s.persistence;
 
 import lombok.AllArgsConstructor;
+import org.java.mentorship.andrei_s.domain.Artist;
 import org.java.mentorship.andrei_s.domain.Song;
 import org.java.mentorship.andrei_s.exception.EntityNotFound;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,9 +24,12 @@ public class SongRepository {
         return song;
     }
 
-    public List<Song> findAll()
-    {
+    public List<Song> findAll() {
         return jdbcTemplate.query("SELECT * FROM songs", rowMapper);
+    }
+
+    public List<Song> findArtistSongs(int artist_id) {
+        return jdbcTemplate.query("SELECT * FROM songs WHERE artist_id = ?", rowMapper, artist_id);
     }
 
     public Song getById(int id) {

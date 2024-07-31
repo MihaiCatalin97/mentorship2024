@@ -1,15 +1,18 @@
 package org.java.mentorship.andrei_s.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.extern.jackson.Jacksonized;
+import org.java.mentorship.andrei_s.exception.FieldIsNullException;
+
+import java.util.Objects;
 
 @Data
-@Jacksonized @Builder
-@AllArgsConstructor
 public class Artist {
-    private final Integer id;
-
+    private Integer id;
     private String name;
+
+    public static void validate (Artist artist) {
+        if (Objects.isNull(artist.getName())) {
+            throw new FieldIsNullException("name");
+        }
+    }
 }
