@@ -44,18 +44,12 @@ public class SongController {
 
     @DeleteMapping("/songs/{id}") ResponseEntity<String> deleteSong(@PathVariable(name = "id") int id)
     {
-        if (songService.deleteSong(id))
-            return ResponseEntity.ok("Deleted song");
-        else
-            return ResponseEntity.notFound().build();
+        songService.deleteById(id);
+        return ResponseEntity.ok("Deleted song");
     }
 
     @PutMapping("/songs/{id}") ResponseEntity<Song> modifySong(@PathVariable(name = "id") int id, @RequestBody Song song)
     {
-        Song modifiedSong = songService.updateById(id, song);
-        if (modifiedSong != null)
-            return ResponseEntity.ok(modifiedSong);
-        else
-            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(songService.updateById(id, song));
     }
 }

@@ -32,9 +32,10 @@ public class SongService {
         return repo.createNew(song);
     }
 
-    public boolean deleteSong(int songId)
+    public boolean deleteById(int songId)
     {
-        throw new RuntimeException("come back later ;)");
+        return repo.deleteById(songId);
+
     }
 
     public Song updateById(int id, Song modifiedSong)

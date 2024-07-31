@@ -40,9 +40,18 @@ public class SongRepository {
         // Check if the song exists, otherwise it will throw EntityNotFound
         getById(id);
 
-        int a = jdbcTemplate.update("UPDATE songs SET name = ?, style = ?, duration = ?, artist_id = ?, album_id = ? WHERE id = ?",
+        jdbcTemplate.update("UPDATE songs SET name = ?, style = ?, duration = ?, artist_id = ?, album_id = ? WHERE id = ?",
                 modifiedSong.getName(), modifiedSong.getStyle(), modifiedSong.getDuration(), modifiedSong.getArtist_id(), modifiedSong.getAlbum_id(), modifiedSong.getId());
+
         return modifiedSong;
     }
 
+    public boolean deleteById(int id) {
+        // Check if the song exists, otherwise it will throw EntityNotFound
+        getById(id);
+
+        jdbcTemplate.update("DELETE FROM songs WHERE id = ?", id);
+
+        return true;
+    }
 }
