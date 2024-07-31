@@ -1,5 +1,6 @@
 package org.java.mentorship.andrei_s.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.java.mentorship.andrei_s.domain.Song;
 import org.java.mentorship.andrei_s.service.SongService;
 import org.springframework.http.ResponseEntity;
@@ -9,14 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class SongController {
     private final SongService songService;
-
-    SongController(SongService songService,
-                   Map<String, String> properties)
-    {
-        this.songService = songService;
-    }
 
     @GetMapping("/songs")
     public ResponseEntity<List<Song>> getAllSongs(@RequestParam(required = false, name = "style") String style)
