@@ -2,13 +2,13 @@ package org.java.mentorship.andrei_s.service;
 
 import lombok.AllArgsConstructor;
 import org.java.mentorship.andrei_s.domain.Album;
+import org.java.mentorship.andrei_s.domain.Song;
 import org.java.mentorship.andrei_s.exception.EntityNotFound;
 import org.java.mentorship.andrei_s.persistence.AlbumRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -16,12 +16,13 @@ public class AlbumService {
     AlbumRepository repo;
 
     ArtistService artistService;
+    SongService songService;
 
     public Album getById(int id) {
         try {
             return repo.getById(id);
         } catch (NoSuchElementException e) {
-            throw new EntityNotFound(id);
+            throw new EntityNotFound(id, "album");
         }
     }
 
@@ -40,7 +41,6 @@ public class AlbumService {
     }
 
     public void deleteById(int id) {
-        repo.getById(id);
         repo.deleteById(id);
     }
 

@@ -18,7 +18,7 @@ public class ArtistService {
         try {
             return repo.getById(id);
         } catch (NoSuchElementException e) {
-            throw new EntityNotFound(id);
+            throw new EntityNotFound(id, "artist");
         }
     }
 

@@ -31,6 +31,10 @@ public class SongRepository {
         return jdbcTemplate.query("SELECT * FROM songs WHERE artist_id = ?", rowMapper, artist_id);
     }
 
+    public List<Song> findAlbumSongs(int album_id) {
+        return jdbcTemplate.query("SELECT * FROM songs WHERE album_id = ?", rowMapper, album_id);
+    }
+
     public Song getById(int id) {
         return jdbcTemplate.query("SELECT * FROM songs WHERE id = ?", rowMapper, id).getFirst();
     }

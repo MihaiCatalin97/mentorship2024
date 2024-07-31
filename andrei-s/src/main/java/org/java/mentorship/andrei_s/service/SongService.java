@@ -15,12 +15,13 @@ public class SongService {
     SongRepository repo;
 
     ArtistService artistService;
+    AlbumService albumService;
 
     public Song getById(int id) {
         try {
             return repo.getById(id);
         } catch (NoSuchElementException e) {
-            throw new EntityNotFound(id);
+            throw new EntityNotFound(id, "song");
         }
     }
 
@@ -47,5 +48,10 @@ public class SongService {
     public List<Song> getArtistSongs(int artist_id) {
         artistService.getById(artist_id);
         return repo.findArtistSongs(artist_id);
+    }
+
+    public List<Song> getAlbumSongs(int album_id) {
+        albumService.getById(album_id);
+        return repo.findAlbumSongs(album_id);
     }
 }

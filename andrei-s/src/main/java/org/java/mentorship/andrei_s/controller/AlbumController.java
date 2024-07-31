@@ -11,37 +11,46 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/albums")
 @RequiredArgsConstructor
 public class AlbumController {
     private final AlbumService albumService;
+    private final SongService songService;
 
-    @GetMapping("/albums")
+    @GetMapping()
     public ResponseEntity<List<Album>> getAll()
     {
         return ResponseEntity.ok(albumService.findAll());
     }
 
-    @GetMapping("/albums/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Album> getById(@PathVariable(name = "id") int id)
     {
-        Album song = albumService.getById(id);
-        return ResponseEntity.ok(song);
+        Album album = albumService.getById(id);
+        return ResponseEntity.ok(album);
     }
 
-    @PostMapping("/albums")
+    @GetMapping("/{id}/songs")
+    public ResponseEntity<List<Song>> getAlbumSongs(@PathVariable(name = "id") int id)
+    {
+        List<Song> songs = songService.getAlbumSongs(id);
+        return ResponseEntity.ok(songs);
+    }
+
+    @PostMapping()
     public ResponseEntity<Album> createNew(@RequestBody Album album)
     {
         Album newAlbum = albumService.createNew(album);
         return ResponseEntity.ok(newAlbum);
     }
 
-    @DeleteMapping("/albums/{id}") ResponseEntity<String> delete(@PathVariable(name = "id") int id)
+    @DeleteMapping("/{id}") ResponseEntity<String> delete(@PathVariable(name = "id") int id)
     {
         albumService.deleteById(id);
         return ResponseEntity.ok("Deleted album");
     }
 
-    @PutMapping("/albums/{id}") ResponseEntity<Album> modify(@PathVariable(name = "id") int id, @RequestBody Album album)
+    @PutMapping("/{id}") ResponseEntity<Album> modify(@PathVariable(name = "id") int id, @RequestBody Album album)
     {
         return ResponseEntity.ok(albumService.updateById(id, album));
     }
