@@ -2,20 +2,18 @@ package org.java.mentorship.controller;
 
 import lombok.AllArgsConstructor;
 import org.java.mentorship.domain.Song;
-import org.java.mentorship.service.TestService;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.java.mentorship.service.SongService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
-import java.util.Map;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @AllArgsConstructor
-public class TestController {
+public class SongController {
 
 //    private final TestService testService;
 //
@@ -65,23 +63,23 @@ public class TestController {
 //       return ResponseEntity.ok(songMod);
 //    }
 //
-    private final TestService testService;
+    private final SongService songService;
 
     @PostMapping("/songs")
     public ResponseEntity<Song> create(@RequestBody final Song song) {
         return ResponseEntity
                 .status(CREATED)
-                .body(testService.save(song));
+                .body(songService.save(song));
     }
 
     @GetMapping("/songs")
     public ResponseEntity<List<Song>> getAll() {
-        return ResponseEntity.ok(testService.findAll());
+        return ResponseEntity.ok(songService.findAll());
     }
 
     @GetMapping("/songs/{id}")
     public ResponseEntity<Song> getById(@PathVariable("id") final int identifier) {
-        return ResponseEntity.ok(testService.findById(identifier));
+        return ResponseEntity.ok(songService.findById(identifier));
     }
 
     @PutMapping("/songs/{id}")
@@ -89,12 +87,12 @@ public class TestController {
                                        @RequestBody final Song song) {
         song.setId(identifier);
 
-        return ResponseEntity.ok(testService.update(identifier,song));
+        return ResponseEntity.ok(songService.update(identifier,song));
     }
 
     @DeleteMapping("/songs/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") final int identifier) {
-        testService.delete(identifier);
+        songService.delete(identifier);
         return ResponseEntity.ok("deleted song");
     }
 

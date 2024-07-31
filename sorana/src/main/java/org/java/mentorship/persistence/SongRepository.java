@@ -2,6 +2,7 @@ package org.java.mentorship.persistence;
 
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.common.EntityRepository;
+import org.java.mentorship.domain.Artist;
 import org.java.mentorship.domain.Song;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -53,5 +54,9 @@ public class SongRepository implements EntityRepository<Song, Integer> {
     @Override
     public List<Song> findAll() {
         return jdbcTemplate.query("SELECT * FROM songs", rowMapper);
+    }
+
+    public List<Song> findSongs(Integer artistId) {
+        return jdbcTemplate.query("SELECT * FROM songs WHERE artist_id = ? ", rowMapper,artistId);
     }
 }

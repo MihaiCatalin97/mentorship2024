@@ -2,6 +2,7 @@ package org.java.mentorship.service;
 
 import lombok.AllArgsConstructor;
 import org.java.mentorship.common.EntityService;
+import org.java.mentorship.domain.Artist;
 import org.java.mentorship.domain.Song;
 import org.java.mentorship.persistence.SongRepository;
 import org.java.mentorship.validation.SongValidator;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class TestService implements EntityService<Song, Integer> {
+public class SongService implements EntityService<Song, Integer> {
 //first try
 //    private List<Song> songs;
 //
@@ -102,4 +103,7 @@ public class TestService implements EntityService<Song, Integer> {
         return repository.findAll();
     }
 
+    public List<Song> findSongs(Integer artistId){
+        return repository.findSongs(artistId);
+    }
 }
