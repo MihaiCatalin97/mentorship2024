@@ -7,6 +7,7 @@ import org.java.mentorship.andrei_s.persistence.AlbumRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @Service
@@ -14,14 +15,17 @@ import java.util.Objects;
 public class AlbumService {
     AlbumRepository repo;
 
+    ArtistService artistService;
+
     public Album getById(int id) {
-        Album foundAlbum = repo.getById(id);
-        if (Objects.isNull(foundAlbum)) throw new EntityNotFound(id);
-        return foundAlbum;
+        try {
+            return repo.getById(id);
+        } catch (NoSuchElementException e) {
+            throw new EntityNotFound(id);
+        }
     }
 
     public List<Album> findAll() {
-
         return repo.findAll();
     }
 
@@ -31,15 +35,17 @@ public class AlbumService {
     }
 
     public List<Album> getArtistAlbums(int artist_id) {
+        artistService.getById(artist_id);
         return repo.getArtistAlbums(artist_id);
     }
 
     public void deleteById(int id) {
-
+        repo.getById(id);
         repo.deleteById(id);
     }
 
     public Album updateById(int id, Album modified) {
+        repo.getById(id);
         Album.validate(modified);
         return repo.updateById(id, modified);
     }

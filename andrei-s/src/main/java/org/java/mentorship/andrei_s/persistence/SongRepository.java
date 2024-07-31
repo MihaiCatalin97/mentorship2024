@@ -1,7 +1,6 @@
 package org.java.mentorship.andrei_s.persistence;
 
 import lombok.AllArgsConstructor;
-import org.java.mentorship.andrei_s.domain.Artist;
 import org.java.mentorship.andrei_s.domain.Song;
 import org.java.mentorship.andrei_s.exception.EntityNotFound;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,29 +32,17 @@ public class SongRepository {
     }
 
     public Song getById(int id) {
-        try {
-            return jdbcTemplate.query("SELECT * FROM songs WHERE id = ?", rowMapper, id).getFirst();
-        } catch (NoSuchElementException e) {
-            throw new EntityNotFound(id);
-        }
+        return jdbcTemplate.query("SELECT * FROM songs WHERE id = ?", rowMapper, id).getFirst();
     }
 
     public Song updateById(int id, Song modifiedSong) {
-        // Check if the song exists, otherwise it will throw EntityNotFound
-        getById(id);
-
         jdbcTemplate.update("UPDATE songs SET name = ?, style = ?, duration = ?, artist_id = ?, album_id = ? WHERE id = ?",
                 modifiedSong.getName(), modifiedSong.getStyle(), modifiedSong.getDuration(), modifiedSong.getArtist_id(), modifiedSong.getAlbum_id(), modifiedSong.getId());
 
         return modifiedSong;
     }
 
-    public boolean deleteById(int id) {
-        // Check if the song exists, otherwise it will throw EntityNotFound
-        getById(id);
-
+    public void deleteById(int id) {
         jdbcTemplate.update("DELETE FROM songs WHERE id = ?", id);
-
-        return true;
     }
 }

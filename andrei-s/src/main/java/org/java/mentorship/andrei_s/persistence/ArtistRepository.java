@@ -29,29 +29,17 @@ public class ArtistRepository {
     }
 
     public Artist getById(int id) {
-        try {
-            return jdbcTemplate.query("SELECT * FROM artists WHERE id = ?", rowMapper, id).getFirst();
-        } catch (NoSuchElementException e) {
-            throw new EntityNotFound(id);
-        }
+        return jdbcTemplate.query("SELECT * FROM artists WHERE id = ?", rowMapper, id).getFirst();
     }
 
     public Artist updateById(int id, Artist modifiedArtist) {
-        // Check if the song exists, otherwise it will throw EntityNotFound
-        getById(id);
-
         jdbcTemplate.update("UPDATE artists SET name = ? WHERE id = ?",
                 modifiedArtist.getName(), modifiedArtist.getId());
 
         return modifiedArtist;
     }
 
-    public boolean deleteById(int id) {
-        // Check if the song exists, otherwise it will throw EntityNotFound
-        getById(id);
-
+    public void deleteById(int id) {
         jdbcTemplate.update("DELETE FROM artists WHERE id = ?", id);
-
-        return true;
     }
 }

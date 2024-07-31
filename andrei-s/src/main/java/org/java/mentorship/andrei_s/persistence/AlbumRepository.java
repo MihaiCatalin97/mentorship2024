@@ -29,11 +29,7 @@ public class AlbumRepository {
     }
 
     public Album getById(int id) {
-        try {
-            return jdbcTemplate.query("SELECT * FROM albums WHERE id = ?", rowMapper, id).getFirst();
-        } catch (NoSuchElementException e) {
-            throw new EntityNotFound(id);
-        }
+        return jdbcTemplate.query("SELECT * FROM albums WHERE id = ?", rowMapper, id).getFirst();
     }
 
     public List<Album> getArtistAlbums(int artist_id) {
@@ -41,21 +37,13 @@ public class AlbumRepository {
     }
 
     public Album updateById(int id, Album modifiedAlbum) {
-        // Check if the song exists, otherwise it will throw EntityNotFound
-        getById(id);
-
         jdbcTemplate.update("UPDATE albums SET name = ? WHERE id = ?",
                 modifiedAlbum.getName(), modifiedAlbum.getId());
 
         return modifiedAlbum;
     }
 
-    public boolean deleteById(int id) {
-        // Check if the song exists, otherwise it will throw EntityNotFound
-        getById(id);
-
+    public void deleteById(int id) {
         jdbcTemplate.update("DELETE FROM albums WHERE id = ?", id);
-
-        return true;
     }
 }
