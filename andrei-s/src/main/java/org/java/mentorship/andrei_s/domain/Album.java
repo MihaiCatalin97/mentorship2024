@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class Album {
-    private int id;
-    private int name;
+    private Integer id;
+    private Integer name;
 }

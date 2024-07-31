@@ -21,7 +21,7 @@ public class SongController {
     @GetMapping("/songs")
     public ResponseEntity<List<Song>> getAllSongs(@RequestParam(required = false, name = "style") String style)
     {
-        return ResponseEntity.ok(songService.getSongs(style));
+        return ResponseEntity.ok(songService.findAll(style));
     }
 
     @GetMapping("/songs/{id}")
@@ -35,7 +35,7 @@ public class SongController {
     @PostMapping("/songs")
     public ResponseEntity<Song> createNewSong(@RequestBody Song song)
     {
-        Song newSong = songService.createNewSong(song);
+        Song newSong = songService.createNew(song);
         if (newSong != null)
             return ResponseEntity.ok(newSong);
         else
