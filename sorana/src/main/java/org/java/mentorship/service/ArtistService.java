@@ -2,8 +2,10 @@ package org.java.mentorship.service;
 
 import lombok.AllArgsConstructor;
 import org.java.mentorship.domain.Artist;
+import org.java.mentorship.exception.EntityNotFound;
 import org.java.mentorship.persistence.ArtistRepository;
 import org.java.mentorship.validation.ArtistValidator;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +21,11 @@ public class ArtistService {
         return artistRepository.findAll();
     }
     public Artist findById(final Integer id) {
-        return artistRepository.findById(id);
+        try{
+            return artistRepository.findById(id);
+        } catch (EmptyResultDataAccessException e){
+            throw new EntityNotFound(id,"album");
+        }
     }
     public Artist save(Artist artist) {
         artistValidator.validate(artist);

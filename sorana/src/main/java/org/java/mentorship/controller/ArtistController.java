@@ -24,7 +24,7 @@ public class ArtistController {
         return ResponseEntity.ok(artistService.findAll());
     }
 
-    @GetMapping("/artists/songs/{id}")
+    @GetMapping("/artists/{id}/songs")
     public ResponseEntity<List<Song>> getAllSongs(@PathVariable Integer id) {
         return ResponseEntity.ok(songService.findSongs(id));
     }
@@ -51,6 +51,10 @@ public class ArtistController {
 
     @DeleteMapping("/artists/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") final int identifier) {
+        List<Song> songs = songService.findSongsByArtistId(identifier);
+        if(!songs.isEmpty()) {
+            return ResponseEntity.badRequest().body("We need to delete all songs before deleting the artist");
+        }
         artistService.delete(identifier);
         return ResponseEntity.ok("deleted artist");
     }

@@ -1,7 +1,10 @@
 package org.java.mentorship.controller;
 
 import lombok.AllArgsConstructor;
+import org.java.mentorship.domain.Artist;
 import org.java.mentorship.domain.Song;
+import org.java.mentorship.service.AlbumService;
+import org.java.mentorship.service.ArtistService;
 import org.java.mentorship.service.SongService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +67,7 @@ public class SongController {
 //    }
 //
     private final SongService songService;
+    private final ArtistService artistService;
 
     @PostMapping("/songs")
     public ResponseEntity<Song> create(@RequestBody final Song song) {
@@ -80,6 +84,12 @@ public class SongController {
     @GetMapping("/songs/{id}")
     public ResponseEntity<Song> getById(@PathVariable("id") final int identifier) {
         return ResponseEntity.ok(songService.findById(identifier));
+    }
+    @GetMapping("/songs/{id}/artist")
+    public ResponseEntity<Artist> getArtistBySong(@PathVariable("id") final int identifier) {
+        Song song = songService.findById(identifier);
+        Artist artist = artistService.findById(song.getArtistId());
+        return ResponseEntity.ok(artist);
     }
 
     @PutMapping("/songs/{id}")

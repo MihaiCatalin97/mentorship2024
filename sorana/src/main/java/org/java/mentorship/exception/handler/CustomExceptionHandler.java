@@ -19,6 +19,8 @@ public class CustomExceptionHandler {
     }
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handle(final RuntimeException exception) {
+        log.error("Exception of type {} was handled. Exception message: {}", exception.getClass().getSimpleName(), exception.getMessage());
+
         return ResponseEntity.badRequest().body(new ErrorResponse(exception.getMessage()));
     }
 }

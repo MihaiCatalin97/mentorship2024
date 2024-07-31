@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import org.java.mentorship.common.EntityService;
 import org.java.mentorship.domain.Artist;
 import org.java.mentorship.domain.Song;
+import org.java.mentorship.exception.EntityNotFound;
 import org.java.mentorship.persistence.SongRepository;
 import org.java.mentorship.validation.SongValidator;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -76,6 +78,7 @@ public class SongService implements EntityService<Song, Integer> {
 
     private final SongValidator validator;
 
+
     @Override
     public Song save(final Song song) {
         validator.validate(song);
@@ -85,7 +88,11 @@ public class SongService implements EntityService<Song, Integer> {
 
     @Override
     public Song findById(final Integer id) {
-        return repository.findById(id);
+        try{
+            return repository.findById(id);
+        } catch (EmptyResultDataAccessException e){
+            throw new EntityNotFound(id,"album");
+        }
     }
 
     @Override
@@ -105,5 +112,11 @@ public class SongService implements EntityService<Song, Integer> {
 
     public List<Song> findSongs(Integer artistId){
         return repository.findSongs(artistId);
+    }
+    public List<Song> findSongsByAlbumId(Integer albumId){
+        return repository.findSongsByAlbumId(albumId);
+    }
+    public List<Song> findSongsByArtistId(Integer artistId){
+        return repository.findSongsByAlbumId(artistId);
     }
 }
