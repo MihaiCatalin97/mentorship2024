@@ -52,7 +52,7 @@ public class SongController {
 
     @PutMapping("/songs/{id}") ResponseEntity<Song> modifySong(@PathVariable(name = "id") int id, @RequestBody Song song)
     {
-        Song modifiedSong = songService.modifySong(id, song);
+        Song modifiedSong = songService.updateById(id, song);
         if (modifiedSong != null)
             return ResponseEntity.ok(modifiedSong);
         else

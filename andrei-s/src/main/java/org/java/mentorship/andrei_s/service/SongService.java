@@ -2,10 +2,12 @@ package org.java.mentorship.andrei_s.service;
 
 import lombok.AllArgsConstructor;
 import org.java.mentorship.andrei_s.domain.Song;
+import org.java.mentorship.andrei_s.exception.EntityNotFound;
 import org.java.mentorship.andrei_s.persistence.SongRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -14,7 +16,9 @@ public class SongService {
 
     public Song getSongById(int songId)
     {
-        throw new RuntimeException("come back later ;)");
+        Song foundSong = repo.getById(songId);
+        if (Objects.isNull(foundSong)) throw new EntityNotFound(songId);
+        return foundSong;
     }
 
     public List<Song> findAll(String style)
@@ -33,8 +37,9 @@ public class SongService {
         throw new RuntimeException("come back later ;)");
     }
 
-    public Song modifySong(int songId, Song modifiedSong)
+    public Song updateById(int id, Song modifiedSong)
     {
-        throw new RuntimeException("come back later ;)");
+        Song.validate(modifiedSong);
+        return repo.updateById(id, modifiedSong);
     }
 }
