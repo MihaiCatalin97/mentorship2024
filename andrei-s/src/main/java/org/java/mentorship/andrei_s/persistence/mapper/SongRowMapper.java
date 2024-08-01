@@ -18,8 +18,8 @@ public class SongRowMapper implements RowMapper<Song> {
         song.setName(rs.getString("name"));
         song.setStyle(rs.getString("style"));
         song.setDuration(rs.getInt("duration"));
-        song.setArtist_id(rs.getInt("artist_id"));
-        song.setAlbum_id(rs.getInt("album_id"));
+        song.setArtistId(rs.getInt("artist_id"));
+        song.setAlbumId(rs.getInt("album_id"));
 
         return song;
     }

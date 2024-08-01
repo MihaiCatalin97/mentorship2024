@@ -2,13 +2,11 @@ package org.java.mentorship.andrei_s.persistence;
 
 import lombok.AllArgsConstructor;
 import org.java.mentorship.andrei_s.domain.Song;
-import org.java.mentorship.andrei_s.exception.EntityNotFound;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Repository
 @AllArgsConstructor
@@ -18,7 +16,7 @@ public class SongRepository {
 
     public Song createNew(Song song) {
         jdbcTemplate.update("INSERT INTO songs (name, style, duration, artist_id, album_id) VALUES (?, ?, ?, ?, ?)",
-                song.getName(), song.getStyle(), song.getDuration(), song.getArtist_id(), song.getAlbum_id());
+                song.getName(), song.getStyle(), song.getDuration(), song.getArtistId(), song.getAlbumId());
 
         return song;
     }
@@ -27,12 +25,12 @@ public class SongRepository {
         return jdbcTemplate.query("SELECT * FROM songs", rowMapper);
     }
 
-    public List<Song> findArtistSongs(int artist_id) {
-        return jdbcTemplate.query("SELECT * FROM songs WHERE artist_id = ?", rowMapper, artist_id);
+    public List<Song> findByArtist(int albumId) {
+        return jdbcTemplate.query("SELECT * FROM songs WHERE albumId = ?", rowMapper, albumId);
     }
 
-    public List<Song> findAlbumSongs(int album_id) {
-        return jdbcTemplate.query("SELECT * FROM songs WHERE album_id = ?", rowMapper, album_id);
+    public List<Song> findByAlbum(int albumId) {
+        return jdbcTemplate.query("SELECT * FROM songs WHERE albumId = ?", rowMapper, albumId);
     }
 
     public Song getById(int id) {
@@ -41,7 +39,7 @@ public class SongRepository {
 
     public Song updateById(int id, Song modifiedSong) {
         jdbcTemplate.update("UPDATE songs SET name = ?, style = ?, duration = ?, artist_id = ?, album_id = ? WHERE id = ?",
-                modifiedSong.getName(), modifiedSong.getStyle(), modifiedSong.getDuration(), modifiedSong.getArtist_id(), modifiedSong.getAlbum_id(), modifiedSong.getId());
+                modifiedSong.getName(), modifiedSong.getStyle(), modifiedSong.getDuration(), modifiedSong.getArtistId(), modifiedSong.getAlbumId(), modifiedSong.getId());
 
         return modifiedSong;
     }

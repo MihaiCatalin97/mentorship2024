@@ -37,7 +37,7 @@ public class SongController {
     public ResponseEntity<Artist> getSongArtist(@PathVariable(name = "id") int id)
     {
         Song song = songService.getById(id);
-        Artist artist = artistService.getById(song.getArtist_id());
+        Artist artist = artistService.getById(song.getArtistId());
         return ResponseEntity.ok(artist);
     }
 
@@ -45,7 +45,7 @@ public class SongController {
     public ResponseEntity<Album> getSongAlbum(@PathVariable(name = "id") int id)
     {
         Song song = songService.getById(id);
-        Album album = albumService.getById(song.getAlbum_id());
+        Album album = albumService.getById(song.getAlbumId());
         return ResponseEntity.ok(album);
     }
 

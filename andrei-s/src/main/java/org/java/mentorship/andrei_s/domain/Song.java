@@ -12,8 +12,8 @@ public class Song {
     private String name;
     private String style;
     private Integer duration;
-    private Integer artist_id;
-    private Integer album_id;
+    private Integer artistId;
+    private Integer albumId;
 
     public static void validate(Song song) {
         if (Objects.isNull(song.getName())) {
@@ -22,10 +22,10 @@ public class Song {
         if (Objects.isNull(song.getStyle())) {
             throw new FieldIsNullException("style");
         }
-        if (Objects.isNull(song.getAlbum_id())) {
+        if (Objects.isNull(song.getAlbumId())) {
             throw new FieldIsNullException("album_id");
         }
-        if (Objects.isNull((song.getArtist_id()))) {
+        if (Objects.isNull((song.getArtistId()))) {
             throw new FieldIsNullException("artist_id");
         }
         if (Objects.isNull(song.getDuration())) {

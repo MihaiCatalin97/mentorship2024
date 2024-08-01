@@ -35,23 +35,23 @@ public class SongService {
     }
 
     public void deleteById(int id) {
-        repo.getById(id);
+        this.getById(id);
         repo.deleteById(id);
     }
 
     public Song updateById(int id, Song modified) {
-        repo.getById(id);
+        this.getById(id);
         Song.validate(modified);
         return repo.updateById(id, modified);
     }
 
     public List<Song> getArtistSongs(int artist_id) {
         artistService.getById(artist_id);
-        return repo.findArtistSongs(artist_id);
+        return repo.findByArtist(artist_id);
     }
 
     public List<Song> getAlbumSongs(int album_id) {
         albumService.getById(album_id);
-        return repo.findAlbumSongs(album_id);
+        return repo.findByAlbum(album_id);
     }
 }

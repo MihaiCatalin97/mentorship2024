@@ -2,14 +2,11 @@ package org.java.mentorship.andrei_s.persistence;
 
 import lombok.AllArgsConstructor;
 import org.java.mentorship.andrei_s.domain.Album;
-import org.java.mentorship.andrei_s.domain.Artist;
-import org.java.mentorship.andrei_s.exception.EntityNotFound;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Repository
 @AllArgsConstructor
@@ -32,7 +29,7 @@ public class AlbumRepository {
         return jdbcTemplate.query("SELECT * FROM albums WHERE id = ?", rowMapper, id).getFirst();
     }
 
-    public List<Album> getArtistAlbums(int artist_id) {
+    public List<Album> findByArtist(int artist_id) {
         return jdbcTemplate.query("SELECT * FROM albums WHERE artist_id = ?", rowMapper, artist_id);
     }
 

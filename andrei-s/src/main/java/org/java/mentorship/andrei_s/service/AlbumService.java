@@ -2,7 +2,7 @@ package org.java.mentorship.andrei_s.service;
 
 import lombok.AllArgsConstructor;
 import org.java.mentorship.andrei_s.domain.Album;
-import org.java.mentorship.andrei_s.domain.Song;
+import org.java.mentorship.andrei_s.exception.AppException;
 import org.java.mentorship.andrei_s.exception.EntityNotFound;
 import org.java.mentorship.andrei_s.persistence.AlbumRepository;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,6 @@ public class AlbumService {
     AlbumRepository repo;
 
     ArtistService artistService;
-    SongService songService;
 
     public Album getById(int id) {
         try {
@@ -37,11 +36,16 @@ public class AlbumService {
 
     public List<Album> getArtistAlbums(int artist_id) {
         artistService.getById(artist_id);
-        return repo.getArtistAlbums(artist_id);
+        return repo.findByArtist(artist_id);
     }
 
     public void deleteById(int id) {
-        repo.deleteById(id);
+        this.getById(id);
+        try {
+            repo.deleteById(id);
+        } catch (Exception e) {
+            throw new AppException("Unknown error when deleting album. Does it still contain songs?", e);
+        }
     }
 
     public Album updateById(int id, Album modified) {
