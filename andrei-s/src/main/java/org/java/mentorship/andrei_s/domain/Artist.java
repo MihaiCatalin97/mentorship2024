@@ -10,7 +10,8 @@ public class Artist {
     private Integer id;
     private String name;
 
-    public static void validate (Artist artist) {
+    public void validate() {
+        Artist artist = this;
         if (Objects.isNull(artist.getName())) {
             throw new FieldIsNullException("name");
         }

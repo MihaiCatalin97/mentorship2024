@@ -28,7 +28,7 @@ public class ArtistService {
     }
 
     public Artist createNew(Artist artist) {
-        Artist.validate(artist);
+        artist.validate();
         return repo.createNew(artist);
     }
 
@@ -43,7 +43,7 @@ public class ArtistService {
 
     public Artist updateById(int id, Artist modified) {
         repo.getById(id);
-        Artist.validate(modified);
+        modified.validate();
         return repo.updateById(id, modified);
     }
 }

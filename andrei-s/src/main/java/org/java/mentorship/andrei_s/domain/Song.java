@@ -1,5 +1,6 @@
 package org.java.mentorship.andrei_s.domain;
 
+import lombok.Builder;
 import lombok.Data;
 import org.java.mentorship.andrei_s.exception.FieldIsNullException;
 
@@ -15,7 +16,8 @@ public class Song {
     private Integer artistId;
     private Integer albumId;
 
-    public static void validate(Song song) {
+    public void validate() {
+        Song song = this;
         if (Objects.isNull(song.getName())) {
             throw new FieldIsNullException("name");
         }
@@ -23,10 +25,10 @@ public class Song {
             throw new FieldIsNullException("style");
         }
         if (Objects.isNull(song.getAlbumId())) {
-            throw new FieldIsNullException("album_id");
+            throw new FieldIsNullException("albumId");
         }
         if (Objects.isNull((song.getArtistId()))) {
-            throw new FieldIsNullException("artist_id");
+            throw new FieldIsNullException("artistId");
         }
         if (Objects.isNull(song.getDuration())) {
             throw new FieldIsNullException("duration");

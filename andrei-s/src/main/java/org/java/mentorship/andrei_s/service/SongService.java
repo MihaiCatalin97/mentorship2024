@@ -27,7 +27,7 @@ public class SongService {
     }
 
     public Song createNew(Song song) {
-        Song.validate(song);
+        song.validate();
         return repo.createNew(song);
     }
 
@@ -38,7 +38,7 @@ public class SongService {
 
     public Song updateById(int id, Song modified) {
         this.getById(id);
-        Song.validate(modified);
+        modified.validate();
         return repo.updateById(id, modified);
     }
 }

@@ -28,7 +28,7 @@ public class AlbumService {
     }
 
     public Album createNew(Album album) {
-        Album.validate(album);
+        album.validate();
         return repo.createNew(album);
     }
 
@@ -43,7 +43,7 @@ public class AlbumService {
 
     public Album updateById(int id, Album modified) {
         repo.getById(id);
-        Album.validate(modified);
+        modified.validate();
         return repo.updateById(id, modified);
     }
 }
