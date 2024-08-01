@@ -1,12 +1,17 @@
 package org.java.mentorship.andrei_s.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.java.mentorship.andrei_s.exception.FieldIsNullException;
 
 import java.util.Objects;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Song {
     private Integer id;
 
