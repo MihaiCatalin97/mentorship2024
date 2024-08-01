@@ -2,7 +2,6 @@ package org.java.mentorship.controller;
 
 import lombok.AllArgsConstructor;
 import org.java.mentorship.domain.Album;
-import org.java.mentorship.domain.Artist;
 import org.java.mentorship.domain.Song;
 import org.java.mentorship.service.AlbumService;
 import org.java.mentorship.service.SongService;

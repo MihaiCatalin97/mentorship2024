@@ -32,6 +32,7 @@ public class ArtistService {
         return artistRepository.save(artist);
     }
     public boolean delete(final Integer id) {
+
         return artistRepository.delete(id);
     }
     public Artist update(final Integer id,Artist artist) {

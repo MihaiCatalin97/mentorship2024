@@ -16,21 +16,25 @@ public class ArtistRepository {
     public List<Artist> findAll() {
         return jdbcTemplate.query("SELECT * FROM artists", new ArtistRowMapper());
     }
+
     public Artist findById(int id) {
         return jdbcTemplate.queryForObject("SELECT * FROM artists WHERE id = ?", new ArtistRowMapper(), id);
     }
+
     public Artist save(Artist artist) {
-        jdbcTemplate.update("INSERT INTO artists (name) VALUES (?, ?)", artist.getName());
+        jdbcTemplate.update("INSERT INTO artists (name) VALUES (?)",artist.getName());
         return artist;
     }
+
     public Artist update(final Integer id,Artist artist) {
         findById(id);
         jdbcTemplate.update("UPDATE artists SET name = ? WHERE id = ?", artist.getName(), artist.getId());
         return artist;
     }
+
     public boolean delete(int id) {
         findById(id);
-        jdbcTemplate.update("DELETE FROM artist WHERE id = ?", id);
+        jdbcTemplate.update("DELETE FROM artists WHERE id = ?", id);
         return true;
     }
 }

@@ -51,6 +51,7 @@ public class ArtistController {
 
     @DeleteMapping("/artists/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") final int identifier) {
+
         List<Song> songs = songService.findSongsByArtistId(identifier);
         if(!songs.isEmpty()) {
             return ResponseEntity.badRequest().body("We need to delete all songs before deleting the artist");
