@@ -20,21 +20,25 @@ public class ArtistService {
     public List<Artist> findAll() {
         return artistRepository.findAll();
     }
+
     public Artist findById(final Integer id) {
         try{
             return artistRepository.findById(id);
         } catch (EmptyResultDataAccessException e){
-            throw new EntityNotFound(id,"album");
+            throw new EntityNotFound(id,"artist");
         }
     }
+
     public Artist save(Artist artist) {
         artistValidator.validate(artist);
         return artistRepository.save(artist);
     }
+
     public boolean delete(final int id) {
 
         return artistRepository.delete(id);
     }
+
     public Artist update(final Integer id,Artist artist) {
         artistValidator.validate(artist);
         return artistRepository.update(id,artist);

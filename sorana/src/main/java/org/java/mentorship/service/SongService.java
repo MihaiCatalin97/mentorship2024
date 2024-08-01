@@ -82,7 +82,6 @@ public class SongService implements EntityService<Song, Integer> {
     @Override
     public Song save(final Song song) {
         validator.validate(song);
-
         return repository.save(song);
     }
 
@@ -91,7 +90,7 @@ public class SongService implements EntityService<Song, Integer> {
         try{
             return repository.findById(id);
         } catch (EmptyResultDataAccessException e){
-            throw new EntityNotFound(id,"album");
+            throw new EntityNotFound(id,"song");
         }
     }
     public List<Song> find(Map<String, Object> requestParam) {
@@ -109,18 +108,12 @@ public class SongService implements EntityService<Song, Integer> {
         return repository.delete(id);
     }
 
-    @Override
-    public List<Song> findAll() {
-        return repository.findAll();
-    }
-
     public List<Song> findSongs(Integer artistId){
         return repository.findSongs(artistId);
     }
+
     public List<Song> findSongsByAlbumId(Integer albumId){
         return repository.findSongsByAlbumId(albumId);
     }
-    public List<Song> findSongsByArtistId(Integer artistId){
-        return repository.findSongsByAlbumId(artistId);
-    }
+
 }

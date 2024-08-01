@@ -14,7 +14,7 @@ import java.util.StringJoiner;
 
 @Repository
 @RequiredArgsConstructor
-public class SongRepository implements EntityRepository<Song, Integer> {
+public class  SongRepository implements EntityRepository<Song, Integer> {
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Song> rowMapper;
 
@@ -62,7 +62,6 @@ public class SongRepository implements EntityRepository<Song, Integer> {
             joiner.add(key + " = ?" ));
 
         String finalQuery = baseQuery + (params.size()!=0 ? joiner.toString() : "");
-        System.out.println(joiner + " " + joiner.length());
         Object[] paramValues = params.values().toArray();
         return jdbcTemplate.query(finalQuery, paramValues, rowMapper);
     }

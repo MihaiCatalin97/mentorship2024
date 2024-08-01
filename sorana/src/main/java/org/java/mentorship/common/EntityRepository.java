@@ -11,7 +11,7 @@ public interface EntityRepository<T, I>{
 
 //    Song create(Song song);
 
-    default List<T> findAll() {
+    default List<T> find() {
         throw new UnsupportedOperationException("Not implemented: findById");
     }
 

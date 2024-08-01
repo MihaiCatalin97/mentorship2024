@@ -21,4 +21,5 @@ public class Song {
     private Integer artistId;
 
     private Integer albumId;
+
 }
