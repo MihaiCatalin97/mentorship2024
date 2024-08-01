@@ -19,29 +19,37 @@ public class AlbumController {
     private final AlbumService albumService;
     private final SongService songService;
 
-    @GetMapping("/albums")
+    @GetMapping("/albums")//works
     public ResponseEntity<List<Album>> getAllalbums() {
         return ResponseEntity.ok(albumService.findAll());
     }
 
-    @GetMapping("/albums/{id}")
-    public ResponseEntity<Album> getAlbumById(@PathVariable int id) {
+    @GetMapping("/albums?name=astroworld")//works??
+    public ResponseEntity<List<Album>> getAllalbumsRequestParam(@RequestParam("name") String name) {
+        if(name.equals("astroworld")) {
+        return ResponseEntity.ok(albumService.findAll());}
+        else return ResponseEntity.notFound().build();
+    }
+
+
+    @GetMapping("/albums/{id}")//works
+    public ResponseEntity<Album> getAlbumById(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(albumService.findById(id));
     }
 
-    @GetMapping("/albums/{id}/songs")
-    public ResponseEntity<List<Song>> getSongsByAlbum(@PathVariable int id) {
+    @GetMapping("/albums/{id}/songs")//works
+    public ResponseEntity<List<Song>> getSongsByAlbum(@PathVariable("id") int id) {
         return ResponseEntity.ok(songService.findSongsByAlbumId(id));
     }
 
-    @PostMapping("/albums")
+    @PostMapping("/albums")//works
     public ResponseEntity<Album> create(@RequestBody final Album album) {
         return ResponseEntity
                 .status(CREATED)
                 .body(albumService.save(album));
     }
 
-    @PutMapping("/albums/{id}")
+    @PutMapping("/albums/{id}")//works
     public ResponseEntity<Album> update(@PathVariable("id") final int identifier,
                                          @RequestBody final Album album) {
         album.setId(identifier);
@@ -49,7 +57,7 @@ public class AlbumController {
         return ResponseEntity.ok(albumService.update(identifier,album));
     }
 
-    @DeleteMapping("/albums/{id}")
+    @DeleteMapping("/albums/{id}")//works
     public ResponseEntity<String> delete(@PathVariable("id") final int identifier) {
         List<Song> songs = songService.findSongsByAlbumId(identifier);
         if(!songs.isEmpty()) {

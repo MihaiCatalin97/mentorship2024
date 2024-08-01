@@ -19,29 +19,29 @@ public class ArtistController {
     private final ArtistService artistService;
     private final SongService songService;
 
-    @GetMapping("/artists")
+    @GetMapping("/artists")//works
     public ResponseEntity<List<Artist>> getAllartists() {
         return ResponseEntity.ok(artistService.findAll());
     }
 
-    @GetMapping("/artists/{id}/songs")
-    public ResponseEntity<List<Song>> getAllSongs(@PathVariable Integer id) {
+    @GetMapping("/artists/{id}/songs")//works
+    public ResponseEntity<List<Song>> getAllSongs(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(songService.findSongs(id));
     }
 
-    @GetMapping("/artists/{id}")
-    public ResponseEntity<Artist> getArtistById(@PathVariable int id) {
+    @GetMapping("/artists/{id}")//works
+    public ResponseEntity<Artist> getArtistById(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(artistService.findById(id));
     }
 
-    @PostMapping("/artists")
+    @PostMapping("/artists")//works
     public ResponseEntity<Artist> create(@RequestBody final Artist artist) {
         return ResponseEntity
                 .status(CREATED)
                 .body(artistService.save(artist));
     }
 
-    @PutMapping("/artists/{id}")
+    @PutMapping("/artists/{id}")//works
     public ResponseEntity<Artist> update(@PathVariable("id") final int identifier,
                                        @RequestBody final Artist artist) {
         artist.setId(identifier);
@@ -50,7 +50,7 @@ public class ArtistController {
     }
 
     @DeleteMapping("/artists/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") final int identifier) {
+    public ResponseEntity<String> delete(@PathVariable("id") final Integer identifier) {
 
         List<Song> songs = songService.findSongsByArtistId(identifier);
         if(!songs.isEmpty()) {

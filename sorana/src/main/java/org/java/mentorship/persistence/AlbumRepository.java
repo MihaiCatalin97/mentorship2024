@@ -23,7 +23,7 @@ public class AlbumRepository {
         return jdbcTemplate.queryForObject("SELECT * FROM albums WHERE id = ?", new AlbumRowMapper(), id);
     }
     public Album save(Album album) {
-        jdbcTemplate.update("INSERT INTO albums (name) VALUES (?, ?)", album.getName());
+        jdbcTemplate.update("INSERT INTO albums (name) VALUES (?)", album.getName());
         return album;
     }
     public Album update(final Integer id,Album album) {

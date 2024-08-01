@@ -17,7 +17,7 @@ public class ArtistRepository {
         return jdbcTemplate.query("SELECT * FROM artists", new ArtistRowMapper());
     }
 
-    public Artist findById(int id) {
+    public Artist findById(Integer id) {
         return jdbcTemplate.queryForObject("SELECT * FROM artists WHERE id = ?", new ArtistRowMapper(), id);
     }
 

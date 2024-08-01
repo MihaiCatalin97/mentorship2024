@@ -1,16 +1,21 @@
 package org.java.mentorship.controller;
 
 import lombok.AllArgsConstructor;
+import org.java.mentorship.domain.Album;
 import org.java.mentorship.domain.Artist;
 import org.java.mentorship.domain.Song;
 import org.java.mentorship.service.AlbumService;
 import org.java.mentorship.service.ArtistService;
 import org.java.mentorship.service.SongService;
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -68,6 +73,7 @@ public class SongController {
 //
     private final SongService songService;
     private final ArtistService artistService;
+    private final AlbumService albumService;
 
     @PostMapping("/songs")
     public ResponseEntity<Song> create(@RequestBody final Song song) {
@@ -76,23 +82,38 @@ public class SongController {
                 .body(songService.save(song));
     }
 
+//    @GetMapping("/songs")//works
+//    public ResponseEntity<List<Song>> getAll() {
+//        return ResponseEntity.ok(songService.findAll());
+//    }
+
     @GetMapping("/songs")
-    public ResponseEntity<List<Song>> getAll() {
-        return ResponseEntity.ok(songService.findAll());
+    public ResponseEntity<List<Song>> getAllQueryParam(@RequestParam final Map<String, String> queryParam) {
+        return  ResponseEntity.ok().body(songService.findAllRequestParam(queryParam));
+
     }
 
-    @GetMapping("/songs/{id}")
+    @GetMapping("/songs/{id}/artistandalbum")//works
+    public ResponseEntity<Map> getAlbumAndArtist(@PathVariable("id") Integer id) {
+        Map<String, Object> map = new HashMap<>();
+        Song song = songService.findById(id);
+        map.put("artist", artistService.findById(song.getArtistId()));
+        map.put("album", albumService.findById(song.getAlbumId()));
+        return ResponseEntity.ok(map);
+    }
+
+    @GetMapping("/songs/{id}")//works
     public ResponseEntity<Song> getById(@PathVariable("id") final int identifier) {
         return ResponseEntity.ok(songService.findById(identifier));
     }
-    @GetMapping("/songs/{id}/artist")
+    @GetMapping("/songs/{id}/artist")//works
     public ResponseEntity<Artist> getArtistBySong(@PathVariable("id") final int identifier) {
         Song song = songService.findById(identifier);
         Artist artist = artistService.findById(song.getArtistId());
         return ResponseEntity.ok(artist);
     }
 
-    @PutMapping("/songs/{id}")
+    @PutMapping("/songs/{id}")//works
     public ResponseEntity<Song> update(@PathVariable("id") final int identifier,
                                        @RequestBody final Song song) {
         song.setId(identifier);
@@ -100,10 +121,11 @@ public class SongController {
         return ResponseEntity.ok(songService.update(identifier,song));
     }
 
-    @DeleteMapping("/songs/{id}")
+    @DeleteMapping("/songs/{id}")//works
     public ResponseEntity<String> delete(@PathVariable("id") final int identifier) {
         songService.delete(identifier);
         return ResponseEntity.ok("deleted song");
     }
+
 
 }

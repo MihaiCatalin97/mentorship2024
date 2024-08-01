@@ -8,6 +8,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
 
 
 @Repository
@@ -57,6 +59,19 @@ public class SongRepository implements EntityRepository<Song, Integer> {
     public List<Song> findAll() {
         return jdbcTemplate.query("SELECT * FROM songs", rowMapper);
     }
+
+
+    public List<Song> findAllRequestParam(Map<String, String> params) {
+        String baseQuery = "SELECT * FROM songs";
+        StringJoiner joiner = new StringJoiner(" AND "," WHERE ", "");
+        params.forEach((key, value) ->
+            joiner.add(key + "= ?" ));
+
+        String finalQuery = baseQuery + (joiner.length() > 0 ? joiner.toString() : "");
+        Object[] paramValues = params.values().toArray();
+        return jdbcTemplate.query(finalQuery, paramValues, rowMapper);
+    }
+
 
     public List<Song> findSongs(Integer artistId) {
         artistRepository.findById(artistId);

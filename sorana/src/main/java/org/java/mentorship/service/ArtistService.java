@@ -31,7 +31,7 @@ public class ArtistService {
         artistValidator.validate(artist);
         return artistRepository.save(artist);
     }
-    public boolean delete(final Integer id) {
+    public boolean delete(final int id) {
 
         return artistRepository.delete(id);
     }

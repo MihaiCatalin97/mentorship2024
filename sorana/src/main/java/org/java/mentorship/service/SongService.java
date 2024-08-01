@@ -11,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -93,6 +94,10 @@ public class SongService implements EntityService<Song, Integer> {
         } catch (EmptyResultDataAccessException e){
             throw new EntityNotFound(id,"album");
         }
+    }
+    public List<Song> findAllRequestParam(Map<String, String> requestParam) {
+        List<Song> songs = repository.findAllRequestParam(requestParam);
+        return songs;
     }
 
     @Override
