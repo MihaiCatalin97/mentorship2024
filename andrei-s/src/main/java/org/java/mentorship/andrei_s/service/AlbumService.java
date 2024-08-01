@@ -15,8 +15,6 @@ import java.util.NoSuchElementException;
 public class AlbumService {
     AlbumRepository repo;
 
-    ArtistService artistService;
-
     public Album getById(int id) {
         try {
             return repo.getById(id);
@@ -32,11 +30,6 @@ public class AlbumService {
     public Album createNew(Album album) {
         Album.validate(album);
         return repo.createNew(album);
-    }
-
-    public List<Album> getArtistAlbums(int artist_id) {
-        artistService.getById(artist_id);
-        return repo.findByArtist(artist_id);
     }
 
     public void deleteById(int id) {

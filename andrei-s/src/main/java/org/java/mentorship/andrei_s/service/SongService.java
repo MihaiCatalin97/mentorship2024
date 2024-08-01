@@ -14,9 +14,6 @@ import java.util.NoSuchElementException;
 public class SongService {
     SongRepository repo;
 
-    ArtistService artistService;
-    AlbumService albumService;
-
     public Song getById(int id) {
         try {
             return repo.getById(id);
@@ -43,15 +40,5 @@ public class SongService {
         this.getById(id);
         Song.validate(modified);
         return repo.updateById(id, modified);
-    }
-
-    public List<Song> getArtistSongs(int artist_id) {
-        artistService.getById(artist_id);
-        return repo.findByArtist(artist_id);
-    }
-
-    public List<Song> getAlbumSongs(int album_id) {
-        albumService.getById(album_id);
-        return repo.findByAlbum(album_id);
     }
 }

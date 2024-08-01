@@ -29,10 +29,6 @@ public class AlbumRepository {
         return jdbcTemplate.query("SELECT * FROM albums WHERE id = ?", rowMapper, id).getFirst();
     }
 
-    public List<Album> findByArtist(int artist_id) {
-        return jdbcTemplate.query("SELECT * FROM albums WHERE artist_id = ?", rowMapper, artist_id);
-    }
-
     public Album updateById(int id, Album modifiedAlbum) {
         jdbcTemplate.update("UPDATE albums SET name = ? WHERE id = ?",
                 modifiedAlbum.getName(), id);

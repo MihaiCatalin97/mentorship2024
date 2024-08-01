@@ -30,13 +30,6 @@ public class AlbumController {
         return ResponseEntity.ok(album);
     }
 
-    @GetMapping("/{id}/songs")
-    public ResponseEntity<List<Song>> getAlbumSongs(@PathVariable(name = "id") int id)
-    {
-        List<Song> songs = songService.getAlbumSongs(id);
-        return ResponseEntity.ok(songs);
-    }
-
     @PostMapping()
     public ResponseEntity<Album> createNew(@RequestBody Album album)
     {

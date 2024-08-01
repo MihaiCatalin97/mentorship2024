@@ -17,8 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SongController {
     private final SongService songService;
-    private final ArtistService artistService;
-    private final AlbumService albumService;
 
     @GetMapping()
     public ResponseEntity<List<Song>> getAll(@RequestParam(required = false, name = "style") String style,
