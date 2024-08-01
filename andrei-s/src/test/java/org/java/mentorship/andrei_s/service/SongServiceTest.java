@@ -134,6 +134,7 @@ public class SongServiceTest {
         songService.updateById(1, goodSong);
         verify(songRepository).updateById(1, goodSong);
     }
+    @Test
     void updateByIdShouldVerifyId() {
         songService.updateById(1, goodSong);
         verify(songRepository).getById(1);
