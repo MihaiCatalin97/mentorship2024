@@ -39,7 +39,7 @@ public class SongRepository {
 
     public Song updateById(int id, Song modifiedSong) {
         jdbcTemplate.update("UPDATE songs SET name = ?, style = ?, duration = ?, artist_id = ?, album_id = ? WHERE id = ?",
-                modifiedSong.getName(), modifiedSong.getStyle(), modifiedSong.getDuration(), modifiedSong.getArtistId(), modifiedSong.getAlbumId(), modifiedSong.getId());
+                modifiedSong.getName(), modifiedSong.getStyle(), modifiedSong.getDuration(), modifiedSong.getArtistId(), modifiedSong.getAlbumId(), id);
 
         return modifiedSong;
     }

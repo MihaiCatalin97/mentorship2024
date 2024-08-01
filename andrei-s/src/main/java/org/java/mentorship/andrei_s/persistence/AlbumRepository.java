@@ -35,7 +35,7 @@ public class AlbumRepository {
 
     public Album updateById(int id, Album modifiedAlbum) {
         jdbcTemplate.update("UPDATE albums SET name = ? WHERE id = ?",
-                modifiedAlbum.getName(), modifiedAlbum.getId());
+                modifiedAlbum.getName(), id);
 
         return modifiedAlbum;
     }

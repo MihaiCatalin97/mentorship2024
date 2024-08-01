@@ -1,7 +1,6 @@
 package org.java.mentorship.andrei_s.exception.handler;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.java.mentorship.andrei_s.exception.AppException;
 import org.java.mentorship.andrei_s.exception.domain.APIErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -9,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @RestControllerAdvice

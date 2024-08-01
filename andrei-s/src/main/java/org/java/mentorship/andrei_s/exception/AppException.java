@@ -1,7 +1,6 @@
 package org.java.mentorship.andrei_s.exception;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Data
