@@ -22,8 +22,8 @@ public class TestService {
         return songs.stream().filter(song -> song.getId() == id).findFirst();
     }
 
-    public Song createSong(String style, int artistId, Album album) {
-        Song song = new Song(currentId++, style, artistId, album);
+    public Song createSong(String style, int artistId, int albumId) {
+        Song song = new Song(currentId++, style, artistId, albumId);
         songs.add(song);
         return song;
     }
@@ -34,7 +34,7 @@ public class TestService {
         optionalSong.ifPresent(song -> {
             song.setStyle(songDetails.getStyle());
             song.setArtistId(songDetails.getArtistId());
-            song.setAlbum(songDetails.getAlbum());
+            song.setAlbumId(songDetails.getAlbumId());
         });
 
         return optionalSong;
