@@ -55,19 +55,14 @@ public class SongRepository implements EntityRepository<Song, Integer> {
         return true;
     }
 
-    @Override
-    public List<Song> findAll() {
-        return jdbcTemplate.query("SELECT * FROM songs", rowMapper);
-    }
-
-
-    public List<Song> findAllRequestParam(Map<String, String> params) {
+    public List<Song> find(Map<String, Object> params) {
         String baseQuery = "SELECT * FROM songs";
         StringJoiner joiner = new StringJoiner(" AND "," WHERE ", "");
         params.forEach((key, value) ->
-            joiner.add(key + "= ?" ));
+            joiner.add(key + " = ?" ));
 
-        String finalQuery = baseQuery + (joiner.length() > 0 ? joiner.toString() : "");
+        String finalQuery = baseQuery + (params.size()!=0 ? joiner.toString() : "");
+        System.out.println(joiner + " " + joiner.length());
         Object[] paramValues = params.values().toArray();
         return jdbcTemplate.query(finalQuery, paramValues, rowMapper);
     }

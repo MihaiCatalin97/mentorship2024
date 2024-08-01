@@ -1,21 +1,16 @@
 package org.java.mentorship.controller;
 
 import lombok.AllArgsConstructor;
-import org.java.mentorship.domain.Album;
 import org.java.mentorship.domain.Artist;
 import org.java.mentorship.domain.Song;
 import org.java.mentorship.service.AlbumService;
 import org.java.mentorship.service.ArtistService;
 import org.java.mentorship.service.SongService;
-import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -87,9 +82,18 @@ public class SongController {
 //        return ResponseEntity.ok(songService.findAll());
 //    }
 
-    @GetMapping("/songs")
-    public ResponseEntity<List<Song>> getAllQueryParam(@RequestParam final Map<String, String> queryParam) {
-        return  ResponseEntity.ok().body(songService.findAllRequestParam(queryParam));
+    @GetMapping("/songs")//works
+    public ResponseEntity<List<Song>> getAllQueryParam(@RequestParam(required = false, name = "style") final String style,@RequestParam(required = false, name = "duration") final Integer duration,@RequestParam(required = false, name = "artistId")final Integer artistId,
+                                                       @RequestParam(required = false, name="albumId") final Integer albumId) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("style", style);
+        map.put("duration", duration);
+        map.put("artist_id", artistId);
+        map.put("album_id", albumId);
+        map.values().removeAll(Collections.singleton(null));
+
+        return  ResponseEntity.ok().body(songService.find(map));
 
     }
 

@@ -2,7 +2,6 @@ package org.java.mentorship.service;
 
 import lombok.AllArgsConstructor;
 import org.java.mentorship.common.EntityService;
-import org.java.mentorship.domain.Artist;
 import org.java.mentorship.domain.Song;
 import org.java.mentorship.exception.EntityNotFound;
 import org.java.mentorship.persistence.SongRepository;
@@ -95,8 +94,8 @@ public class SongService implements EntityService<Song, Integer> {
             throw new EntityNotFound(id,"album");
         }
     }
-    public List<Song> findAllRequestParam(Map<String, String> requestParam) {
-        List<Song> songs = repository.findAllRequestParam(requestParam);
+    public List<Song> find(Map<String, Object> requestParam) {
+        List<Song> songs = repository.find(requestParam);
         return songs;
     }
 
