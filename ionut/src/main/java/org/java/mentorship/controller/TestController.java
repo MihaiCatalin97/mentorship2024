@@ -28,7 +28,7 @@ public class TestController {
     }
 
     @GetMapping("/songs/{id}")
-    public ResponseEntity<Song> getSongById(@PathVariable int id) {
+    public ResponseEntity<Song> getSongById(@PathVariable(name ="id") int id) {
         Optional<Song> song = testService.getSongById(id);
         return song.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -38,7 +38,7 @@ public class TestController {
     public ResponseEntity<Song> createSong(@RequestBody Song song) {
         String style = song.getStyle();
         int artistId = song.getArtistId();
-        Album album = song.getAlbum();
+        int album = song.getAlbumId();
 
         Song createdSong = testService.createSong(style, artistId, album);
 
@@ -47,14 +47,14 @@ public class TestController {
 
 
     @PutMapping("/songs/{id}")
-    public ResponseEntity<Song> updateSong(@PathVariable int id, @RequestBody Song songDetails) {
+    public ResponseEntity<Song> updateSong(@PathVariable(name ="id") int id, @RequestBody Song songDetails) {
         Optional<Song> updatedSong = testService.updateSong(id, songDetails);
         return updatedSong.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/songs/{id}")
-    public ResponseEntity<Void> deleteSong(@PathVariable int id) {
+    public ResponseEntity<Void> deleteSong(@PathVariable(name= "id") int id) {
         boolean isDeleted = testService.deleteSong(id);
         return isDeleted ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();
