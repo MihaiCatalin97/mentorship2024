@@ -25,8 +25,8 @@ public class AlbumService {
         }
     }
 
-    public List<Album> findAll() {
-        return repo.findAll();
+    public List<Album> find() {
+        return repo.find();
     }
 
     public Album createNew(Album album) {

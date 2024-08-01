@@ -25,8 +25,8 @@ public class SongService {
         }
     }
 
-    public List<Song> findAll(String style) {
-        return repo.findAll();
+    public List<Song> find(String style, Integer artistId, Integer albumId) {
+        return repo.find(style, artistId, albumId);
     }
 
     public Song createNew(Song song) {

@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArtistController {
     private final ArtistService artistService;
-    private final SongService songService;
     private final AlbumService albumService;
 
     @GetMapping()
@@ -31,13 +30,6 @@ public class ArtistController {
     {
         Artist artist = artistService.getById(id);
         return ResponseEntity.ok(artist);
-    }
-
-    @GetMapping("/{id}/songs")
-    public ResponseEntity<List<Song>> getArtistSongs(@PathVariable(name = "id") int id)
-    {
-        List<Song> songs = songService.getArtistSongs(id);
-        return ResponseEntity.ok(songs);
     }
 
     @GetMapping("/{id}/albums")

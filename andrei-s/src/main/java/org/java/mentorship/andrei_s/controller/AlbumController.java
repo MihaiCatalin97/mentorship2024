@@ -20,7 +20,7 @@ public class AlbumController {
     @GetMapping()
     public ResponseEntity<List<Album>> getAll()
     {
-        return ResponseEntity.ok(albumService.findAll());
+        return ResponseEntity.ok(albumService.find());
     }
 
     @GetMapping("/{id}")

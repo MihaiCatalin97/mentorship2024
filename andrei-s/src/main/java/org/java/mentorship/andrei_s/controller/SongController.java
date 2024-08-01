@@ -21,9 +21,11 @@ public class SongController {
     private final AlbumService albumService;
 
     @GetMapping()
-    public ResponseEntity<List<Song>> getAll(@RequestParam(required = false, name = "style") String style)
+    public ResponseEntity<List<Song>> getAll(@RequestParam(required = false, name = "style") String style,
+                                             @RequestParam(required = false, name = "artist") Integer artistId,
+                                             @RequestParam(required = false, name = "album") Integer albumId)
     {
-        return ResponseEntity.ok(songService.findAll(style));
+        return ResponseEntity.ok(songService.find(style, artistId, albumId));
     }
 
     @GetMapping("/{id}")
@@ -31,22 +33,6 @@ public class SongController {
     {
         Song song = songService.getById(id);
         return ResponseEntity.ok(song);
-    }
-
-    @GetMapping("/{id}/artist")
-    public ResponseEntity<Artist> getSongArtist(@PathVariable(name = "id") int id)
-    {
-        Song song = songService.getById(id);
-        Artist artist = artistService.getById(song.getArtistId());
-        return ResponseEntity.ok(artist);
-    }
-
-    @GetMapping("/{id}/album")
-    public ResponseEntity<Album> getSongAlbum(@PathVariable(name = "id") int id)
-    {
-        Song song = songService.getById(id);
-        Album album = albumService.getById(song.getAlbumId());
-        return ResponseEntity.ok(album);
     }
 
     @PostMapping()

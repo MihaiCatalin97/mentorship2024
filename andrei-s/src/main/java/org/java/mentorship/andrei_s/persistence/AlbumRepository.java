@@ -21,7 +21,7 @@ public class AlbumRepository {
         return album;
     }
 
-    public List<Album> findAll() {
+    public List<Album> find() {
         return jdbcTemplate.query("SELECT * FROM albums", rowMapper);
     }
 
