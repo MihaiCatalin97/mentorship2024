@@ -19,8 +19,8 @@ public class SongRepository implements EntityRepository<Song, Integer> {
 
     @Override
     public Song save(final Song song) {
-        jdbcTemplate.update("INSERT INTO songs (name, style, duration, artistId, albumId) VALUES(?,?,?,?,?)",
-                song.getName(), song.getStyle(), song.getDuration(), song.getArtistId(), song.getAlbumId());
+        jdbcTemplate.update("INSERT INTO songs (name, style, duration) VALUES(?,?,?)",
+                song.getName(), song.getStyle(), song.getDuration());
         return song;
     }
 
@@ -42,7 +42,7 @@ public class SongRepository implements EntityRepository<Song, Integer> {
     @Override
     public Song update(final Song song) {
         jdbcTemplate.update(
-                "UPDATE songs SET name = ?, style = ?, duration = ?, artistId = ?, albumId = ? WHERE id = ?",
+                "UPDATE songs SET name = ?, style = ?, duration = ?, artist_id = ?, album_id = ? WHERE id = ?",
                 song.getName(),
                 song.getStyle(),
                 song.getDuration(),
