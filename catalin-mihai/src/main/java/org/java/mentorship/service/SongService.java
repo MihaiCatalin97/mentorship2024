@@ -6,6 +6,7 @@ import org.java.mentorship.domain.Song;
 import org.java.mentorship.persistence.SongRepository;
 import org.java.mentorship.validation.SongValidator;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class SongService implements EntityService<Song, Integer> {
     private final SongValidator validator;
 
     @Override
+    @Transactional
     public Song save(final Song song) {
         validator.validate(song);
 
