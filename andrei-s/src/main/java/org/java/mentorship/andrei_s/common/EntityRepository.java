@@ -1,12 +1,5 @@
 package org.java.mentorship.andrei_s.common;
 
-import com.fasterxml.jackson.databind.util.Named;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.SuperBuilder;
-import org.java.mentorship.andrei_s.domain.Artist;
-import org.java.mentorship.andrei_s.domain.Song;
 import org.java.mentorship.andrei_s.sql.SQLConditions;
 import org.java.mentorship.andrei_s.sql.common.SQLOperator;
 import org.springframework.jdbc.core.JdbcTemplate;
