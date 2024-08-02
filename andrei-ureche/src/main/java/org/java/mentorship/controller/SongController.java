@@ -23,19 +23,19 @@ public class SongController {
                 .body(songService.save(song));
     }
 
-    //  getById
     @GetMapping("/songs")
     public ResponseEntity<List<Song>> getAll() {
         return ResponseEntity.ok(songService.findAll());
+
     }
 
-    //  Create
+
     @GetMapping("/songs/{id}")
     public ResponseEntity<Song> getById(@PathVariable("id") final int identifier) {
         return ResponseEntity.ok(songService.findById(identifier));
     }
 
-    // Update
+
     @PutMapping("/songs/{id}")
     public ResponseEntity<Song> update(@PathVariable("id") final int identifier, @RequestBody final Song song) {
         return ResponseEntity.ok(songService.update(song));
