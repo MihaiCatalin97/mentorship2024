@@ -2,18 +2,13 @@ package org.java.mentorship.andrei_s.persistence;
 
 import org.assertj.core.api.Assertions;
 import org.java.mentorship.andrei_s.domain.Artist;
-import org.java.mentorship.andrei_s.domain.Song;
 import org.java.mentorship.andrei_s.persistence.mapper.ArtistRowMapper;
-import org.java.mentorship.andrei_s.persistence.mapper.SongRowMapper;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
 
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +58,7 @@ public class ArtistRepositoryTest {
         List<Artist> result = artistRepository.find(filter);
         Assertions.assertThat(result.size()).isEqualTo(0);
     }
+
     @Test
     void updateByIdShouldUpdateEntity() {
         // Given
@@ -83,6 +79,63 @@ public class ArtistRepositoryTest {
         filter.put("name", "NewUniqueName");
         List<Artist> result2 = artistRepository.find(filter);
         Assertions.assertThat(result2.size()).isEqualTo(1);
+    }
+
+    @Test
+    void findShouldReturnAllEntities() {
+        // Given
+        Map<String, Object> filter = new HashMap<>();
+        Artist artist = new Artist();
+        artist.setName("name");
+
+        // When
+        artistRepository.createNew(artist);
+        List<Artist> artists = artistRepository.find(filter);
+
+        Assertions.assertThat(artists.size()).isEqualTo(1);
+
+    }
+
+    @Test
+    void findShouldFilterEntities() {
+        // Given
+        Map<String, Object> filter = new HashMap<>();
+        filter.put("name", "name");
+        Artist artist = new Artist();
+
+        // When
+        artist.setName("name");
+        artistRepository.createNew(artist);
+        artist.setName("name2");
+        artistRepository.createNew(artist);
+
+        List<Artist> artists = artistRepository.find(filter);
+
+        Assertions.assertThat(artists.size()).isEqualTo(1);
+    }
+
+    @Test
+    void getByIdShouldReturnEntityWithId() {
+        // Given
+        Map<String, Object> filter = new HashMap<>();
+        filter.put("name", "name");
+        Artist artist = new Artist();
+
+        // When
+        artist.setName("name");
+        artistRepository.createNew(artist);
+
+        Assertions.assertThat(
+                artistRepository
+                        .getById(
+                                artistRepository
+                                        .find(filter)
+                                        .getFirst()
+                                        .getId()
+                        )
+                )
+                .extracting("name")
+                .isEqualTo("name");
     }
 
 }

@@ -73,12 +73,18 @@ public class SongServiceTest {
         when(songRepository.find(filters)).thenAnswer(invocationOnMock -> {
             Map<String, Object> suppliedFilters = invocationOnMock.getArgument(0);
             Song song = new Song();
+            Song song2 = new Song();
             List<Song> songs = new ArrayList<>();
             song.setId(123);
             song.setStyle((String) suppliedFilters.get("style"));
             song.setAlbumId((Integer) suppliedFilters.get("album_id"));
             song.setArtistId((Integer) suppliedFilters.get("artist_id"));
+            song2.setId(124);
+            song2.setStyle((String) "Style2");
+            song2.setAlbumId((Integer) suppliedFilters.get("album_id"));
+            song2.setArtistId((Integer) suppliedFilters.get("artist_id"));
             songs.add(song);
+            songs.add(song2);
             return songs;
         });
 
@@ -88,6 +94,32 @@ public class SongServiceTest {
         assertThat(result.getFirst())
                 .extracting("style", "artistId", "albumId")
                 .containsExactly("Style", 1, 1);
+
+    }
+    @Test
+    void findShouldReturnAllSongs() {
+        when(songRepository.find(anyMap())).thenAnswer(invocationOnMock -> {
+            Map<String, Object> suppliedFilters = invocationOnMock.getArgument(0);
+            Song song = new Song();
+            Song song2 = new Song();
+            List<Song> songs = new ArrayList<>();
+            song.setId(123);
+            song.setStyle((String) "Style");
+            song.setAlbumId(1);
+            song.setArtistId(2);
+            song2.setId(124);
+            song2.setStyle((String) "Style2");
+            song2.setAlbumId(1);
+            song2.setArtistId(2);
+            songs.add(song);
+            songs.add(song2);
+            return songs;
+        });
+
+        List<Song> result = songService.find();
+
+        verify(songRepository, times(1)).find(anyMap());
+        assertThat(result.size()).isEqualTo(2);
 
     }
     @Test
