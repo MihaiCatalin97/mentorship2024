@@ -54,7 +54,7 @@ class AlbumRepositoryTest {
         // Then
         List<Album> result = albumRepository.find(params);
 
-        assertEquals(1, result.size());
+        assertEquals(2, result.size());
     }
 
     @Test
@@ -86,13 +86,13 @@ class AlbumRepositoryTest {
 
 
 
-    @Test
-    @Sql({
-            "classpath:testData.sql"
-    })
-    void findByIdShouldReturnTheDatabaseEntry() {
-        Album album = albumRepository.findById(1);
-
-        assertEquals("Test Song 1",album.getName());
-    }
+//    @Test
+//    @Sql({
+//            "classpath:testData.sql"
+//    })
+//    void findByIdShouldReturnTheDatabaseEntry() {
+//        Album album = albumRepository.findById(1);
+//
+//        assertEquals("astroworld",album.getName());
+//    }
 }

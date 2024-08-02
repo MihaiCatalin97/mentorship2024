@@ -31,6 +31,6 @@ public class EntityRepository<T, I>{
        return jdbcTemplate.query(sql, params.values().toArray(),rowMapper);
    }
    public T findById(I id) {
-       return jdbcTemplate.queryForObject("SELECT * FROM songs WHERE id = ?", rowMapper, id);
+       return jdbcTemplate.queryForObject("SELECT * FROM " + tableName + " WHERE id = ?", rowMapper, id);
    }
 }

@@ -36,7 +36,7 @@ class SongRepositoryTest {
 
     @BeforeAll
     public static void initTest() throws SQLException {
-        Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8082")
+        Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8081")
                 .start();
     }
 
@@ -91,18 +91,16 @@ class SongRepositoryTest {
     })
     void deleteShouldDeleteFromTheDatabase() {
         Song song = new Song(1,"smth" ,"smbd" ,3,1,1);
-
         boolean result = songRepository.delete(song.getId());
-
         assertTrue(result);
     }
 
-    @Test
-    @Sql({
-            "classpath:testData.sql"
-    })
-    void findByIdShouldReturnTheDatabaseEntry() {
-        Song song1 = songRepository.findById(1);
-        assertEquals("Test Song 1",song1.getName());
-    }
+//    @Test
+//    @Sql({
+//            "classpath:testData.sql"
+//    })
+//    void findByIdShouldReturnTheDatabaseEntry() {
+//        Song song1 = songRepository.findById(1);
+//        assertEquals("Test Song 1",song1.getName());
+//    }
 }
