@@ -21,7 +21,7 @@ public class AlbumService {
     private final AlbumValidator albumValidator;
 
     public List<Album> findAll(Map<String, Object> params) {
-        List<Album> albums = albumRepository.findAll(params);
+        List<Album> albums = albumRepository.find(params);
         return albums;
     }
 

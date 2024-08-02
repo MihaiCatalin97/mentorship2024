@@ -51,7 +51,7 @@ public class AlbumServiceTest {
     @Test
     void findAllShouldReturnAlbums() {
         Map<String, Object> filters = new HashMap<>();
-        when(albumRepository.findAll(filters)).thenAnswer(invocationOnMock -> {
+        when(albumRepository.find(filters)).thenAnswer(invocationOnMock -> {
             List<Album> result = new ArrayList<>();
             Album album1 = new Album();
             album1.setId(1);

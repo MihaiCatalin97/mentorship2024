@@ -52,12 +52,6 @@ public class SongService implements EntityService<Song, Integer> {
         return repository.delete(id);
     }
 
-    public List<Song> findSongs(Integer artistId){
-        return repository.findSongs(artistId);
-    }
 
-    public List<Song> findSongsByAlbumId(Integer albumId){
-        return repository.findSongsByAlbumId(albumId);
-    }
 
 }

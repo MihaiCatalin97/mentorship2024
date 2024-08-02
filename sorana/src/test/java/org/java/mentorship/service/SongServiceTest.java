@@ -149,34 +149,8 @@ public class SongServiceTest {
         Assertions.assertNotNull(captured);
     }
 
-    @Test
-    void findSongsByArtistShouldReturnAllSongs(){
-        Integer artistId = 1;
 
-        List<Song> song = List.of(new Song(1,"Fei1n","Rap",2,1,1));
 
-        when(songRepository.findSongs(artistId)).thenReturn(song);
 
-        List<Song> result = songService.findSongs(artistId);
-
-        verify(songRepository, times(1)).findSongs(artistId);
-        assertEquals(song, result);
-
-    }
-
-    @Test
-    void findSongsByAlbumShouldReturnAllSongs(){
-        Integer albumId = 1;
-
-        List<Song> song = List.of(new Song(1,"Fei1n","Rap",2,1,1));
-
-        when(songRepository.findSongsByAlbumId(albumId)).thenReturn(song);
-
-        List<Song> result = songService.findSongsByAlbumId(albumId);
-
-        verify(songRepository, times(1)).findSongsByAlbumId(albumId);
-        assertEquals(song, result);
-
-    }
 
 }

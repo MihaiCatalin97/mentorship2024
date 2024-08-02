@@ -11,7 +11,6 @@ org/java/mentorship/exception/EntityNotFound.class
 org/java/mentorship/exception/FieldIsNullException.class
 org/java/mentorship/common/EntityRepository.class
 org/java/mentorship/exception/handler/CustomExceptionHandler.class
-org/java/mentorship/config/TestConfiguration.class
 org/java/mentorship/persistence/mapper/SongRowMapper.class
 org/java/mentorship/exception/domain/ErrorResponse.class
 org/java/mentorship/validation/ArtistValidator.class

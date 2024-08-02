@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.StringJoiner;
 
 public class SQLfindAll {
+
     public static String  getSQL(Map<String, Object> params){
         StringJoiner joiner = new StringJoiner(" AND "," WHERE ","");
 

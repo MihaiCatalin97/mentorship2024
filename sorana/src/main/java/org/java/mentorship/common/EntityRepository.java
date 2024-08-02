@@ -1,31 +1,36 @@
 package org.java.mentorship.common;
 
-import org.java.mentorship.domain.Song;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 import java.util.List;
+import java.util.Map;
 
-public interface EntityRepository<T, I>{
-    default T save(final T song) {
-        throw new UnsupportedOperationException("Not implemented: findById");
+import static org.java.mentorship.sql.SQLfindAll.*;
+
+public class EntityRepository<T, I>{
+
+    protected JdbcTemplate jdbcTemplate;
+    protected RowMapper<T> rowMapper;
+    protected String tableName;
+
+    public EntityRepository(JdbcTemplate jdbcTemplate, RowMapper<T> rowMapper, String tableName) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.rowMapper = rowMapper;
+        this.tableName = tableName;
     }
 
-//    Song create(Song song);
+    public boolean delete(Integer id) {
+       jdbcTemplate.update("DELETE FROM " + tableName + " WHERE id = ?", id);
+       return true;
+   }
 
-    default List<T> find() {
-        throw new UnsupportedOperationException("Not implemented: findById");
-    }
+   public List<T> find(Map<String, Object> params) {
+       String sql = "SELECT * FROM " + tableName + " " + getSQL(params);
 
-    default T findById(final I id) {
-        throw new UnsupportedOperationException("Not implemented: findById");
-    }
-
-    default Song update(final T song) {
-        throw new UnsupportedOperationException("Not implemented: update");
-    }
-
-    Song update(Integer id, Song song);
-
-    default boolean delete(final I id) {
-        throw new UnsupportedOperationException("Not implemented: delete");
-    }
+       return jdbcTemplate.query(sql, params.values().toArray(),rowMapper);
+   }
+   public T findById(I id) {
+       return jdbcTemplate.queryForObject("SELECT * FROM songs WHERE id = ?", rowMapper, id);
+   }
 }

@@ -1,20 +1,18 @@
 package org.java.mentorship.percistence;
 
-
 import org.h2.tools.Server;
-import org.java.mentorship.domain.Song;
-import org.java.mentorship.persistence.SongRepository;
-
-import org.java.mentorship.persistence.mapper.SongRowMapper;
-
+import org.java.mentorship.domain.Album;
+import org.java.mentorship.domain.Artist;
+import org.java.mentorship.persistence.AlbumRepository;
+import org.java.mentorship.persistence.ArtistRepository;
+import org.java.mentorship.persistence.mapper.AlbumRowMapper;
+import org.java.mentorship.persistence.mapper.ArtistRowMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
-
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -26,13 +24,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @JdbcTest
 @ContextConfiguration(classes = {
-        SongRepository.class,
-        SongRowMapper.class
+        AlbumRepository.class,
+        AlbumRowMapper.class
 })
-class SongRepositoryTest {
+class AlbumRepositoryTest {
 
     @Autowired
-    private SongRepository songRepository;
+    private AlbumRepository albumRepository;
 
     @BeforeAll
     public static void initTest() throws SQLException {
@@ -40,18 +38,7 @@ class SongRepositoryTest {
                 .start();
     }
 
-    @Test
-    @Sql({
-            "classpath:testData.sql"
-    })
-    void findAllShouldReturnAllDatabaseEntries() {
-        Map<String, Object> params = new HashMap<>();
-        // When
-        List<Song> results = songRepository.find(params);
 
-        // Then
-        assertEquals(1, results.size());
-    }
 
     @Test
     @Sql({
@@ -59,15 +46,15 @@ class SongRepositoryTest {
     })
     void saveShouldInsertIntoTheDatabase() {
         // Given
-        Song song = new Song(1,"smth" ,"smbd" ,3,1,1);
+        Album album = new Album(1,"smth" );
 
         // When
-        songRepository.save(song);
+        albumRepository.save(album);
         Map<String, Object> params = new HashMap<>();
         // Then
-        List<Song> result = songRepository.find(params);
+        List<Album> result = albumRepository.find(params);
 
-        assertEquals(2, result.size());
+        assertEquals(1, result.size());
     }
 
     @Test
@@ -76,13 +63,13 @@ class SongRepositoryTest {
     })
     void updateShouldUpdateTheDatabase() {
         Integer id = 1;
-        Song song = new Song(1,"smth" ,"smbd" ,3,null,null);
+        Album album = new Album(1,"smth");
 
-        song.setName("smth1");
+        album.setName("smth1");
 
-        Song  song1 = songRepository.update(id,song);
+        Album  album1 = albumRepository.update(id,album);
 
-        assertEquals("smth1",song1.getName());
+        assertEquals("smth1",album1.getName());
     }
 
     @Test
@@ -90,19 +77,22 @@ class SongRepositoryTest {
             "classpath:testData.sql"
     })
     void deleteShouldDeleteFromTheDatabase() {
-        Song song = new Song(1,"smth" ,"smbd" ,3,1,1);
+        Album album = new Album(1,"smth" );
 
-        boolean result = songRepository.delete(song.getId());
+        boolean result =albumRepository.delete(album.getId());
 
         assertTrue(result);
     }
+
+
 
     @Test
     @Sql({
             "classpath:testData.sql"
     })
     void findByIdShouldReturnTheDatabaseEntry() {
-        Song song1 = songRepository.findById(1);
-        assertEquals("Test Song 1",song1.getName());
+        Album album = albumRepository.findById(1);
+
+        assertEquals("Test Song 1",album.getName());
     }
 }

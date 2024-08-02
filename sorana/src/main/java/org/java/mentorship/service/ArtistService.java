@@ -19,7 +19,7 @@ public class ArtistService {
     private final ArtistValidator artistValidator;
 
     public List<Artist> findAll(Map<String,Object> map) {
-        List<Artist> artists =  artistRepository.findAll(map);
+        List<Artist> artists =  artistRepository.find(map);
         return artists;
     }
 

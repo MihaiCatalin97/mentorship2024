@@ -46,7 +46,7 @@ public class ArtistServiceTest {
     @Test
     void findAllShouldReturnArtists() {
         Map<String, Object> filters = new HashMap<>();
-        when(artistRepository.findAll(filters)).thenAnswer(invocationOnMock -> {
+        when(artistRepository.find(filters)).thenAnswer(invocationOnMock -> {
             List<Artist> result = new ArrayList<>();
             Artist artist1 = new Artist();
             artist1.setId(1);
