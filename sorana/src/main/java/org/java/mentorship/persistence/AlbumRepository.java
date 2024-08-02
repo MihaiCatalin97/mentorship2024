@@ -5,19 +5,27 @@ import org.java.mentorship.domain.Album;
 import org.java.mentorship.domain.Artist;
 import org.java.mentorship.persistence.mapper.AlbumRowMapper;
 import org.java.mentorship.persistence.mapper.ArtistRowMapper;
+import org.java.mentorship.sql.SQLfindAll;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
+
+import static org.java.mentorship.sql.SQLfindAll.getSQL;
 
 @Repository
 @AllArgsConstructor
 public class AlbumRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public List<Album> findAll() {
+    public List<Album> findAll(Map<String,Object> params) {
+        String sql = "SELECT * FROM albums " + getSQL(params);
 
-        return jdbcTemplate.query("SELECT * FROM albums", new AlbumRowMapper());
+        return jdbcTemplate.query(sql,params.values().toArray(), new AlbumRowMapper());
+
+
     }
     public Album findById(int id) {
         return jdbcTemplate.queryForObject("SELECT * FROM albums WHERE id = ?", new AlbumRowMapper(), id);

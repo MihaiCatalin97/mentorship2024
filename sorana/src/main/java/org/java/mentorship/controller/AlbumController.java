@@ -9,7 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -20,15 +23,13 @@ public class AlbumController {
     private final SongService songService;
 
     @GetMapping("/albums")//works
-    public ResponseEntity<List<Album>> getAllalbums() {
-        return ResponseEntity.ok(albumService.findAll());
-    }
+    public ResponseEntity<List<Album>> getAllalbums(@RequestParam(required = false, name = "id") final Integer id,@RequestParam(required = false, name = "name") final String name) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("name", name);
+        map.values().removeAll(Collections.singleton(null));
 
-    @GetMapping("/albums?name=astroworld")//works??
-    public ResponseEntity<List<Album>> getAllalbumsRequestParam(@RequestParam("name") String name) {
-        if(name.equals("astroworld")) {
-        return ResponseEntity.ok(albumService.findAll());}
-        else return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(albumService.findAll(map));
     }
 
 

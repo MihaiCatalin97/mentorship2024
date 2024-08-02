@@ -11,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -19,8 +20,9 @@ public class AlbumService {
     private final AlbumRepository albumRepository;
     private final AlbumValidator albumValidator;
 
-    public List<Album> findAll() {
-        return albumRepository.findAll();
+    public List<Album> findAll(Map<String, Object> params) {
+        List<Album> albums = albumRepository.findAll(params);
+        return albums;
     }
 
     public Album findById(final Integer id) {

@@ -1,5 +1,6 @@
 package org.java.mentorship.service;
 
+import org.checkerframework.checker.units.qual.A;
 import org.java.mentorship.domain.Album;
 import org.java.mentorship.domain.Artist;
 import org.java.mentorship.domain.Song;
@@ -17,7 +18,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.EmptyResultDataAccessException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,11 +50,23 @@ public class AlbumServiceTest {
 
     @Test
     void findAllShouldReturnAlbums() {
-        List<Album> albums = List.of(new Album(1, "as"), new Album(2, "ghj"));
+        Map<String, Object> filters = new HashMap<>();
+        when(albumRepository.findAll(filters)).thenAnswer(invocationOnMock -> {
+            List<Album> result = new ArrayList<>();
+            Album album1 = new Album();
+            album1.setId(1);
+            Album album2 = new Album();
+            album2.setId(2);
+            Album album3 = new Album();
+            album3.setId(3);
+            result.add(album1);
+            result.add(album2);
+            result.add(album3);
+            return result;
+        });
 
-        when(albumRepository.findAll()).thenReturn(albums);
-        List<Album> result = albumService.findAll();
-        assertEquals(albums,result);
+        List<Album> expectedAlbum = albumService.findAll(filters);
+        assertEquals(expectedAlbum.size(), 3);
     }
 
     @Test

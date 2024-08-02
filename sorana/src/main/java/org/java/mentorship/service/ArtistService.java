@@ -9,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -17,8 +18,9 @@ public class ArtistService {
     private final ArtistRepository artistRepository;
     private final ArtistValidator artistValidator;
 
-    public List<Artist> findAll() {
-        return artistRepository.findAll();
+    public List<Artist> findAll(Map<String,Object> map) {
+        List<Artist> artists =  artistRepository.findAll(map);
+        return artists;
     }
 
     public Artist findById(final Integer id) {

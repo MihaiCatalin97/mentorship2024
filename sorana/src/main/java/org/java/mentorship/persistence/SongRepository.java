@@ -3,6 +3,7 @@ package org.java.mentorship.persistence;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.common.EntityRepository;
 import org.java.mentorship.domain.Song;
+import org.java.mentorship.sql.SQLfindAll;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
+
+import static org.java.mentorship.sql.SQLfindAll.*;
 
 
 @Repository
@@ -56,14 +59,9 @@ public class  SongRepository implements EntityRepository<Song, Integer> {
     }
 
     public List<Song> find(Map<String, Object> params) {
-        String baseQuery = "SELECT * FROM songs";
-        StringJoiner joiner = new StringJoiner(" AND "," WHERE ", "");
-        params.forEach((key, value) ->
-            joiner.add(key + " = ?" ));
+        String baseQuery = "SELECT * FROM songs " + getSQL(params);
 
-        String finalQuery = baseQuery + (params.size()!=0 ? joiner.toString() : "");
-        Object[] paramValues = params.values().toArray();
-        return jdbcTemplate.query(finalQuery, paramValues, rowMapper);
+        return jdbcTemplate.query(baseQuery, params.values().toArray(), rowMapper);
     }
 
 

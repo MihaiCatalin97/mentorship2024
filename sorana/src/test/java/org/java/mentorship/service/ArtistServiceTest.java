@@ -1,5 +1,6 @@
 package org.java.mentorship.service;
 
+import jakarta.websocket.OnClose;
 import org.java.mentorship.domain.Artist;
 import org.java.mentorship.domain.Song;
 import org.java.mentorship.exception.EntityNotFound;
@@ -15,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,11 +45,23 @@ public class ArtistServiceTest {
 
     @Test
     void findAllShouldReturnArtists() {
-        List<Artist> artists = List.of(new Artist(1, "as"), new Artist(2, "ghj"));
+        Map<String, Object> filters = new HashMap<>();
+        when(artistRepository.findAll(filters)).thenAnswer(invocationOnMock -> {
+            List<Artist> result = new ArrayList<>();
+            Artist artist1 = new Artist();
+            artist1.setId(1);
+            Artist artist2 = new Artist();
+            artist2.setId(2);
+            Artist artist3 = new Artist();
+            artist3.setId(3);
+            result.add(artist1);
+            result.add(artist2);
+            result.add(artist3);
+            return result;
+        });
 
-        when(artistRepository.findAll()).thenReturn(artists);
-        List<Artist> result = artistService.findAll();
-        assertEquals(artists,result);
+        List<Artist> expectedArtist = artistService.findAll(filters);
+        assertEquals(expectedArtist.size(), 3);
     }
 
     @Test
