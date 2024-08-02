@@ -5,31 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.java.mentorship</groupId>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <artifactId>maven-test</artifactId>
-    <version>1.0-SNAPSHOT</version>
-=======
-=======
->>>>>>> Done
     <artifactId>mentorship-application</artifactId>
     <version>1.0-SNAPSHOT</version>
-=======
-    <artifactId>mentorship-application</artifactId>
-    <version>1.0-SNAPSHOT</version>
->>>>>>> 60fbd81ee044da0ffcdae78b021f97199e1cb409
     <packaging>pom</packaging>
     <modules>
         <module>ionut</module>
     </modules>
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> am adaugat chestii
-=======
->>>>>>> Done
-=======
->>>>>>> 60fbd81ee044da0ffcdae78b021f97199e1cb409
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -41,13 +22,31 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.34</version>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-            <scope>provided</scope>
->>>>>>> am adaugat chestii
-=======
->>>>>>> Done
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.11.0-M2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.11.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>5.11.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
