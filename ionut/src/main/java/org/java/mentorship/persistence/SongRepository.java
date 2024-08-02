@@ -19,14 +19,46 @@ public class SongRepository implements EntityRepository<Song, Integer> {
 
     @Override
     public Song save(final Song song) {
-        jdbcTemplate.update("INSERT INTO songs (name, style, duration) VALUES(?,?,?)",
-                song.getName(), song.getStyle(), song.getDuration());
-
+        jdbcTemplate.update("INSERT INTO songs (name, style, duration, artistId, albumId) VALUES(?,?,?,?,?)",
+                song.getName(), song.getStyle(), song.getDuration(), song.getArtistId(), song.getAlbumId());
         return song;
     }
 
     @Override
     public List<Song> findAll() {
         return jdbcTemplate.query("SELECT * FROM songs", rowMapper);
+    }
+
+    @Override
+    public Song findById(final Integer id) {
+        return jdbcTemplate.queryForObject(
+                "SELECT * FROM songs WHERE id = ?",
+                new Object[]{id},  // Pass the ID here
+                rowMapper
+        );
+    }
+
+
+    @Override
+    public Song update(final Song song) {
+        jdbcTemplate.update(
+                "UPDATE songs SET name = ?, style = ?, duration = ?, artistId = ?, albumId = ? WHERE id = ?",
+                song.getName(),
+                song.getStyle(),
+                song.getDuration(),
+                song.getArtistId(),
+                song.getAlbumId(),
+                song.getId()
+        );
+        return song;
+    }
+
+    @Override
+    public Song delete(final Integer id) {
+        Song song = findById(id);
+        if (song != null) {
+            jdbcTemplate.update("DELETE FROM songs WHERE id = ?", id);
+        }
+        return song;
     }
 }
