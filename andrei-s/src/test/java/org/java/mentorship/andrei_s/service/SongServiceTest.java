@@ -11,9 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.assertj.core.api.Assertions.*;
@@ -67,23 +65,26 @@ public class SongServiceTest {
     }
     @Test
     void findShouldReturnFilteredSongs() {
-        when(songRepository.find("Style", 1, 1)).thenAnswer(invocationOnMock -> {
-            String style = invocationOnMock.getArgument(0);
-            int artistId = invocationOnMock.getArgument(1);
-            int albumId = invocationOnMock.getArgument(2);
+        Map<String, Object> filters = new HashMap<>();
+        filters.put("style", "Style");
+        filters.put("album_id", 1);
+        filters.put("artist_id", 1);
+
+        when(songRepository.find(filters)).thenAnswer(invocationOnMock -> {
+            Map<String, Object> suppliedFilters = invocationOnMock.getArgument(0);
             Song song = new Song();
             List<Song> songs = new ArrayList<>();
             song.setId(123);
-            song.setStyle(style);
-            song.setAlbumId(albumId);
-            song.setArtistId(artistId);
+            song.setStyle((String) suppliedFilters.get("style"));
+            song.setAlbumId((Integer) suppliedFilters.get("album_id"));
+            song.setArtistId((Integer) suppliedFilters.get("artist_id"));
             songs.add(song);
             return songs;
         });
 
-        List<Song> result = songService.find("Style", 1,1);
+        List<Song> result = songService.find(filters);
 
-        verify(songRepository, times(1)).find("Style", 1, 1);
+        verify(songRepository, times(1)).find(filters);
         assertThat(result.getFirst())
                 .extracting("style", "artistId", "albumId")
                 .containsExactly("Style", 1, 1);

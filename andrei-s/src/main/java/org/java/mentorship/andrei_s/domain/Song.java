@@ -1,18 +1,18 @@
 package org.java.mentorship.andrei_s.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import net.sf.jsqlparser.expression.operators.relational.MinorThanEquals;
+import org.java.mentorship.andrei_s.common.Entity;
 import org.java.mentorship.andrei_s.exception.FieldIsNullException;
 
 import java.util.Objects;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class Song {
+public class Song implements Entity {
     private Integer id;
 
     private String name;
@@ -21,6 +21,7 @@ public class Song {
     private Integer artistId;
     private Integer albumId;
 
+    @Override
     public void validate() {
         Song song = this;
         if (Objects.isNull(song.getName())) {

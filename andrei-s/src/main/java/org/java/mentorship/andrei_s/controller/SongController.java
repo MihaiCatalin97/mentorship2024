@@ -10,7 +10,9 @@ import org.java.mentorship.andrei_s.service.SongService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController()
 @RequestMapping("/songs")
@@ -23,7 +25,13 @@ public class SongController {
                                              @RequestParam(required = false, name = "artist") Integer artistId,
                                              @RequestParam(required = false, name = "album") Integer albumId)
     {
-        return ResponseEntity.ok(songService.find(style, artistId, albumId));
+        Map<String, Object> filtersMap = new HashMap();
+
+        filtersMap.put("style", style);
+        filtersMap.put("artist_id", artistId);
+        filtersMap.put("album_id", albumId);
+
+        return ResponseEntity.ok(songService.find(filtersMap));
     }
 
     @GetMapping("/{id}")

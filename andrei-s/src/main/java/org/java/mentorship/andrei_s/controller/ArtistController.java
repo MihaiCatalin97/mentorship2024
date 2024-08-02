@@ -21,7 +21,7 @@ public class ArtistController {
     @GetMapping()
     public ResponseEntity<List<Artist>> getAll()
     {
-        return ResponseEntity.ok(artistService.findAll());
+        return ResponseEntity.ok(artistService.find());
     }
 
     @GetMapping("/{id}")

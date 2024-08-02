@@ -1,19 +1,20 @@
 package org.java.mentorship.andrei_s.persistence;
 
-import lombok.AllArgsConstructor;
+import org.java.mentorship.andrei_s.common.EntityRepository;
 import org.java.mentorship.andrei_s.domain.Album;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 @Repository
-@AllArgsConstructor
-public class AlbumRepository {
-    private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<Album> rowMapper;
+public class AlbumRepository extends EntityRepository<Album> {
+    AlbumRepository(RowMapper<Album> rowMapper, JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedJdbcTemplate) {
+        super(rowMapper, jdbcTemplate, namedJdbcTemplate, "albums");
+    }
 
+    @Override
     public Album createNew(Album album) {
         jdbcTemplate.update("INSERT INTO albums (name) VALUES (?)",
                 album.getName());
@@ -21,22 +22,11 @@ public class AlbumRepository {
         return album;
     }
 
-    public List<Album> find() {
-        return jdbcTemplate.query("SELECT * FROM albums", rowMapper);
-    }
-
-    public Album getById(int id) {
-        return jdbcTemplate.query("SELECT * FROM albums WHERE id = ?", rowMapper, id).getFirst();
-    }
-
-    public Album updateById(int id, Album modifiedAlbum) {
+    @Override
+    public Album updateById(Integer id, Album modifiedAlbum) {
         jdbcTemplate.update("UPDATE albums SET name = ? WHERE id = ?",
                 modifiedAlbum.getName(), id);
 
         return modifiedAlbum;
-    }
-
-    public void deleteById(int id) {
-        jdbcTemplate.update("DELETE FROM albums WHERE id = ?", id);
     }
 }
