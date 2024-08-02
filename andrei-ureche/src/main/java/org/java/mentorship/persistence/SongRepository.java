@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class SongRepository implements EntityRepository<Song, Integer>{
+public class SongRepository implements EntityRepository<Song, Integer> {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -23,7 +23,7 @@ public class SongRepository implements EntityRepository<Song, Integer>{
 //                song.getId(),song.getName(), song.getStyle(), song.getDuration(),song.getArtistId(), song.getAlbumId());
 
         jdbcTemplate.update("INSERT INTO songs (name, style, duration) VALUES(?,?,?)",
-            song.getName(), song.getStyle(), song.getDuration());
+                song.getName(), song.getStyle(), song.getDuration());
 
 
         return song;
