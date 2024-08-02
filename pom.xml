@@ -7,6 +7,7 @@
     <groupId>org.java.mentorship</groupId>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <artifactId>maven-test</artifactId>
     <version>1.0-SNAPSHOT</version>
 =======
@@ -14,14 +15,21 @@
 >>>>>>> Done
     <artifactId>mentorship-application</artifactId>
     <version>1.0-SNAPSHOT</version>
+=======
+    <artifactId>mentorship-application</artifactId>
+    <version>1.0-SNAPSHOT</version>
+>>>>>>> 60fbd81ee044da0ffcdae78b021f97199e1cb409
     <packaging>pom</packaging>
     <modules>
         <module>ionut</module>
     </modules>
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> am adaugat chestii
 =======
 >>>>>>> Done
+=======
+>>>>>>> 60fbd81ee044da0ffcdae78b021f97199e1cb409
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

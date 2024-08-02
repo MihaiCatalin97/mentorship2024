@@ -4,9 +4,12 @@ target/
 ### IntelliJ IDEA ###
 .idea/
 <<<<<<< HEAD
+<<<<<<< HEAD
 *.iml
 =======
 >>>>>>> Done
+=======
+>>>>>>> 60fbd81ee044da0ffcdae78b021f97199e1cb409
 
 ### Eclipse ###
 .apt_generated
