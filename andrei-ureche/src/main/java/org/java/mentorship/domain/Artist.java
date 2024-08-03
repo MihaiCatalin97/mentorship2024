@@ -3,11 +3,8 @@ package org.java.mentorship.domain;
 import lombok.Data;
 
 @Data
-public class Album {
-
+public class Artist {
     private int id;
 
     private String name;
-
-    private int artistId;
 }
