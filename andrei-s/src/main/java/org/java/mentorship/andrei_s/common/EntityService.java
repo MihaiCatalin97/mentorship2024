@@ -1,6 +1,5 @@
 package org.java.mentorship.andrei_s.common;
 
-import org.java.mentorship.andrei_s.domain.Album;
 import org.java.mentorship.andrei_s.exception.AppException;
 import org.java.mentorship.andrei_s.exception.EntityNotFound;
 
@@ -10,8 +9,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 public abstract class EntityService<T extends Entity> {
-    protected EntityRepository<T> repo;
     private final String entityName;
+    protected EntityRepository<T> repo;
 
     public EntityService(EntityRepository<T> repo, String entityName) {
         this.repo = repo;

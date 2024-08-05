@@ -1,10 +1,6 @@
 package org.java.mentorship.andrei_s.domain;
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import org.java.mentorship.andrei_s.common.Entity;
 import org.java.mentorship.andrei_s.exception.FieldIsNullException;
 

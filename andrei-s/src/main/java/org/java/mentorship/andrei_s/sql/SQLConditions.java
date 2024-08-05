@@ -6,7 +6,6 @@ import org.java.mentorship.andrei_s.sql.common.SQLOperator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class SQLConditions implements SQLExpression {
     List<SQLExpression> expressions;
@@ -20,7 +19,7 @@ public class SQLConditions implements SQLExpression {
     public String build() {
         StringBuilder stringBuilder = new StringBuilder();
         expressions.forEach((k) -> stringBuilder.append(k.build()));
-        return String.format("(%s) ", stringBuilder.toString());
+        return String.format("(%s) ", stringBuilder);
     }
 
     public SQLConditions and(SQLExpression expr) {

@@ -17,8 +17,7 @@ public abstract class EntityRepository<T extends Entity> {
     protected final NamedParameterJdbcTemplate namedJdbcTemplate;
     protected final String tableName;
 
-    public EntityRepository(RowMapper<T> rowMapper, JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedJdbcTemplate, String tableName)
-    {
+    public EntityRepository(RowMapper<T> rowMapper, JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedJdbcTemplate, String tableName) {
         this.rowMapper = rowMapper;
         this.jdbcTemplate = jdbcTemplate;
         this.namedJdbcTemplate = namedJdbcTemplate;
@@ -39,12 +38,13 @@ public abstract class EntityRepository<T extends Entity> {
 
     public void deleteById(Integer id) {
         jdbcTemplate.update("DELETE FROM " + this.tableName + " WHERE id = ?", id);
-    };
+    }
 
     public T getById(Integer id) {
         return jdbcTemplate.query("SELECT * FROM " + this.tableName + " WHERE id = ?", rowMapper, id).getFirst();
     }
 
     public abstract T createNew(T entity);
+
     public abstract T updateById(Integer id, T modifiedEntity);
 }

@@ -27,7 +27,7 @@ public class GeneralExceptionHandler {
     public ResponseEntity<APIErrorResponse> handle(final RuntimeException exception) {
         log.error(String.format("Caught exception: %s", exception.getMessage()));
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIErrorResponse("Unknown server error."));
+                .body(new APIErrorResponse("Unknown server error."));
     }
 
 }

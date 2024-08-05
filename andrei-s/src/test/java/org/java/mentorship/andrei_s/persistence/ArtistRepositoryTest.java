@@ -27,53 +27,44 @@ public class ArtistRepositoryTest {
 
     @Test
     void saveShouldInsertIntoTheDatabase() {
-        // Given
         Map<String, Object> filter = new HashMap<>();
         filter.put("name", "UniqueArtistName");
         Artist artist = new Artist();
         artist.setName("UniqueArtistName");
 
-        // When
         artistRepository.createNew(artist);
 
-        // Then
         List<Artist> result = artistRepository.find(filter);
         Assertions.assertThat(result.size()).isEqualTo(1);
     }
 
     @Test
     void deleteByIdShouldDeleteEntity() {
-        // Given
         Map<String, Object> filter = new HashMap<>();
         filter.put("name", "UniqueArtistName");
         Artist artist = new Artist();
         artist.setName("UniqueArtistName");
 
-        // When
         artistRepository.createNew(artist);
         Artist artistFromDb = artistRepository.find(filter).getFirst();
         artistRepository.deleteById(artistFromDb.getId());
 
-        // Then
         List<Artist> result = artistRepository.find(filter);
         Assertions.assertThat(result.size()).isEqualTo(0);
     }
 
     @Test
     void updateByIdShouldUpdateEntity() {
-        // Given
         Map<String, Object> filter = new HashMap<>();
         filter.put("name", "UniqueArtistName");
         Artist artist = new Artist();
         artist.setName("UniqueArtistName");
 
-        // When
         artistRepository.createNew(artist);
         Artist artistFromDb = artistRepository.find(filter).getFirst();
         artist.setName("NewUniqueName");
         artistRepository.updateById(artistFromDb.getId(), artist);
 
-        // Then
         List<Artist> result = artistRepository.find(filter);
         Assertions.assertThat(result.size()).isEqualTo(0);
         filter.put("name", "NewUniqueName");
@@ -83,27 +74,22 @@ public class ArtistRepositoryTest {
 
     @Test
     void findShouldReturnAllEntities() {
-        // Given
         Map<String, Object> filter = new HashMap<>();
         Artist artist = new Artist();
         artist.setName("name");
 
-        // When
         artistRepository.createNew(artist);
         List<Artist> artists = artistRepository.find(filter);
 
         Assertions.assertThat(artists.size()).isEqualTo(1);
-
     }
 
     @Test
     void findShouldFilterEntities() {
-        // Given
         Map<String, Object> filter = new HashMap<>();
         filter.put("name", "name");
         Artist artist = new Artist();
 
-        // When
         artist.setName("name");
         artistRepository.createNew(artist);
         artist.setName("name2");
@@ -116,12 +102,10 @@ public class ArtistRepositoryTest {
 
     @Test
     void getByIdShouldReturnEntityWithId() {
-        // Given
         Map<String, Object> filter = new HashMap<>();
         filter.put("name", "name");
         Artist artist = new Artist();
 
-        // When
         artist.setName("name");
         artistRepository.createNew(artist);
 

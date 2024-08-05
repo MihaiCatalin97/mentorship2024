@@ -1,7 +1,6 @@
 package org.java.mentorship.andrei_s.persistence.mapper;
 
 import org.java.mentorship.andrei_s.domain.Artist;
-import org.java.mentorship.andrei_s.domain.Song;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 

@@ -1,8 +1,9 @@
 package org.java.mentorship.andrei_s.domain;
 
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-import net.sf.jsqlparser.expression.operators.relational.MinorThanEquals;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.java.mentorship.andrei_s.common.Entity;
 import org.java.mentorship.andrei_s.exception.FieldIsNullException;
 

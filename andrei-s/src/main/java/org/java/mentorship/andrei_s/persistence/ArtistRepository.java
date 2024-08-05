@@ -22,6 +22,7 @@ public class ArtistRepository extends EntityRepository<Artist> {
 
         return artist;
     }
+
     @Override
     public Artist updateById(Integer id, Artist modifiedArtist) {
         jdbcTemplate.update("UPDATE artists SET name = ? WHERE id = ?",
