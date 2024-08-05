@@ -32,7 +32,7 @@ public class AlbumRepository implements EntityRepository<Album, Integer> {
     public Album findById(final Integer id) {
         return jdbcTemplate.queryForObject(
                 "SELECT * FROM albums WHERE id = ?",
-                new Object[]{id},  // Pass the ID here
+                new Object[]{id},
                 rowMapper
         );
     }

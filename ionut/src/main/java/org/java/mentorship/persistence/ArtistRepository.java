@@ -33,7 +33,7 @@ public class ArtistRepository implements EntityRepository<Artist, Integer> {
     public Artist findById(final Integer id) {
         return jdbcTemplate.queryForObject(
                 "SELECT * FROM artists WHERE id = ?",
-                new Object[]{id},  // Pass the ID here
+                new Object[]{id},
                 rowMapper
         );
     }
