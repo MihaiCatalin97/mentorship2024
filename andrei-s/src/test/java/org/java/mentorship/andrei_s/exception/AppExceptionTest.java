@@ -3,7 +3,7 @@ package org.java.mentorship.andrei_s.exception;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class AppExceptionTest {
 

@@ -1,10 +1,11 @@
 package org.java.mentorship.andrei_s.domain;
 
 import org.java.mentorship.andrei_s.exception.FieldIsNullException;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SongTest {
 
@@ -29,6 +30,7 @@ class SongTest {
                 .extracting("statusCode")
                 .isEqualTo(HttpStatus.BAD_REQUEST);
     }
+
     @Test
     void validateShouldThrowWhenArtistIdIsNull() {
         song.setArtistId(null);
@@ -38,6 +40,7 @@ class SongTest {
                 .extracting("statusCode")
                 .isEqualTo(HttpStatus.BAD_REQUEST);
     }
+
     @Test
     void validateShouldThrowWhenAlbumIdIsNull() {
         song.setAlbumId(null);
@@ -47,6 +50,7 @@ class SongTest {
                 .extracting("statusCode")
                 .isEqualTo(HttpStatus.BAD_REQUEST);
     }
+
     @Test
     void validateShouldThrowWhenDurationIsNull() {
         song.setDuration(null);
@@ -56,6 +60,7 @@ class SongTest {
                 .extracting("statusCode")
                 .isEqualTo(HttpStatus.BAD_REQUEST);
     }
+
     @Test
     void validateShouldThrowWhenStyleIsNull() {
         song.setStyle(null);

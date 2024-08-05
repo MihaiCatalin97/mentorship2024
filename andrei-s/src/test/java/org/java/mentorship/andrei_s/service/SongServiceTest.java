@@ -9,23 +9,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 
 import java.util.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class SongServiceTest {
 
-    SongService songService;
-
     private final static Song songEmpty = new Song();
     private final static Song songNullName = new Song(null, null, "Style", 2, 2, 2);
     private final static Song goodSong = new Song(null, "Name", "Style", 2, 2, 2);
-
+    SongService songService;
     @Mock
     SongRepository songRepository;
 
@@ -47,6 +45,7 @@ public class SongServiceTest {
                 .hasMessageContaining("404")
                 .hasMessageContaining("song");
     }
+
     @Test
     void getByIdShouldReturnSongWhenFound() {
         int songId = 200;
@@ -63,6 +62,7 @@ public class SongServiceTest {
                 .extracting("id")
                 .isEqualTo(songId);
     }
+
     @Test
     void findShouldReturnFilteredSongs() {
         Map<String, Object> filters = new HashMap<>();
@@ -80,7 +80,7 @@ public class SongServiceTest {
             song.setAlbumId((Integer) suppliedFilters.get("album_id"));
             song.setArtistId((Integer) suppliedFilters.get("artist_id"));
             song2.setId(124);
-            song2.setStyle((String) "Style2");
+            song2.setStyle("Style2");
             song2.setAlbumId((Integer) suppliedFilters.get("album_id"));
             song2.setArtistId((Integer) suppliedFilters.get("artist_id"));
             songs.add(song);
@@ -96,6 +96,7 @@ public class SongServiceTest {
                 .containsExactly("Style", 1, 1);
 
     }
+
     @Test
     void findShouldReturnAllSongs() {
         when(songRepository.find(anyMap())).thenAnswer(invocationOnMock -> {
@@ -104,11 +105,11 @@ public class SongServiceTest {
             Song song2 = new Song();
             List<Song> songs = new ArrayList<>();
             song.setId(123);
-            song.setStyle((String) "Style");
+            song.setStyle("Style");
             song.setAlbumId(1);
             song.setArtistId(2);
             song2.setId(124);
-            song2.setStyle((String) "Style2");
+            song2.setStyle("Style2");
             song2.setAlbumId(1);
             song2.setArtistId(2);
             songs.add(song);
@@ -122,11 +123,13 @@ public class SongServiceTest {
         assertThat(result.size()).isEqualTo(2);
 
     }
+
     @Test
     void createNewShouldValidate() {
         assertThatThrownBy(() -> songService.createNew(songEmpty)).isInstanceOf(FieldIsNullException.class);
         assertThatThrownBy(() -> songService.createNew(songNullName)).isInstanceOf(FieldIsNullException.class);
     }
+
     @Test
     void creteNewShouldReturnSong() {
         when(songRepository.createNew(any())).thenAnswer(invocationOnMock -> {
@@ -148,25 +151,30 @@ public class SongServiceTest {
                 .extracting("id", "name").isNotNull()
                 .containsExactly(1, goodSong.getName());
     }
+
     @Test
     void deleteByIdShouldVerifyId() {
         songService.deleteById(1);
         verify(songRepository).deleteById(1);
     }
+
     @Test
     void deleteByIdShouldCallRepo() {
         songService.deleteById(1);
         verify(songRepository).getById(1);
     }
+
     @Test
     void updateByIdShouldValidate() {
         assertThatThrownBy(() -> songService.updateById(1, songNullName)).isInstanceOf(FieldIsNullException.class);
     }
+
     @Test
     void updateByIdShouldCallRepo() {
         songService.updateById(1, goodSong);
         verify(songRepository).updateById(1, goodSong);
     }
+
     @Test
     void updateByIdShouldVerifyId() {
         songService.updateById(1, goodSong);

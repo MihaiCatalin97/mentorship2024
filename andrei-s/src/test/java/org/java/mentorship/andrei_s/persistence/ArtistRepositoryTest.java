@@ -26,7 +26,7 @@ public class ArtistRepositoryTest {
     ArtistRepository artistRepository;
 
     @Test
-    void saveShouldInsertIntoTheDatabase() {
+    void createNewShouldInsertIntoTheDatabase() {
         Map<String, Object> filter = new HashMap<>();
         filter.put("name", "UniqueArtistName");
         Artist artist = new Artist();
@@ -39,61 +39,33 @@ public class ArtistRepositoryTest {
     }
 
     @Test
-    void deleteByIdShouldDeleteEntity() {
-        Map<String, Object> filter = new HashMap<>();
-        filter.put("name", "UniqueArtistName");
-        Artist artist = new Artist();
-        artist.setName("UniqueArtistName");
-
-        artistRepository.createNew(artist);
-        Artist artistFromDb = artistRepository.find(filter).getFirst();
-        artistRepository.deleteById(artistFromDb.getId());
-
-        List<Artist> result = artistRepository.find(filter);
-        Assertions.assertThat(result.size()).isEqualTo(0);
+    void deleteByIdShouldThrowWhenAlbumContainsSongs() {
+        Assertions.assertThatThrownBy(() -> artistRepository.deleteById(1))
+                .hasMessageContaining("FK_ALBUM_ARTIST");
     }
 
     @Test
     void updateByIdShouldUpdateEntity() {
-        Map<String, Object> filter = new HashMap<>();
-        filter.put("name", "UniqueArtistName");
-        Artist artist = new Artist();
-        artist.setName("UniqueArtistName");
+        Artist artist = artistRepository.getById(3);
+        artist.setName("New Artist 3");
 
-        artistRepository.createNew(artist);
-        Artist artistFromDb = artistRepository.find(filter).getFirst();
-        artist.setName("NewUniqueName");
-        artistRepository.updateById(artistFromDb.getId(), artist);
+        artistRepository.updateById(3, artist);
+        Artist updatedArtist = artistRepository.getById(3);
 
-        List<Artist> result = artistRepository.find(filter);
-        Assertions.assertThat(result.size()).isEqualTo(0);
-        filter.put("name", "NewUniqueName");
-        List<Artist> result2 = artistRepository.find(filter);
-        Assertions.assertThat(result2.size()).isEqualTo(1);
+        Assertions.assertThat(updatedArtist).extracting("name").isEqualTo("New Artist 3");
     }
 
     @Test
     void findShouldReturnAllEntities() {
-        Map<String, Object> filter = new HashMap<>();
-        Artist artist = new Artist();
-        artist.setName("name");
+        List<Artist> artists = artistRepository.find(new HashMap<>());
 
-        artistRepository.createNew(artist);
-        List<Artist> artists = artistRepository.find(filter);
-
-        Assertions.assertThat(artists.size()).isEqualTo(1);
+        Assertions.assertThat(artists.size()).isEqualTo(3);
     }
 
     @Test
     void findShouldFilterEntities() {
         Map<String, Object> filter = new HashMap<>();
-        filter.put("name", "name");
-        Artist artist = new Artist();
-
-        artist.setName("name");
-        artistRepository.createNew(artist);
-        artist.setName("name2");
-        artistRepository.createNew(artist);
+        filter.put("name", "Artist 3");
 
         List<Artist> artists = artistRepository.find(filter);
 
@@ -101,25 +73,16 @@ public class ArtistRepositoryTest {
     }
 
     @Test
-    void getByIdShouldReturnEntityWithId() {
-        Map<String, Object> filter = new HashMap<>();
-        filter.put("name", "name");
-        Artist artist = new Artist();
+    void getByIdShouldReturnEntityWhenIdExists() {
+        Artist artist = artistRepository.getById(3);
 
-        artist.setName("name");
-        artistRepository.createNew(artist);
-
-        Assertions.assertThat(
-                artistRepository
-                        .getById(
-                                artistRepository
-                                        .find(filter)
-                                        .getFirst()
-                                        .getId()
-                        )
-                )
+        Assertions.assertThat(artist)
                 .extracting("name")
-                .isEqualTo("name");
+                .isEqualTo("Artist 3");
     }
 
+    @Test
+    void getByIdShouldThrowWhenIdDoesNotExist() {
+        Assertions.assertThatThrownBy(() -> artistRepository.getById(10));
+    }
 }
