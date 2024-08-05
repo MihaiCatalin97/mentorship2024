@@ -10,8 +10,14 @@ import static java.util.Objects.isNull;
 public class AlbumValidator {
 
     public void validate(final Album album) {
+        if (isNull(album.getId())) {
+            throw new FieldIsNullException("id");
+        }
         if (isNull(album.getName())) {
             throw new FieldIsNullException("name");
+        }
+        if (isNull(album.getArtistId())) {
+            throw new FieldIsNullException("artistId");
         }
     }
 }

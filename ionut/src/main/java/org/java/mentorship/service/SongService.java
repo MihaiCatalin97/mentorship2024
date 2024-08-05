@@ -3,6 +3,7 @@ package org.java.mentorship.service;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.common.EntityService;
 import org.java.mentorship.domain.Song;
+import org.java.mentorship.exception.NoEntityFoundException;
 import org.java.mentorship.persistence.SongRepository;
 import org.java.mentorship.validation.SongValidator;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class SongService implements EntityService<Song, Integer> {
     public Song findById(final Integer id) {
         Song song = repository.findById(id);
         if (song == null) {
-            throw new IllegalArgumentException("Song with id " + id + " not found");
+            throw new NoEntityFoundException("Song with id " + id + " not found");
         }
         return song;
     }
@@ -41,17 +42,16 @@ public class SongService implements EntityService<Song, Integer> {
         validator.validate(song);
         Song existingSong = repository.findById(song.getId());
         if (existingSong == null) {
-            throw new IllegalArgumentException("Song with id " + song.getId() + " not found");
+            throw new NoEntityFoundException("Song with id " + song.getId() + " not found");
         }
         return repository.update(song);
     }
 
     @Override
     public Song delete(final Integer id) {
-
         Song song = repository.findById(id);
         if (song == null) {
-            throw new IllegalArgumentException("Song with id " + id + " not found");
+            throw new NoEntityFoundException("Song with id " + id + " not found");
         }
         repository.delete(id);
         return song;

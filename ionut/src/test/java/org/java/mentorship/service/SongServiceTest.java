@@ -1,6 +1,7 @@
 package org.java.mentorship.service;
 
 import org.java.mentorship.domain.Song;
+import org.java.mentorship.exception.NoEntityFoundException;
 import org.java.mentorship.persistence.SongRepository;
 import org.java.mentorship.validation.SongValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -88,7 +89,7 @@ public class SongServiceTest {
         when(repository.findById(1)).thenReturn(null);
 
         // When & Then
-        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> songService.findById(1));
+        NoEntityFoundException thrown = assertThrows(NoEntityFoundException.class, () -> songService.findById(1));
         assertEquals("Song with id 1 not found", thrown.getMessage());
     }
 
@@ -125,7 +126,7 @@ public class SongServiceTest {
         when(repository.findById(1)).thenReturn(null);
 
         // When & Then
-        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> songService.update(song));
+        NoEntityFoundException thrown = assertThrows(NoEntityFoundException.class, () -> songService.update(song));
         assertEquals("Song with id 1 not found", thrown.getMessage());
     }
 
@@ -153,7 +154,7 @@ public class SongServiceTest {
         when(repository.findById(1)).thenReturn(null);
 
         // When & Then
-        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> songService.delete(1));
+        NoEntityFoundException thrown = assertThrows(NoEntityFoundException.class, () -> songService.delete(1));
         assertEquals("Song with id 1 not found", thrown.getMessage());
     }
 

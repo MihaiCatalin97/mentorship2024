@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class Album {
 
-    private int id;
+    private Integer id;
 
     private String name;
 
-    private int artistId;
+    private Integer artistId;
 }

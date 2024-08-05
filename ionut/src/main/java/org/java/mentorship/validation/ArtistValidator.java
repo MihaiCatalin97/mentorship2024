@@ -10,6 +10,9 @@ import static java.util.Objects.isNull;
 public class ArtistValidator {
 
     public void validate(final Artist artist) {
+        if (isNull(artist.getId())) {
+            throw new FieldIsNullException("id");
+        }
         if (isNull(artist.getName())) {
             throw new FieldIsNullException("name");
         }

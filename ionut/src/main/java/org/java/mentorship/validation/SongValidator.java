@@ -10,8 +10,23 @@ import static java.util.Objects.isNull;
 public class SongValidator {
 
     public void validate(final Song song) {
+        if (isNull(song.getId())) {
+            throw new FieldIsNullException("id");
+        }
         if (isNull(song.getName())) {
             throw new FieldIsNullException("name");
+        }
+        if (isNull(song.getStyle())) {
+            throw new FieldIsNullException("style");
+        }
+        if (isNull(song.getDuration())) {
+            throw new FieldIsNullException("duration");
+        }
+        if (isNull(song.getArtistId())) {
+            throw new FieldIsNullException("artistId");
+        }
+        if (isNull(song.getAlbumId())) {
+            throw new FieldIsNullException("albumId");
         }
     }
 }
