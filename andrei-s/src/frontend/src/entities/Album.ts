@@ -1,13 +1,13 @@
 export type Album = {
     id: number;
-    artist_id: number;
+    artistId: number;
     name: string;
 }
 
 export function parseAlbum(apiEntity: Record<string, any>): Album {
     return {
         id: apiEntity.id,
-        artist_id: apiEntity.id ?? null,
+        artistId: apiEntity.artistId ?? null,
         name: apiEntity.name ?? ""
     };
 }

@@ -1,5 +1,6 @@
 package org.java.mentorship.andrei_s.controller;
 
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.andrei_s.domain.Artist;
 import org.java.mentorship.andrei_s.service.ArtistService;
@@ -40,6 +41,11 @@ public class ArtistController {
     @PutMapping("/{id}")
     ResponseEntity<Artist> modifySong(@PathVariable(name = "id") int id, @RequestBody Artist artist) {
         return ResponseEntity.ok(artistService.updateById(id, artist));
+    }
+
+    @GetMapping("/search")
+    ResponseEntity<List<Artist>> searchArtist(@RequestParam(name = "query") String query) {
+        return ResponseEntity.ok(artistService.searchBy("name", query));
     }
 
 

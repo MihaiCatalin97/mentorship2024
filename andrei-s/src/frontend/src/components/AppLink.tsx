@@ -7,6 +7,6 @@ export default function AppLink({className, href, children}: {
     children?: ReactNode
 }) {
     return <Link className={`underline decoration-pink-500/50 hover:decoration-pink-500 ${className}`} href={href}>
-        { children }
+        {children}
     </Link>
 }

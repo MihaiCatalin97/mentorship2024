@@ -49,4 +49,8 @@ public abstract class EntityRepository<T extends Entity> {
     public abstract T createNew(T entity);
 
     public abstract T updateById(Integer id, T modifiedEntity);
+
+    public List<T> searchBy(String field, String query) {
+        return jdbcTemplate.query("SELECT * FROM " + this.tableName + " WHERE LOWER(" + field + ") LIKE ?", rowMapper, "%" + query.toLowerCase() + "%");
+    }
 }

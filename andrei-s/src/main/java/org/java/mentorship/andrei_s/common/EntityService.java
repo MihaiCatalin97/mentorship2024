@@ -52,4 +52,8 @@ public abstract class EntityService<T extends Entity> {
         modified.validate();
         return repo.updateById(id, modified);
     }
+
+    public List<T> searchBy(String field, String query) {
+        return repo.searchBy(field, query);
+    }
 }

@@ -1,5 +1,6 @@
 package org.java.mentorship.andrei_s.exception.handler;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.java.mentorship.andrei_s.exception.AppException;
 import org.java.mentorship.andrei_s.exception.domain.APIErrorResponse;
@@ -15,17 +16,21 @@ import java.util.Objects;
 public class GeneralExceptionHandler {
 
     @ExceptionHandler(AppException.class)
-    public ResponseEntity<APIErrorResponse> handle(final AppException exception) {
+    public ResponseEntity<APIErrorResponse> handle(final AppException exception, final HttpServletRequest request) {
         if (!Objects.isNull(exception.getOriginalException())) {
-            log.error(String.format("Caught exception: %s", exception.getOriginalException().getMessage()));
+            log.error(String.format("[%s] Caught exception: %s",
+                    request.getRequestURI(),
+                    exception.getOriginalException().getMessage()));
         }
         return ResponseEntity.status(exception.getStatusCode())
                 .body(new APIErrorResponse(exception.getMessage()));
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<APIErrorResponse> handle(final RuntimeException exception) {
-        log.error(String.format("Caught exception: %s", exception.getMessage()));
+    public ResponseEntity<APIErrorResponse> handle(final RuntimeException exception, final HttpServletRequest request) {
+        log.error(String.format("[%s] Caught exception: %s",
+                request.getRequestURI(),
+                exception.getMessage()));
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new APIErrorResponse("Unknown server error."));
     }

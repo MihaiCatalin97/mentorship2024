@@ -10,6 +10,7 @@ import java.util.Objects;
 public class Album implements Entity {
     private Integer id;
     private String name;
+    private Integer artistId;
 
     @Override
     public void validate() {

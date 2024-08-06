@@ -1,60 +1,29 @@
-'use client';
-
-import {Album, parseAlbum} from "@/entities/Album";
-import {useEffect, useState} from "react";
-import {useRouter} from "next/router";
-import {Artist, parseArtist} from "@/entities/Artist";
-import {parseSongs, Song} from "@/entities/Song";
+import SongList from "@/components/Song/SongList";
+import AlbumEditForm from "@/components/Album/AlbumEditForm";
+import {getAlbum} from "@/lib/albumActions";
 import AppLink from "@/components/AppLink";
+import {getSongsByAlbum} from "@/lib/songActions";
+import {getArtist} from "@/lib/artistActions";
+import SongNewForm from "@/components/Song/SongNewForm";
 
-export default function AlbumPage({params}: { params: { id: string } }) {
+export default async function AlbumPage({params}: { params: { id: number } }) {
 
-    const [album, setAlbum] = useState<Album | null>(null);
-    const [artist, setArtist] = useState<Artist | null>(null);
-    const [songs, setSongs] = useState<Song[] | null>(null);
-
-    useEffect(() => {
-        fetch('http://localhost:8080/albums/' + params.id)
-            .then((res) => res.json())
-            .then((data: object) => {
-                setAlbum(parseAlbum(data));
-            })
-    }, [params.id]);
-
-    useEffect(() => {
-        if (!album) return;
-        fetch('http://localhost:8080/artists/' + album.artist_id)
-            .then((res) => res.json())
-            .then((data: object) => {
-                setArtist(parseArtist(data));
-            })
-    }, [album]);
-
-    useEffect(() => {
-        if (!album) return;
-        fetch('http://localhost:8080/songs?album=' + album.id)
-            .then((res) => res.json())
-            .then((data: object) => {
-                setSongs(parseSongs(data));
-            })
-    }, [album, artist]);
+    let album = await getAlbum(params.id);
+    let artist = await getArtist(album.artistId);
+    let albumSongs = await getSongsByAlbum(album.id);
 
     return (
         <div>
-            {(album && artist && songs) ? <div>
-                <div className="mb-1 text-md text-pink-500">Album: {album.name}</div>
-                <div className="mb-3 text-sm">Artist: {artist.name}</div>
-                <div className="mb-1 text-md">Album Songs</div>
-                <ul className="border border-gray-600 rounded-lg text-sm">
-                    {songs.map(song =>
-                        <div className="px-2 py-1">
-                            <AppLink href={`/songs/${song.id}`}>
-                                {song.name} <span className="text-pink-300">({song.style})</span>
-                            </AppLink>
-                        </div>
-                    )}
-                </ul>
-            </div> : <div>Loading...</div>}
+            <div>
+                <div className="mb-1 text-xl text-pink-500">Album: {album.name}</div>
+                <div className="text-sm">Artist: <AppLink href={`/artists/${artist.id}`}>{artist.name}</AppLink></div>
+                <div className="mb-1 mt-3 text-md">Album Songs</div>
+                <SongList songs={albumSongs}/>
+                <div className="mb-1 mt-3 text-xl">Add Song</div>
+                <SongNewForm albumId={album.id}/>
+                <div className="mb-1 mt-3 text-xl">Edit Album</div>
+                <AlbumEditForm album={album}/>
+            </div>
         </div>
     );
 }

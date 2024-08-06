@@ -16,8 +16,8 @@ public class AlbumRepository extends EntityRepository<Album> {
 
     @Override
     public Album createNew(Album album) {
-        jdbcTemplate.update("INSERT INTO albums (name) VALUES (?)",
-                album.getName());
+        jdbcTemplate.update("INSERT INTO albums (name, artist_id) VALUES (?, ?)",
+                album.getName(), album.getArtistId());
 
         return album;
     }
