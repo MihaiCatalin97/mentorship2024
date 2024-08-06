@@ -24,8 +24,17 @@ export async function getSong(id: number): Promise<Song> {
     return parseSong(await data.json());
 }
 
-export async function updateSong(song: Song) {
+export async function deleteSong(id: number): Promise<String> {
+    let data = await fetch('http://localhost:8080/songs/' + id, {
+        method: "DELETE",
+        next: {tags: ['songs']}
+    });
+    revalidateTag("songs");
+    if (data.status != 200) return Promise.reject(new Error(await data.text()));
+    return await data.text();
+}
 
+export async function updateSong(song: Song) {
     let data = await fetch('http://localhost:8080/songs/' + song.id, {
         method: "PUT",
         body: JSON.stringify(song),
@@ -58,3 +67,4 @@ export async function createSong(song: Song) {
 
     return await data.text();
 }
+

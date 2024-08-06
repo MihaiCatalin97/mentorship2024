@@ -7,7 +7,7 @@ export default async function SongList({
     songs: Song[]
 }) {
     return (
-        <div className="border border-gray-600 rounded-lg text-sm">
+        <div className="shadow border border-gray-600 rounded-lg text-sm">
             {songs.map(song =>
                 <div className="px-2 py-1">
                     <AppLink href={`/songs/${song.id}`}>

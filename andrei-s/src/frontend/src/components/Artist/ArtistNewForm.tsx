@@ -20,11 +20,10 @@ export default function ArtistNewForm() {
     }
 
     return <div>
-        Name: <AppField className={"ml-1"} type="text" value={artistName}
+        <AppField label={"Name"} type="text" value={artistName}
                         onChange={(e) => {
                             setArtistName(e.target.value)
                         }}/>
-        <br/>
         <AppButton className={"mt-1"} onClick={submitForm}>Add</AppButton>
         <p>{formResult}</p>
     </div>

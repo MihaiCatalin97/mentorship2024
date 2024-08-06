@@ -21,11 +21,10 @@ export default function AlbumNewForm({artistId}: { artistId: number }) {
     }
 
     return <div>
-        Name: <AppField className={"ml-1"} type="text" value={albumName}
+        <AppField label={"Name"} type="text" value={albumName}
                         onChange={(e) => {
                             setAlbumName(e.target.value)
                         }}/>
-        <br/>
         <AppButton className={"mt-1"} onClick={submitForm}>Add</AppButton>
         <p>{formResult}</p>
     </div>

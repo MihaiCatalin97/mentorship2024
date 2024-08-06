@@ -22,6 +22,16 @@ export async function getArtists(): Promise<Artist[]> {
     return parseArtists(await data.json());
 }
 
+export async function deleteArtist(id: number): Promise<String> {
+    let data = await fetch('http://localhost:8080/artists/' + id, {
+        method: "DELETE",
+        next: {tags: ['artists']}
+    });
+    revalidateTag("artists");
+    if (data.status != 200) return Promise.reject(new Error(await data.text()));
+    return await data.text();
+}
+
 export async function updateArtist(artist: Artist) {
     let data = await fetch('http://localhost:8080/artists/' + artist.id, {
         method: "PUT",

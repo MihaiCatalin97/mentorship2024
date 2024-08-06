@@ -1,10 +1,11 @@
 import SongList from "@/components/Song/SongList";
 import AlbumEditForm from "@/components/Album/AlbumEditForm";
-import {getAlbum} from "@/lib/albumActions";
+import {deleteAlbum, getAlbum} from "@/lib/albumActions";
 import AppLink from "@/components/AppLink";
 import {getSongsByAlbum} from "@/lib/songActions";
 import {getArtist} from "@/lib/artistActions";
 import SongNewForm from "@/components/Song/SongNewForm";
+import AppButton from "@/components/AppButton";
 
 export default async function AlbumPage({params}: { params: { id: number } }) {
 
@@ -14,16 +15,24 @@ export default async function AlbumPage({params}: { params: { id: number } }) {
 
     return (
         <div>
-            <div>
-                <div className="mb-1 text-xl text-pink-500">Album: {album.name}</div>
-                <div className="text-sm">Artist: <AppLink href={`/artists/${artist.id}`}>{artist.name}</AppLink></div>
-                <div className="mb-1 mt-3 text-md">Album Songs</div>
-                <SongList songs={albumSongs}/>
-                <div className="mb-1 mt-3 text-xl">Add Song</div>
-                <SongNewForm albumId={album.id}/>
-                <div className="mb-1 mt-3 text-xl">Edit Album</div>
-                <AlbumEditForm album={album}/>
-            </div>
+            {
+                album.id &&
+                <div>
+                    <div className="mb-1 text-xl text-pink-500">Album: {album.name}</div>
+                    <div className="text-sm">Artist: <AppLink href={`/artists/${artist.id}`}>{artist.name}</AppLink>
+                    </div>
+                    <div className="mb-1 mt-3 text-md">Album Songs</div>
+                    <SongList songs={albumSongs}/>
+                    <div className="mb-1 mt-3 text-xl">Add Song</div>
+                    <SongNewForm albumId={album.id}/>
+                    <div className="mb-1 mt-3 text-xl">Edit Album</div>
+                    <AlbumEditForm album={album}/>
+                </div>
+            }
+            {
+                !album.id &&
+                    <p>Album not found :(</p>
+            }
         </div>
     );
 }

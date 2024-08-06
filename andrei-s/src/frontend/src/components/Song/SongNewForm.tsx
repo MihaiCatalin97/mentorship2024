@@ -3,7 +3,7 @@
 import {useState} from "react";
 import AppButton from "@/components/AppButton";
 import AppField from "@/components/AppField";
-import {createSong} from "@/lib/songActions";
+import {createSong, deleteSong} from "@/lib/songActions";
 import {parseSong} from "@/entities/Song";
 import {Artist} from "@/entities/Artist";
 import {searchArtists} from "@/lib/artistActions";
@@ -32,6 +32,10 @@ export default function SongNewForm({albumId}: { albumId: number }) {
             setSongArtistId(0);
             setSongDuration(0);
             setSongStyle("");
+            setArtistChosen(false);
+            setArtistNameQuery("");
+            setArtistsResults([]);
+            setSongArtistId(0);
         }).catch((e) => setFormResult(e.message));
     }
 
@@ -46,26 +50,27 @@ export default function SongNewForm({albumId}: { albumId: number }) {
     }
 
     return <div>
-        Name: <AppField className={"ml-1 mb-1"} type="text" value={songName}
+        <AppField label={"Name"} type="text" value={songName}
                         onChange={(e) => {
                             setSongName(e.target.value)
-                        }}/><br/>
-        Style: <AppField className={"ml-1 mb-1"} type="text" value={songStyle}
+                        }}/>
+        <AppField label={"Style"} type="text" value={songStyle}
                          onChange={(e) => {
                              setSongStyle(e.target.value)
-                         }}/><br/>
-        Duration: <AppField className={"ml-1 mb-1"} type="number" value={songDuration}
+                         }}/>
+        <AppField label={"Duration"} type="number" value={songDuration}
                             onChange={(e) => {
                                 setSongDuration(parseInt(e.target.value))
-                            }}/><br/>
+                            }}/>
         {
             !artistChosen &&
             <div>
-                Search for artist <AppField className={"ml-1 mb-1 mr-1"} type="string" value={artistNameQuery}
+                <AppField label={"Artist name"} type="string" value={artistNameQuery}
                                             onChange={(e) => {
                                                 setArtistNameQuery(e.target.value)
-                                            }}/>
-                <AppButton onClick={searchForArtist}>Search</AppButton><br/>
+                                            }}>
+                    <AppButton onClick={searchForArtist}>Search</AppButton>
+                </AppField>
                 {
                     artistsResults.map(artist =>
                         <div>
@@ -81,7 +86,7 @@ export default function SongNewForm({albumId}: { albumId: number }) {
                 Artist: {songArtistName} <AppButton onClick={() => setArtistChosen(false)}>Edit</AppButton><br/>
             </div>
         }
-        <AppButton className={"mt-1"} onClick={submitForm}>Add</AppButton>
+        <AppButton className={"mt-1 mr-1"} onClick={submitForm}>Add</AppButton>
         <p>{formResult}</p>
     </div>
 }
