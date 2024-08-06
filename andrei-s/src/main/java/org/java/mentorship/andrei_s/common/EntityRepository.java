@@ -33,6 +33,8 @@ public abstract class EntityRepository<T extends Entity> {
         filters.replaceAll((k, v) -> ":" + k);
         sqlConditions.andEquals(filters);
 
+        System.out.println(sqlConditions.build());
+
         return namedJdbcTemplate.query(String.format("SELECT * FROM " + this.tableName + " WHERE %s", sqlConditions.build()), in, rowMapper);
     }
 
