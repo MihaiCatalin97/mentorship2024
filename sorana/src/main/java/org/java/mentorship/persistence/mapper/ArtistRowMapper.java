@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.apache.coyote.http11.Constants.a;
-
 @Component
 public class ArtistRowMapper implements RowMapper<Artist> {
     @Override

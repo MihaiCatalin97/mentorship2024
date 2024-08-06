@@ -6,9 +6,9 @@ import org.springframework.jdbc.core.RowMapper;
 import java.util.List;
 import java.util.Map;
 
-import static org.java.mentorship.sql.SQLfindAll.*;
+import static org.java.mentorship.sql.SQLfindAll.getSQL;
 
-public class EntityRepository<T, I>{
+public class EntityRepository<T, I> {
 
     protected JdbcTemplate jdbcTemplate;
     protected RowMapper<T> rowMapper;
@@ -21,16 +21,17 @@ public class EntityRepository<T, I>{
     }
 
     public boolean delete(Integer id) {
-       jdbcTemplate.update("DELETE FROM " + tableName + " WHERE id = ?", id);
-       return true;
-   }
+        jdbcTemplate.update("DELETE FROM " + tableName + " WHERE id = ?", id);
+        return true;
+    }
 
-   public List<T> find(Map<String, Object> params) {
-       String sql = "SELECT * FROM " + tableName + " " + getSQL(params);
+    public List<T> find(Map<String, Object> params) {
+        String sql = "SELECT * FROM " + tableName + " " + getSQL(params);
 
-       return jdbcTemplate.query(sql, params.values().toArray(),rowMapper);
-   }
-   public T findById(I id) {
-       return jdbcTemplate.queryForObject("SELECT * FROM " + tableName + " WHERE id = ?", rowMapper, id);
-   }
+        return jdbcTemplate.query(sql, params.values().toArray(), rowMapper);
+    }
+
+    public T findById(I id) {
+        return jdbcTemplate.queryForObject("SELECT * FROM " + tableName + " WHERE id = ?", rowMapper, id);
+    }
 }

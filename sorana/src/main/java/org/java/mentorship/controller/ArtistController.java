@@ -23,7 +23,7 @@ public class ArtistController {
     private final SongService songService;
 
     @GetMapping("/artists")//works
-    public ResponseEntity<List<Artist>> getAllartists(@RequestParam(required = false, name = "id") final Integer id,@RequestParam(required = false, name = "name") final String name) {
+    public ResponseEntity<List<Artist>> getAllartists(@RequestParam(required = false, name = "id") final Integer id, @RequestParam(required = false, name = "name") final String name) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
         map.put("name", name);
@@ -51,17 +51,17 @@ public class ArtistController {
 
     @PutMapping("/artists/{id}")//works
     public ResponseEntity<Artist> update(@PathVariable("id") final int identifier,
-                                       @RequestBody final Artist artist) {
+                                         @RequestBody final Artist artist) {
         artist.setId(identifier);
 
-        return ResponseEntity.ok(artistService.update(identifier,artist));
+        return ResponseEntity.ok(artistService.update(identifier, artist));
     }
 
     @DeleteMapping("/artists/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") final Integer identifier) {
 
         List<Song> songs = songService.findSongs(identifier);
-        if(!songs.isEmpty()) {
+        if (!songs.isEmpty()) {
             return ResponseEntity.badRequest().body("We need to delete all songs before deleting the artist");
         }
         artistService.delete(identifier);

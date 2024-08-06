@@ -30,12 +30,13 @@ public class SongService implements EntityService<Song, Integer> {
 
     @Override
     public Song findById(final Integer id) {
-        try{
+        try {
             return repository.findById(id);
-        } catch (EmptyResultDataAccessException e){
-            throw new EntityNotFound(id,"song");
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntityNotFound(id, "song");
         }
     }
+
     @Override
     public List<Song> find(Map<String, Object> requestParam) {
         List<Song> songs = repository.find(requestParam);
@@ -43,15 +44,15 @@ public class SongService implements EntityService<Song, Integer> {
     }
 
     @Override
-    public Song update(final Integer id, final Song song){
+    public Song update(final Integer id, final Song song) {
         validator.validate(song);
-        return repository.update(id,song);
+        return repository.update(id, song);
     }
+
     @Override
     public boolean delete(final Integer id) {
         return repository.delete(id);
     }
-
 
 
 }

@@ -18,16 +18,16 @@ public class ArtistService {
     private final ArtistRepository artistRepository;
     private final ArtistValidator artistValidator;
 
-    public List<Artist> findAll(Map<String,Object> map) {
-        List<Artist> artists =  artistRepository.find(map);
+    public List<Artist> findAll(Map<String, Object> map) {
+        List<Artist> artists = artistRepository.find(map);
         return artists;
     }
 
     public Artist findById(final Integer id) {
-        try{
+        try {
             return artistRepository.findById(id);
-        } catch (EmptyResultDataAccessException e){
-            throw new EntityNotFound(id,"artist");
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntityNotFound(id, "artist");
         }
     }
 
@@ -41,9 +41,9 @@ public class ArtistService {
         return artistRepository.delete(id);
     }
 
-    public Artist update(final Integer id,Artist artist) {
+    public Artist update(final Integer id, Artist artist) {
         artistValidator.validate(artist);
-        return artistRepository.update(id,artist);
+        return artistRepository.update(id, artist);
     }
 
 }

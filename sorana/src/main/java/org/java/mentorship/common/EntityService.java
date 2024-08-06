@@ -5,7 +5,7 @@ import org.java.mentorship.domain.Song;
 import java.util.List;
 import java.util.Map;
 
-public interface EntityService<T,I>{
+public interface EntityService<T, I> {
     default T save(final T song) {
         throw new UnsupportedOperationException("Not implemented: save");
     }

@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import org.java.mentorship.domain.Album;
 import org.java.mentorship.exception.EntityNotFound;
 import org.java.mentorship.persistence.AlbumRepository;
-import org.java.mentorship.persistence.ArtistRepository;
 import org.java.mentorship.validation.AlbumValidator;
-import org.java.mentorship.validation.ArtistValidator;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +24,10 @@ public class AlbumService {
     }
 
     public Album findById(final Integer id) {
-        try{
-        return albumRepository.findById(id);
-        } catch (EmptyResultDataAccessException e){
-            throw new EntityNotFound(id,"album");
+        try {
+            return albumRepository.findById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntityNotFound(id, "album");
         }
     }
 
