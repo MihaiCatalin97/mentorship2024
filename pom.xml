@@ -11,11 +11,13 @@
     <modules>
         <module>gateway-service</module>
         <module>user-service</module>
+        <module>database</module>
     </modules>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencyManagement>
