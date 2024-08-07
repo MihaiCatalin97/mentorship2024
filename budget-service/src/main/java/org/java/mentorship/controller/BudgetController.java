@@ -1,17 +1,14 @@
-package org.java.mentorship.user.controller;
+package org.java.mentorship.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class HelloController {
+public class BudgetController {
 
     @GetMapping("/hello")
-    ResponseEntity<String> hello() {
-        return ResponseEntity.ok("Hello World");
+    public ResponseEntity<String> helloWorld() {
+        return ResponseEntity.ok("Hello World!");
     }
-
 }
-
-
