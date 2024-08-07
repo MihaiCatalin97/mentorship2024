@@ -8,4 +8,4 @@
 
 ## [Modules](./docs/modules.md)
 
-## [User Flows](docs/flows/flows.md)
+## [User Flows](docs/flows.md)
