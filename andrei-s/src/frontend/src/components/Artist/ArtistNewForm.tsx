@@ -10,7 +10,7 @@ export default function ArtistNewForm() {
     const [artistName, setArtistName] = useState("");
     const [formResult, setFormResult] = useState("");
 
-    async function submitForm() {
+    function submitForm() {
         let artist = parseArtist({});
         artist.name = artistName;
         newArtist(artist).then(() => {

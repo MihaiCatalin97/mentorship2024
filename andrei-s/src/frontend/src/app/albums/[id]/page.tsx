@@ -6,6 +6,7 @@ import {getSongsByAlbum} from "@/lib/songActions";
 import {getArtist} from "@/lib/artistActions";
 import SongNewForm from "@/components/Song/SongNewForm";
 import AppButton from "@/components/AppButton";
+import Link from "next/link";
 
 export default async function AlbumPage({params}: { params: { id: number } }) {
 

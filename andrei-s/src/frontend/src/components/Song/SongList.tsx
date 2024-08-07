@@ -1,11 +1,7 @@
 import AppLink from "@/components/AppLink";
 import {Song} from "@/entities/Song";
 
-export default async function SongList({
-                                           songs
-                                       }: {
-    songs: Song[]
-}) {
+export default async function SongList({ songs }: { songs: Song[] }) {
     return (
         <div className="shadow border border-gray-600 rounded-lg text-sm">
             {songs.map(song =>

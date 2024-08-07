@@ -7,7 +7,7 @@ import AppLink from "@/components/AppLink";
 import AlbumNewForm from "@/components/Album/AlbumNewForm";
 import AppButton from "@/components/AppButton";
 
-export default async function ArtistPage({params}: { params: { id: number } }) {
+export default async function ArtistPage({ params }: { params: { id: number } }) {
 
     let artist = await getArtist(params.id);
     let artistSongs = await getSongsByArtist(artist.id);

@@ -25,6 +25,7 @@ export default function SongEditForm({song}: { song: Song }) {
     }
 
     return <div>
+        {modifiedName}
         <AppField label={"Name"} type="text" value={modifiedName}
                         onChange={(e) => {
                             setModifiedName(e.target.value)
