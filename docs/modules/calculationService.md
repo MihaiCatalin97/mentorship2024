@@ -12,3 +12,11 @@ the application's more complex logic such as generating reports, summaries and r
 Interacts with the Budget Service, Notification Service and Gateway Service.
 
 It is designed in a two-layered architecture, having a Presentation and a Business layer.
+
+## Technologies
+- Java 21+
+- Maven
+- Spring Boot
+- Docker
+- 2-layer architecture
+- Quartz / other cron-job executor

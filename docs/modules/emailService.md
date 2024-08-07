@@ -9,3 +9,14 @@ The Email Service is an internal service of the Budget Tracker application respo
 generating emails and sending them to users.\
 It receives the email payload from the Notification Service, creates an email based on that payload and sends it to 
 the user's email through SMTP.
+
+## Technologies
+- Java 21+
+- Maven
+- Spring Boot
+- Docker
+- 2-layer architecture
+- FreeMarker
+- SMTP
+- RabbitMQ
+- JPA
