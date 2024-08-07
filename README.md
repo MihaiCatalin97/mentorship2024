@@ -6,4 +6,6 @@
 
 ## [Technologies](./docs/technologies.md)
 
-## [User Flows](./docs/flows.md)
+## [Modules](./docs/modules.md)
+
+## [User Flows](docs/flows/flows.md)
