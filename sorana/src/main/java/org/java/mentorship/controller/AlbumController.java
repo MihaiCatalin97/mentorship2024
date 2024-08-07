@@ -1,6 +1,7 @@
 package org.java.mentorship.controller;
 
 import lombok.AllArgsConstructor;
+import net.sf.jsqlparser.expression.operators.relational.MinorThanEquals;
 import org.java.mentorship.domain.Album;
 import org.java.mentorship.domain.Song;
 import org.java.mentorship.service.AlbumService;
@@ -23,12 +24,14 @@ public class AlbumController {
     private final SongService songService;
 
     @GetMapping("/albums")//works
-    public ResponseEntity<List<Album>> getAllalbums(@RequestParam(required = false, name = "id") final Integer id, @RequestParam(required = false, name = "name") final String name) {
+    public ResponseEntity<List<Album>> getAllalbums(
+            @RequestParam(required = false, name = "artistId") final Integer artistId,
+            @RequestParam(required = false, name = "id") final Integer id, @RequestParam(required = false, name = "name") final String name) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
         map.put("name", name);
+        map.put("artist_id", artistId);
         map.values().removeAll(Collections.singleton(null));
-
         return ResponseEntity.ok(albumService.findAll(map));
     }
 

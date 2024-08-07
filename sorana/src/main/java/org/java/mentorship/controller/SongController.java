@@ -85,7 +85,9 @@ public class SongController {
 //    }
 
     @GetMapping("/songs")//works
-    public ResponseEntity<List<Song>> getAllQueryParam(@RequestParam(required = false, name = "style") final String style, @RequestParam(required = false, name = "duration") final Integer duration, @RequestParam(required = false, name = "artistId") final Integer artistId,
+    public ResponseEntity<List<Song>> getAllQueryParam(@RequestParam(required = false, name = "style") final String style,
+                                                       @RequestParam(required = false, name = "duration") final Integer duration,
+                                                       @RequestParam(required = false, name = "artistId") final Integer artistId,
                                                        @RequestParam(required = false, name = "albumId") final Integer albumId) {
 
         Map<String, Object> map = new HashMap<>();

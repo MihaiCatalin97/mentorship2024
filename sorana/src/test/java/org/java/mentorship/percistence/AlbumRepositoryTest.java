@@ -46,7 +46,7 @@ class AlbumRepositoryTest {
     })
     void saveShouldInsertIntoTheDatabase() {
         // Given
-        Album album = new Album(1,"smth" );
+        Album album = new Album(1,"smth", 1);
 
         // When
         albumRepository.save(album);
@@ -63,7 +63,7 @@ class AlbumRepositoryTest {
     })
     void updateShouldUpdateTheDatabase() {
         Integer id = 1;
-        Album album = new Album(1,"smth");
+        Album album = new Album(1,"smth", 1);
 
         album.setName("smth1");
 
@@ -77,7 +77,7 @@ class AlbumRepositoryTest {
             "classpath:testData.sql"
     })
     void deleteShouldDeleteFromTheDatabase() {
-        Album album = new Album(1,"smth" );
+        Album album = new Album(1,"smth", 1);
 
         boolean result =albumRepository.delete(album.getId());
 

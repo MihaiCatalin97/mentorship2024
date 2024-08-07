@@ -13,7 +13,7 @@ public class AlbumValidatorTest {
 
     @Test
     void validateShouldThrownExceptionWhenAlbumIsIsNull(){
-        Album album = new Album(1,"astroworld");
+        Album album = new Album(1,"astroworld", 1);
         album.setId(null);
 
         FieldIsNullException e = assertThrows(FieldIsNullException.class, () -> albumValidator.validate(album));
@@ -22,7 +22,7 @@ public class AlbumValidatorTest {
 
     @Test
     void validateShouldThrownExceptionWhenAlbumNameIsNull(){
-        Album album = new Album(1,"travis");
+        Album album = new Album(1,"travis", 1);
         album.setName(null);
 
         FieldIsNullException e = assertThrows(FieldIsNullException.class, () -> albumValidator.validate(album));

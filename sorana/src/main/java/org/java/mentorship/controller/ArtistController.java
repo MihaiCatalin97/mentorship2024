@@ -59,11 +59,6 @@ public class ArtistController {
 
     @DeleteMapping("/artists/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") final Integer identifier) {
-
-        List<Song> songs = songService.findSongs(identifier);
-        if (!songs.isEmpty()) {
-            return ResponseEntity.badRequest().body("We need to delete all songs before deleting the artist");
-        }
         artistService.delete(identifier);
         return ResponseEntity.ok("deleted artist");
     }

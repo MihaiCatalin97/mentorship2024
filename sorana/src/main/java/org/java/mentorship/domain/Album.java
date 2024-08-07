@@ -10,4 +10,5 @@ import lombok.RequiredArgsConstructor;
 public class Album {
     private Integer id;
     private String name;
+    private Integer artistId;
 }

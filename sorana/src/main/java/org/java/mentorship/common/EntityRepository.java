@@ -27,7 +27,7 @@ public class EntityRepository<T, I> {
 
     public List<T> find(Map<String, Object> params) {
         String sql = "SELECT * FROM " + tableName + " " + getSQL(params);
-
+        System.out.println(sql);
         return jdbcTemplate.query(sql, params.values().toArray(), rowMapper);
     }
 

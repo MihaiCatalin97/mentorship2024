@@ -16,8 +16,8 @@ public class SongRepository extends EntityRepository<Song, Integer> {
 
 
     public Song save(final Song song) {
-        jdbcTemplate.update("INSERT INTO songs (name, style, duration) VALUES(?,?,?)",
-                song.getName(), song.getStyle(), song.getDuration());
+        jdbcTemplate.update("INSERT INTO songs (name, style, duration, album_id, artist_id) VALUES(?,?,?,?,?)",
+                song.getName(), song.getStyle(), song.getDuration(), song.getAlbumId(), song.getArtistId());
 
         return song;
     }
