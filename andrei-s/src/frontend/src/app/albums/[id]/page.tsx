@@ -1,12 +1,10 @@
-import SongList from "@/components/Song/SongList";
+import SongListTable from "@/components/Song/SongListTable";
 import AlbumEditForm from "@/components/Album/AlbumEditForm";
-import {deleteAlbum, getAlbum} from "@/lib/albumActions";
+import {getAlbum} from "@/lib/albumActions";
 import AppLink from "@/components/AppLink";
 import {getSongsByAlbum} from "@/lib/songActions";
 import {getArtist} from "@/lib/artistActions";
 import SongNewForm from "@/components/Song/SongNewForm";
-import AppButton from "@/components/AppButton";
-import Link from "next/link";
 
 export default async function AlbumPage({params}: { params: { id: number } }) {
 
@@ -23,7 +21,7 @@ export default async function AlbumPage({params}: { params: { id: number } }) {
                     <div className="text-sm">Artist: <AppLink href={`/artists/${artist.id}`}>{artist.name}</AppLink>
                     </div>
                     <div className="mb-1 mt-3 text-md">Album Songs</div>
-                    <SongList songs={albumSongs}/>
+                    <SongListTable songs={albumSongs}/>
                     <div className="mb-1 mt-3 text-xl">Add Song</div>
                     <SongNewForm albumId={album.id}/>
                     <div className="mb-1 mt-3 text-xl">Edit Album</div>

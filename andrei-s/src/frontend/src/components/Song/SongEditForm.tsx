@@ -1,10 +1,10 @@
 'use client';
 
-import {useState} from "react";
-import AppButton from "@/components/AppButton";
-import AppField from "@/components/AppField";
+import React, {useState} from "react";
+import {AppField} from "@/components/ui/appField";
 import {Song} from "@/entities/Song";
 import {deleteSong, updateSong} from "@/lib/songActions";
+import {AppButton} from "@/components/ui/appButton";
 
 export default function SongEditForm({song}: { song: Song }) {
     const [formResult, setFormResult] = useState("");
@@ -24,18 +24,17 @@ export default function SongEditForm({song}: { song: Song }) {
         deleteSong(song.id).catch(e => setFormResult(e.message));
     }
 
-    return <div>
-        {modifiedName}
-        <AppField label={"Name"} type="text" value={modifiedName}
+    return <div className={"flex flex-col gap-2"}>
+        <AppField placeholder={"Name"} type="text" value={modifiedName}
                         onChange={(e) => {
                             setModifiedName(e.target.value)
                         }}/>
-        <AppField label={"Style"} type="text" value={modifiedStyle}
+        <AppField placeholder={"Style"} type="text" value={modifiedStyle}
                          onChange={(e) => {
                              setModifiedStyle(e.target.value)
                          }}/>
-        <AppButton className={"mt-1 mr-1"} onClick={submitForm}>Save</AppButton>
-        <AppButton className={"mt-1"} onClick={deleteBtn} style={"danger"}>Delete</AppButton>
+        <AppButton onClick={submitForm}>Save</AppButton>
+        <AppButton onClick={deleteBtn} variant={"destructive"}>Delete</AppButton>
         <p>{formResult}</p>
     </div>
 }

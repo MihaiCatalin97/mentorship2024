@@ -1,15 +1,35 @@
+'use client';
+
 import AppLink from "@/components/AppLink";
+import {
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuIndicator,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger, navigationMenuTriggerStyle,
+    NavigationMenuViewport,
+} from "@/components/ui/navigation-menu"
+import Link from "next/link";
+import {usePathname} from "next/navigation";
 
 export default function AppNavbar() {
-    return <div className={"shadow flex flex-row p-2 border-b-2 border-b-pink-500"}>
-        <div className={"mr-4 text-pink-500"}>
-            Music DB
-        </div>
-        <AppLink className={"mr-2"} href={"/"}>
-            Home
-        </AppLink>
-        <AppLink href={"/artists/new"}>
-            New Artist
-        </AppLink>
-    </div>
+    const pathname = usePathname();
+
+    return <NavigationMenu>
+        <NavigationMenuList>
+            <NavigationMenuItem>
+                <NavigationMenuLink asChild active={pathname == '/'}>
+                    <Link href={'/'} className={navigationMenuTriggerStyle()}>Songs DB</Link>
+                </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+                <NavigationMenuLink asChild active={pathname == '/artists/new'}>
+                    <Link href={'/artists/new'} className={navigationMenuTriggerStyle()}>New Artist</Link>
+                </NavigationMenuLink>
+            </NavigationMenuItem>
+        </NavigationMenuList>
+    </NavigationMenu>
+
 }

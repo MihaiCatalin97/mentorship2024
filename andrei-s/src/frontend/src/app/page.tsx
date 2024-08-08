@@ -1,27 +1,23 @@
 import AppLink from "@/components/AppLink";
 import {getAlbums} from "@/lib/albumActions";
 import {getArtists} from "@/lib/artistActions";
+import React, { Suspense } from "react";
+import AlbumList from "@/components/Album/AlbumList";
+import ArtistList from "@/components/Artist/ArtistList";
+import TestChart from "@/components/TestChart";
 
 export default async function Home() {
-    let albums = await getAlbums();
-    let artists = await getArtists();
-
     return (
         <div>
-            <div className="mt-3 mb-1 text-xl">Albums in database</div>
-            {albums.map(album =>
-                <div>
-                    <AppLink href={`/albums/${album.id}`}
-                             className="text-sm underline decoration-pink-500/50 hover:decoration-pink-500">{album.name}</AppLink>
-                </div>
-            )}
-            <div className="mt-3 mb-1 text-xl">Artists in database</div>
-            {artists.map(artist =>
-                <div>
-                    <AppLink href={`/artists/${artist.id}`}
-                             className="text-sm underline decoration-pink-500/50 hover:decoration-pink-500">{artist.name}</AppLink>
-                </div>
-            )}
+            <div className="mt-5 mb-2 text-xl">Albums in database</div>
+            <Suspense>
+                <AlbumList albums={await getAlbums()}/>
+            </Suspense>
+            <div className="mt-5 mb-2 text-xl">Artists in database</div>
+            <Suspense>
+                <ArtistList artists={await getArtists()}/>
+            </Suspense>
+            <div className="mt-5 mb-2 text-xl">Some charts</div>
         </div>
     );
 }

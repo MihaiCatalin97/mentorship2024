@@ -15,14 +15,14 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-        <body>
-        <main>
-            <AppNavbar/>
-            <div className={"m-10"}>
-                {children}
-            </div>
-        </main>
-        </body>
+            <body>
+                <main>
+                    <AppNavbar/>
+                    <div className={"px-2 max-w-3xl ml-auto mr-auto"}>
+                        {children}
+                    </div>
+                </main>
+            </body>
         </html>
     )
 }

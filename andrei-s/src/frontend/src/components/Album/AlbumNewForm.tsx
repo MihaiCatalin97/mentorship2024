@@ -3,8 +3,8 @@
 import {parseAlbum} from "@/entities/Album";
 import {createAlbum} from "@/lib/albumActions";
 import {useState} from "react";
-import AppButton from "@/components/AppButton";
-import AppField from "@/components/AppField";
+import {AppField} from "@/components/ui/appField";
+import {AppButton} from "@/components/ui/appButton";
 
 export default function AlbumNewForm({artistId}: { artistId: number }) {
     const [formResult, setFormResult] = useState("");
@@ -20,12 +20,12 @@ export default function AlbumNewForm({artistId}: { artistId: number }) {
         }).catch((e) => setFormResult(e.message));
     }
 
-    return <div>
-        <AppField label={"Name"} type="text" value={albumName}
+    return <div className={"flex flex-col gap-2"}>
+        <AppField placeholder={"Name"} type="text" value={albumName}
                         onChange={(e) => {
                             setAlbumName(e.target.value)
                         }}/>
-        <AppButton className={"mt-1"} onClick={submitForm}>Add</AppButton>
+        <AppButton onClick={submitForm}>Add</AppButton>
         <p>{formResult}</p>
     </div>
 }

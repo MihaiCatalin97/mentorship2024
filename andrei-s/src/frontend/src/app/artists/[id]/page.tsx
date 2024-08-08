@@ -1,11 +1,11 @@
 import {getSongsByArtist} from "@/lib/songActions";
-import SongList from "@/components/Song/SongList";
-import {deleteArtist, getArtist} from "@/lib/artistActions";
+import SongListTable from "@/components/Song/SongListTable";
+import {getArtist} from "@/lib/artistActions";
 import ArtistEditForm from "@/components/Artist/ArtistEditForm";
-import {deleteAlbum, getAlbumsByArtist} from "@/lib/albumActions";
+import {getAlbumsByArtist} from "@/lib/albumActions";
 import AppLink from "@/components/AppLink";
 import AlbumNewForm from "@/components/Album/AlbumNewForm";
-import AppButton from "@/components/AppButton";
+import AlbumList from "@/components/Album/AlbumList";
 
 export default async function ArtistPage({ params }: { params: { id: number } }) {
 
@@ -20,16 +20,9 @@ export default async function ArtistPage({ params }: { params: { id: number } })
                 <div>
                     <div className="mb-1 text-xl text-pink-500">Artist: {artist.name}</div>
                     <div className="mb-1 mt-3">Artist Albums</div>
-                    {artistAlbums.map(album =>
-                        <div>
-                            <AppLink href={`/albums/${album.id}`}>{album.name}</AppLink>
-                        </div>
-                    )}
-                    {artistAlbums.length == 0 &&
-                        <div className={"text-xs"}>No Albums</div>
-                    }
+                    <AlbumList albums={artistAlbums} />
                     <div className="mb-1 mt-3">Artist Songs</div>
-                    <SongList songs={artistSongs}/>
+                    <SongListTable songs={artistSongs}/>
                     <div className="mb-1 mt-3">Add Album</div>
                     <AlbumNewForm artistId={artist.id}/>
                     <div className="mb-1 mt-3">Edit Artist</div>

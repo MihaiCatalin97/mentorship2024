@@ -1,12 +1,12 @@
 'use client';
 
-import {useState} from "react";
-import AppButton from "@/components/AppButton";
-import AppField from "@/components/AppField";
-import {createSong, deleteSong} from "@/lib/songActions";
+import React, {useState} from "react";
+import {AppField} from "@/components/ui/appField";
+import {createSong} from "@/lib/songActions";
 import {parseSong} from "@/entities/Song";
 import {Artist} from "@/entities/Artist";
 import {searchArtists} from "@/lib/artistActions";
+import {AppButton} from "@/components/ui/appButton";
 
 export default function SongNewForm({albumId}: { albumId: number }) {
     const [formResult, setFormResult] = useState("");
@@ -49,23 +49,23 @@ export default function SongNewForm({albumId}: { albumId: number }) {
         setSongArtistId(artist.id);
     }
 
-    return <div>
-        <AppField label={"Name"} type="text" value={songName}
+    return <div className={"flex flex-col gap-2"}>
+        <AppField placeholder={"Name"} type="text" value={songName}
                         onChange={(e) => {
                             setSongName(e.target.value)
                         }}/>
-        <AppField label={"Style"} type="text" value={songStyle}
+        <AppField placeholder={"Style"} type="text" value={songStyle}
                          onChange={(e) => {
                              setSongStyle(e.target.value)
                          }}/>
-        <AppField label={"Duration"} type="number" value={songDuration}
+        <AppField placeholder={"Duration"} type="number" value={songDuration}
                             onChange={(e) => {
                                 setSongDuration(parseInt(e.target.value))
                             }}/>
         {
             !artistChosen &&
             <div>
-                <AppField label={"Artist name"} type="string" value={artistNameQuery}
+                <AppField placeholder={"Artist name"} type="string" value={artistNameQuery}
                                             onChange={(e) => {
                                                 setArtistNameQuery(e.target.value)
                                             }}>
@@ -86,7 +86,7 @@ export default function SongNewForm({albumId}: { albumId: number }) {
                 Artist: {songArtistName} <AppButton onClick={() => setArtistChosen(false)}>Edit</AppButton><br/>
             </div>
         }
-        <AppButton className={"mt-1 mr-1"} onClick={submitForm}>Add</AppButton>
+        <AppButton className={"w-full"} onClick={submitForm}>Add</AppButton>
         <p>{formResult}</p>
     </div>
 }

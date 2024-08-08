@@ -1,6 +1,5 @@
 package org.java.mentorship.andrei_s.controller;
 
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.andrei_s.domain.Artist;
 import org.java.mentorship.andrei_s.service.ArtistService;
