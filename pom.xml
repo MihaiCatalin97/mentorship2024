@@ -20,6 +20,8 @@
     <properties>
         <lombok.version>1.18.34</lombok.version>
         <spring.version>3.3.2</spring.version>
+        <jib.version>3.4.1</jib.version>
+
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -52,6 +54,11 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${spring.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>${jib.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
