@@ -27,6 +27,13 @@ services:
       - budget-tracker-internal
     ports:
       - "8082:8080"
+  budget-service:
+    image: budget-service:latest
+    hostname: budget
+    networks:
+      - budget-tracker-internal
+    ports:
+      - "8084:8080"
 networks:
   budget-tracker-internal:
     name: budget-tracker-internal
