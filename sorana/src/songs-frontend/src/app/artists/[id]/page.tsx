@@ -1,16 +1,16 @@
 import SongList from "@/app/components/SongList";
 import AlbumList from "@/app/components/AlbumList";
-import { fetchArtist, fetchArtistAlbums, fetchArtistSongs } from "@/lib/fetchMethods";
-import {Button, Card} from "antd";
+import {fetchArtist, fetchArtistAlbums, fetchArtistSongs} from "@/lib/fetchMethods";
+import {Card} from "antd";
 import ArtistEditForm from "@/app/components/editFrom/ArtistEditForm";
 import AlbumNewForm from "@/app/components/newForm/AlbumNewForm";
 
 
-export default async function ArtistPage({params}: {params : {id:number}}){
+export default async function ArtistPage({params}: { params: { id: number } }) {
     const artistId = params.id;
 
     const artist = await fetchArtist(artistId);
-  
+
     if (artist == null) return <div>Artist not found.</div>
 
     const artistSongs = await fetchArtistSongs(artist.id);
@@ -22,6 +22,6 @@ export default async function ArtistPage({params}: {params : {id:number}}){
             <AlbumList albums={artistAlbums}/>
         </Card>
         <ArtistEditForm artist={artist}/>
-        <AlbumNewForm artistId={artist.id} />
+        <AlbumNewForm artistId={artist.id}/>
     </div>
 }

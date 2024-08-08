@@ -30,6 +30,7 @@ export async function createAlbum(album: Album): Promise<string> {
 
     return await req.text();
 }
+
 export async function createSong(song: Song): Promise<string> {
     let req = await fetch("http://localhost:8080/songs", {
         method: "POST",

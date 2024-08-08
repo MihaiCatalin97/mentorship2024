@@ -6,6 +6,7 @@ org/java/mentorship/controller/SongController.class
 org/java/mentorship/Application.class
 org/java/mentorship/controller/AlbumController.class
 org/java/mentorship/persistence/mapper/AlbumRowMapper.class
+org/java/mentorship/sql/SQLfindAll.class
 org/java/mentorship/persistence/SongRepository.class
 org/java/mentorship/exception/EntityNotFound.class
 org/java/mentorship/exception/FieldIsNullException.class

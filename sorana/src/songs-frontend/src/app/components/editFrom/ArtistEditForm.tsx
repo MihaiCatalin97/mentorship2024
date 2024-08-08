@@ -7,7 +7,7 @@ import {Artist} from "@/entities/artistEntity";
 import {updateArtist} from "@/lib/updateMethods";
 import {deleteArtist} from "@/lib/deleteMethods";
 
-export default function ArtistEditForm({artist}: {artist: Artist}){
+export default function ArtistEditForm({artist}: { artist: Artist }) {
     const [artistName, setArtistName] = useState(artist.name);
     const [result, setResult] = useState<null | string>(null);
 
@@ -25,12 +25,12 @@ export default function ArtistEditForm({artist}: {artist: Artist}){
     return <>
         <Input value={artistName}
                placeholder={"Name"}
-               onChange={(e) => setArtistName(e.target.value)} />
+               onChange={(e) => setArtistName(e.target.value)}/>
         <Button onClick={updateClick}>Update artist</Button>
         <Button onClick={deleteClick} danger={true}>Delete artist</Button>
 
-        { result &&
-            <Alert message={result} />
+        {result &&
+            <Alert message={result}/>
         }
     </>
 }
