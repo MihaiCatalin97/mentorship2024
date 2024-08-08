@@ -6,6 +6,13 @@ services:
       - budget-tracker-internal
     ports:
       - "8080:8080"
+  notification-service:
+    image: notification-service:latest
+    hostname: notification
+    networks:
+      - budget-tracker-internal
+    ports:
+      - "8083:8080"
 networks:
   budget-tracker-internal:
     name: budget-tracker-internal
