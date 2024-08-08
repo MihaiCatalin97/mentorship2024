@@ -13,6 +13,7 @@
         <module>user-service</module>
         <module>database</module>
         <module>notification-service</module>
+        <module>email-service</module>
     </modules>
 
     <properties>
