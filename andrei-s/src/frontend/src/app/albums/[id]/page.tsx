@@ -17,20 +17,19 @@ export default async function AlbumPage({params}: { params: { id: number } }) {
             {
                 album.id &&
                 <div>
-                    <div className="mb-1 text-xl text-pink-500">Album: {album.name}</div>
-                    <div className="text-sm">Artist: <AppLink href={`/artists/${artist.id}`}>{artist.name}</AppLink>
-                    </div>
+                    <div className="mb-1 text-2xl">Album: {album.name}</div>
+                    <AlbumEditForm album={album}/>
+                    <div className="mt-3 text-sm">Artist: <AppLink
+                        href={`/artists/${artist.id}`}>{artist.name}</AppLink></div>
                     <div className="mb-1 mt-3 text-md">Album Songs</div>
                     <SongListTable songs={albumSongs}/>
                     <div className="mb-1 mt-3 text-xl">Add Song</div>
                     <SongNewForm albumId={album.id}/>
-                    <div className="mb-1 mt-3 text-xl">Edit Album</div>
-                    <AlbumEditForm album={album}/>
                 </div>
             }
             {
                 !album.id &&
-                    <p>Album not found :(</p>
+                <p>Album not found :(</p>
             }
         </div>
     );

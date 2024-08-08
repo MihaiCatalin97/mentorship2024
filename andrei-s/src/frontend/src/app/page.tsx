@@ -1,10 +1,8 @@
-import AppLink from "@/components/AppLink";
 import {getAlbums} from "@/lib/albumActions";
 import {getArtists} from "@/lib/artistActions";
-import React, { Suspense } from "react";
+import React, {Suspense} from "react";
 import AlbumList from "@/components/Album/AlbumList";
 import ArtistList from "@/components/Artist/ArtistList";
-import TestChart from "@/components/TestChart";
 
 export default async function Home() {
     return (

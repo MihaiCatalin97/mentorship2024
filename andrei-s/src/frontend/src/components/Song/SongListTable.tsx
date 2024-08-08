@@ -1,10 +1,10 @@
 'use client';
 
 import {Song} from "@/entities/Song";
-import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {useRouter} from "next/navigation";
 
-export default function SongListTable({ songs }: { songs: Song[] }) {
+export default function SongListTable({songs}: { songs: Song[] }) {
     const router = useRouter();
 
     return (

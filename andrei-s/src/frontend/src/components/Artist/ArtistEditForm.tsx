@@ -4,7 +4,17 @@ import {useState} from "react";
 import {AppField} from "@/components/ui/appField";
 import {Artist} from "@/entities/Artist";
 import {deleteArtist, updateArtist} from "@/lib/artistActions";
-import {AppButton} from "@/components/ui/appButton";
+import {AppButton, ButtonIcon} from "@/components/ui/appButton";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog";
+import {EditIcon, TrashIcon} from "lucide-react";
 
 export default function ArtistEditForm({artist}: { artist: Artist }) {
     const [formResult, setFormResult] = useState("");
@@ -23,13 +33,34 @@ export default function ArtistEditForm({artist}: { artist: Artist }) {
             .catch(e => setFormResult(e.message));
     }
 
-    return <div className={"flex flex-col gap-2"}>
-        <AppField placeholder={"Name"} type="text" value={modifiedName}
-                        onChange={(e) => {
-                            setModifiedName(e.target.value)
-                        }}/>
-        <AppButton onClick={submitForm}>Save</AppButton>
-        <AppButton onClick={deleteBtn} variant={"destructive"}>Delete</AppButton>
-        <p>{formResult}</p>
-    </div>
+    return <>
+        <div className={"flex flex-row gap-1"}>
+            <Dialog>
+                <DialogTrigger asChild>
+                    <AppButton>
+                        <ButtonIcon icon={<EditIcon/>}/>
+                        Edit
+                    </AppButton>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Edit Artist</DialogTitle>
+                        <DialogDescription>You are editing artist currently named '{artist.name}' with
+                            ID {artist.id}</DialogDescription>
+                    </DialogHeader>
+                    <AppField placeholder={"Name"} type="text" value={modifiedName}
+                              onChange={(e) => {
+                                  setModifiedName(e.target.value)
+                              }}/>
+                    <DialogClose asChild>
+                        <AppButton onClick={submitForm}>Save</AppButton>
+                    </DialogClose>
+                </DialogContent>
+            </Dialog>
+            <AppButton onClick={deleteBtn} variant={"destructive"}>
+                <ButtonIcon icon={<TrashIcon/>}/>
+                Delete</AppButton>
+            <p>{formResult}</p>
+        </div>
+    </>
 }

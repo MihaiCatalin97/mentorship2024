@@ -7,6 +7,9 @@ import {parseSong} from "@/entities/Song";
 import {Artist} from "@/entities/Artist";
 import {searchArtists} from "@/lib/artistActions";
 import {AppButton} from "@/components/ui/appButton";
+import {ScrollArea} from "@/components/ui/scroll-area";
+import {AppCard, CardContent} from "@/components/ui/appCard";
+import {Separator} from "@/components/ui/separator";
 
 export default function SongNewForm({albumId}: { albumId: number }) {
     const [formResult, setFormResult] = useState("");
@@ -51,33 +54,39 @@ export default function SongNewForm({albumId}: { albumId: number }) {
 
     return <div className={"flex flex-col gap-2"}>
         <AppField placeholder={"Name"} type="text" value={songName}
-                        onChange={(e) => {
-                            setSongName(e.target.value)
-                        }}/>
+                  onChange={(e) => {
+                      setSongName(e.target.value)
+                  }}/>
         <AppField placeholder={"Style"} type="text" value={songStyle}
-                         onChange={(e) => {
-                             setSongStyle(e.target.value)
-                         }}/>
+                  onChange={(e) => {
+                      setSongStyle(e.target.value)
+                  }}/>
         <AppField placeholder={"Duration"} type="number" value={songDuration}
-                            onChange={(e) => {
-                                setSongDuration(parseInt(e.target.value))
-                            }}/>
+                  onChange={(e) => {
+                      setSongDuration(parseInt(e.target.value))
+                  }}/>
         {
             !artistChosen &&
             <div>
                 <AppField placeholder={"Artist name"} type="string" value={artistNameQuery}
-                                            onChange={(e) => {
-                                                setArtistNameQuery(e.target.value)
-                                            }}>
+                          onChange={(e) => {
+                              setArtistNameQuery(e.target.value)
+                          }}>
                     <AppButton onClick={searchForArtist}>Search</AppButton>
                 </AppField>
-                {
-                    artistsResults.map(artist =>
-                        <div>
-                            <AppButton onClick={() => chooseArtist(artist)}>Set '{artist.name}'</AppButton>
-                        </div>
-                    )
-                }
+                <ScrollArea className={"w-full h-[200px] border rounded-md mt-2"}>
+                    <div className={"mt-2 mx-3"}>
+                        {
+                            artistsResults.map(artist =>
+                                <div>
+                                <span className={"cursor-pointer"} onClick={() => chooseArtist(artist)}>Select
+                                    <b> {artist.name}</b></span>
+                                    <Separator />
+                                </div>
+                            )
+                        }
+                    </div>
+                </ScrollArea>
             </div>
         }
         {

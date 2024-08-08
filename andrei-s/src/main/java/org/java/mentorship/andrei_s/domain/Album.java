@@ -21,6 +21,7 @@ public class Album implements Entity {
             throw new FieldIsNullException("name");
         }
 
-        if (album.getName().length() < 2) throw new AppException("Name should be 2 characters or more", HttpStatus.BAD_REQUEST);
+        if (album.getName().length() < 2)
+            throw new AppException("Name should be 2 characters or more", HttpStatus.BAD_REQUEST);
     }
 }

@@ -22,9 +22,9 @@ export default function AlbumNewForm({artistId}: { artistId: number }) {
 
     return <div className={"flex flex-col gap-2"}>
         <AppField placeholder={"Name"} type="text" value={albumName}
-                        onChange={(e) => {
-                            setAlbumName(e.target.value)
-                        }}/>
+                  onChange={(e) => {
+                      setAlbumName(e.target.value)
+                  }}/>
         <AppButton onClick={submitForm}>Add</AppButton>
         <p>{formResult}</p>
     </div>

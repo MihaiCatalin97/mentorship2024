@@ -42,9 +42,12 @@ public class Song implements Entity {
         if (Objects.isNull(song.getDuration())) {
             throw new FieldIsNullException("duration");
         }
-        if (song.getName().length() < 2) throw new AppException("Name should be 2 characters or more", HttpStatus.BAD_REQUEST);
-        if (song.getStyle().length() < 2) throw new AppException("Style should be 2 characters or more", HttpStatus.BAD_REQUEST);
-        if (song.getDuration() <= 0) throw new AppException("Duration should be greater than 0", HttpStatus.BAD_REQUEST);
+        if (song.getName().length() < 2)
+            throw new AppException("Name should be 2 characters or more", HttpStatus.BAD_REQUEST);
+        if (song.getStyle().length() < 2)
+            throw new AppException("Style should be 2 characters or more", HttpStatus.BAD_REQUEST);
+        if (song.getDuration() <= 0)
+            throw new AppException("Duration should be greater than 0", HttpStatus.BAD_REQUEST);
 
     }
 }

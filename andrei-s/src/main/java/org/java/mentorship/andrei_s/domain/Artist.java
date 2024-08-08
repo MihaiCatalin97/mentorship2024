@@ -19,7 +19,8 @@ public class Artist implements Entity {
         if (Objects.isNull(artist.getName())) {
             throw new FieldIsNullException("name");
         }
-        if (artist.getName().length() < 2) throw new AppException("Name should be 2 characters or more", HttpStatus.BAD_REQUEST);
+        if (artist.getName().length() < 2)
+            throw new AppException("Name should be 2 characters or more", HttpStatus.BAD_REQUEST);
 
     }
 }
