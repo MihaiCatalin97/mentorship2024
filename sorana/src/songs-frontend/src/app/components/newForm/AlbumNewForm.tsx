@@ -4,7 +4,6 @@ import React, {useState} from "react";
 import {Alert, Button, Input, notification} from "antd";
 import {Album} from "@/entities/albumEntity";
 import {createAlbum} from "@/lib/createMethods";
-import NotificationCreate from "@/app/components/NotificationCreate";
 import {InfoCircleOutlined} from "@ant-design/icons";
 
 export default function AlbumNewForm({artistId}: { artistId: number }) {
@@ -29,7 +28,6 @@ export default function AlbumNewForm({artistId}: { artistId: number }) {
 
     return <>
         {contextHolder}
-        <NotificationCreate />
         <Input value={albumName}
                placeholder={"Name"}
                onChange={(e) => setAlbumName(e.target.value)}/>
