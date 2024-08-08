@@ -3,7 +3,7 @@
 import {useState} from "react";
 import {Alert, Button, Input} from "antd";
 import {Artist} from "@/entities/artistEntity";
-import createArtist from "@/lib/createMethods";
+
 import {updateArtist} from "@/lib/updateMethods";
 import {deleteArtist} from "@/lib/deleteMethods";
 

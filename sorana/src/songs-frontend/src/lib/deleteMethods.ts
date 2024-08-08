@@ -10,3 +10,11 @@ export async function deleteArtist(artistId : number){
 
     return await req.text();
 }
+export async function deleteAlbum(albumId : number){
+    let req = await fetch("http://localhost:8080/albums/" + albumId, {
+        method: "DELETE"
+    })
+    revalidateTag("albums");
+
+    return await req.text();
+}

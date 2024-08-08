@@ -10,6 +10,12 @@
         <module name="sorana" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="database" target="21" />
+      <module name="gateway-service" target="22" />
+      <module name="notification-service" target="21" />
+      <module name="user-service" target="22" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

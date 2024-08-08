@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/sorana.iml" filepath="$PROJECT_DIR$/sorana.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sorana/sorana.iml" filepath="$PROJECT_DIR$/sorana/sorana.iml" />
     </modules>
   </component>
 </project>
