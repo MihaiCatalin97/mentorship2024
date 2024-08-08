@@ -44,7 +44,7 @@
                     </to>
                     <container>
                         <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
-                        <mainClass>org.java.mentorship.gateway.Application</mainClass>
+                        <mainClass>org.java.mentorship.user.Application</mainClass>
                     </container>
                 </configuration>
                 <executions>
