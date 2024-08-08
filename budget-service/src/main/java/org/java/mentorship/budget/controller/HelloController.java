@@ -1,4 +1,4 @@
-package org.java.mentorship.controller;
+package org.java.mentorship.budget.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +9,6 @@ public class HelloController {
 
     @GetMapping("/hello")
     public ResponseEntity<String> helloWorld() {
-        return ResponseEntity.ok("Hello1 World!");
+        return ResponseEntity.ok("Hello World!");
     }
 }

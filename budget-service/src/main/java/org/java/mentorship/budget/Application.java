@@ -1,4 +1,4 @@
-package org.java.mentorship;
+package org.java.mentorship.budget;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
