@@ -6,6 +6,13 @@ services:
       - budget-tracker-internal
     ports:
       - "8080:8080"
+  user-service:
+    image: user-service:latest
+    hostname: user
+    networks:
+      - budget-tracker-internal
+    ports:
+      - "8081:8080"
 networks:
   budget-tracker-internal:
     name: budget-tracker-internal
