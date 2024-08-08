@@ -1,4 +1,4 @@
-package org.java.mentorship.controller;
+package org.java.mentorship.notification.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
