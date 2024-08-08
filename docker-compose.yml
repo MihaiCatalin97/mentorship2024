@@ -13,6 +13,13 @@ services:
       - budget-tracker-internal
     ports:
       - "8081:8080"
+  notification-service:
+    image: notification-service:latest
+    hostname: notification
+    networks:
+      - budget-tracker-internal
+    ports:
+      - "8083:8080"
   email-service:
     image: email-service:latest
     hostname: email
