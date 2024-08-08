@@ -12,6 +12,7 @@
         <module>gateway-service</module>
         <module>user-service</module>
         <module>database</module>
+        <module>budget-service</module>
         <module>notification-service</module>
     </modules>
 
