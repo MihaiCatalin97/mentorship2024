@@ -1,7 +1,10 @@
 package org.java.mentorship.contracts.user.client;
 
+import feign.Param;
+import feign.RequestLine;
 import org.java.mentorship.contracts.user.dto.User;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -16,4 +19,10 @@ public interface UserFeignClient {
             value = "/users"
     )
     List<User> getUsers();
+
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/users/{id}"
+    )
+    User getUser(@PathVariable("id") Integer id);
 }
