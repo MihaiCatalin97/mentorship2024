@@ -3,6 +3,7 @@ package org.java.mentorship.user.repository;
 import org.java.mentorship.contracts.user.dto.Session;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,12 @@ public class SessionRepository {
     public List<Session> getSessionsByUser(Integer id) {
         return sessions.stream()
                 .filter(session -> session.getUserId().equals(id))
+                .collect(Collectors.toList());
+    }
+
+    public List<Session> getActiveSessionsByUser(Integer id) {
+        return sessions.stream()
+                .filter(session -> session.getUserId().equals(id) && session.getExpiresAt() <= Instant.now().getEpochSecond())
                 .collect(Collectors.toList());
     }
 }
