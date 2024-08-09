@@ -39,7 +39,7 @@ public class UserService {
         user.setLastName(registrationRequest.getLastName());
         user.setVerified(false);
         user.setHashedPassword(getMd5(registrationRequest.getPassword()));
-        System.out.println(user);
+
         return repository.saveUser(user);
     }
 
