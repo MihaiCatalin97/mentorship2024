@@ -11,6 +11,10 @@
 
     <artifactId>gateway-service</artifactId>
 
+    <properties>
+        <application.mainClass>org.java.mentorship.gateway.GatewayApplication</application.mainClass>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -20,6 +24,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.java.mentorship</groupId>
+            <artifactId>user-contracts</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -27,32 +35,7 @@
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <configuration>
-                    <from>
-                        <image>azul/zulu-openjdk:22</image>
-                    </from>
-                    <to>
-                        <image>gateway-service</image>
-                        <tags>
-                            <tag>${project.version}</tag>
-                        </tags>
-                    </to>
-                    <container>
-                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
-                        <mainClass>org.java.mentorship.gateway.Application</mainClass>
-                    </container>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>dockerBuild</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
-
-
 </project>

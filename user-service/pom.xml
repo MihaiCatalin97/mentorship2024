@@ -11,6 +11,10 @@
 
     <artifactId>user-service</artifactId>
 
+    <properties>
+        <application.mainClass>org.java.mentorship.user.UserApplication</application.mainClass>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -20,41 +24,19 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.java.mentorship</groupId>
+            <artifactId>user-contracts</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-
-            <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <configuration>
-                    <from>
-                        <image>azul/zulu-openjdk:22</image>
-                    </from>
-                    <to>
-                        <image>user-service</image>
-                        <tags>
-                            <tag>${project.version}</tag>
-                        </tags>
-                    </to>
-                    <container>
-                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
-                        <mainClass>org.java.mentorship.user.Application</mainClass>
-                    </container>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>dockerBuild</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

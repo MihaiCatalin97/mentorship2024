@@ -11,6 +11,10 @@
 
     <artifactId>budget-service</artifactId>
 
+    <properties>
+        <application.mainClass>org.java.mentorship.budget.BudgetApplication</application.mainClass>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -27,32 +31,7 @@
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <configuration>
-                    <from>
-                        <image>azul/zulu-openjdk:22</image>
-                    </from>
-                    <to>
-                        <image>budget-service</image>
-                        <tags>
-                            <tag>${project.version}</tag>
-                        </tags>
-                    </to>
-                    <container>
-                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
-                        <mainClass>org.java.mentorship.budget.Application</mainClass>
-                    </container>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>dockerBuild</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
-
-
 </project>
