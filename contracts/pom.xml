@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>user-contracts</module>
+        <module>notification-contracts</module>
     </modules>
 
 </project>
