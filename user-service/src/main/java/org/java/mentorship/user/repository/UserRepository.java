@@ -29,4 +29,11 @@ public class UserRepository {
     public Optional<UserEntity> getUserByEmail(String email) {
         return users.stream().filter(user -> user.getEmail().equals(email)).findAny();
     }
+
+    public boolean setUserVerified(Integer id) {
+        users.stream().filter(user -> user.getId().equals(id)).findAny().ifPresent(user -> {
+            user.setVerified(true);
+        });
+        return true;
+    }
 }

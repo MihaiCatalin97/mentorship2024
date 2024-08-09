@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.java.mentorship.user.crypt.MD5.getMd5;
 
@@ -39,6 +40,9 @@ public class UserService {
         user.setLastName(registrationRequest.getLastName());
         user.setVerified(false);
         user.setHashedPassword(getMd5(registrationRequest.getPassword()));
+        user.setVerificationToken(UUID.randomUUID().toString());
+
+        // TODO: Call notification service with VERIFICATION message type
 
         return repository.saveUser(user);
     }
@@ -48,5 +52,13 @@ public class UserService {
         return user
                 .map(userEntity -> userEntity.getHashedPassword().equals(getMd5(password)))
                 .orElse(false);
+    }
+
+    public boolean verifyUserUsingToken(Integer id, String token) {
+        Optional<UserEntity> user = getUserById(id);
+        if (user.isEmpty()) { return false; }
+        if (!user.get().getVerificationToken().equals(token)) { return false; }
+
+        return repository.setUserVerified(id);
     }
 }
