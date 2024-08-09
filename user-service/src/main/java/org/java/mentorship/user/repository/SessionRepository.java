@@ -36,7 +36,9 @@ public class SessionRepository {
 
     public List<Session> getActiveSessionsByUser(Integer id) {
         return sessions.stream()
-                .filter(session -> session.getUserId().equals(id) && session.getExpiresAt() <= Instant.now().getEpochSecond())
+                .filter(session ->
+                        session.getUserId().equals(id) &&
+                                session.getExpiresAt() <= Instant.now().getEpochSecond())
                 .collect(Collectors.toList());
     }
 }

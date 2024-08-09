@@ -20,7 +20,7 @@ public class SessionController {
     }
 
     @GetMapping("/sessions/{key}")
-    public ResponseEntity<Session> getSession(@PathVariable(name="key") String key) {
+    public ResponseEntity<Session> getSession(@PathVariable(name = "key") String key) {
         return sessionService.getSession(key)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
