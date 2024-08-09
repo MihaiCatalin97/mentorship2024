@@ -26,7 +26,7 @@ export default function RootLayout({
                 <Link href={'/'}>Songs Site</Link>
             </Header>
             <Layout className={"px-4 pt-4 bg-white"}>
-                <Content className={"p-3 bg-gray-200 rounded-md"}>
+                <Content className={"p-3 bg-gray-200 rounded-md align-middle"}>
                     {children}
                 </Content>
             </Layout>

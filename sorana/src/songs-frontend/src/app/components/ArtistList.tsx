@@ -7,7 +7,7 @@ export default async function ArtistList({artists}: { artists: Artist[] }) {
         <div>
             {artists.map(artist =>
                 <div>
-                    <Button className={"mb-1"} type={"link"} size={"large"}>
+                    <Button className={"mb-1"}  size={"large"}>
                         <Link href={`/artists/${artist.id}`} passHref={true}>artist - {artist.name} (id: {artist.id})</Link>
                     </Button>
                 </div>

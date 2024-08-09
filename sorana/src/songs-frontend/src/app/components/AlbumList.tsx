@@ -1,12 +1,15 @@
 import {Album} from "@/entities/albumEntity";
 import Link from "next/link";
+import {Button} from "antd";
 
-export default async function ArtistList({albums}: { albums: Album[] }) {
+export default function ArtistList({albums}: { albums: Album[] }) {
     return (
         <div>
             {albums.map(album =>
                 <div>
-                    <Link href={`/albums/${album.id}`}> album - {album.name} (id: {album.id})</Link>
+                    <Button className={"mb-1"} size={"large"}>
+                        <Link href={`/artists/${album.id}`} passHref={true}>album - {album.name} (id: {album.id})</Link>
+                    </Button>
                 </div>
             )}
         </div>

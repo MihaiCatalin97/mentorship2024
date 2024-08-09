@@ -1,9 +1,12 @@
+'use server';
 import SongList from "@/app/components/SongList";
 import AlbumList from "@/app/components/AlbumList";
 import {fetchArtist, fetchArtistAlbums, fetchArtistSongs} from "@/lib/fetchMethods";
 import {Card} from "antd";
 import ArtistEditForm from "@/app/components/editFrom/ArtistEditForm";
 import AlbumNewForm from "@/app/components/newForm/AlbumNewForm";
+import ArtistTabs from "@/app/components/ArtistTabs";
+import React from "react";
 
 
 export default async function ArtistPage({params}: { params: { id: number } }) {
@@ -17,10 +20,9 @@ export default async function ArtistPage({params}: { params: { id: number } }) {
     const artistAlbums = await fetchArtistAlbums(artist.id);
 
     return <div className={"max-w-xl"}>
-        <Card className={"mb-5"} title={`Artist: ${artist.name}`}>
-            <SongList songs={artistSongs}/>
-            <AlbumList albums={artistAlbums}/>
-        </Card>
+        <ArtistTabs songs={artistSongs} albums={artistAlbums}/>
+        <br/>
+        <br/>
         <ArtistEditForm artist={artist}/>
         <AlbumNewForm artistId={artist.id}/>
     </div>
