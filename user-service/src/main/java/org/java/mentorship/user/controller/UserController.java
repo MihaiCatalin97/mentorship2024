@@ -39,10 +39,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserRegistrationRequest registrationRequest) {
-        if (userService.registerUser(registrationRequest))
-            return ResponseEntity.ok("Success");
-        else return ResponseEntity.badRequest().build();
+    public ResponseEntity<User> registerUser(@RequestBody UserRegistrationRequest registrationRequest) {
+        return userService.registerUser(registrationRequest).map(userEntity -> ResponseEntity.ok(userEntity.ToContract()))
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @PostMapping("/verify/{id}/{token}")

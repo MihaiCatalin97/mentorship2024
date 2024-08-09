@@ -24,17 +24,17 @@ public class SessionController {
     }
 
     @GetMapping("/{key}")
-    public ResponseEntity<Session> getSession(@PathVariable String key) {
+    public ResponseEntity<Session> getSession(@PathVariable(name = "key") String key) {
         return ResponseEntity.ok(userFeignClient.getSession(key));
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<List<Session>> getSessionsByUser(@PathVariable Integer id) {
+    public ResponseEntity<List<Session>> getSessionsByUser(@PathVariable(name = "id") Integer id) {
         return ResponseEntity.ok(userFeignClient.getSessions(id));
     }
 
     @GetMapping("/user/{id}/active")
-    public ResponseEntity<List<Session>> getActiveSessionsByUser(@PathVariable Integer id) {
+    public ResponseEntity<List<Session>> getActiveSessionsByUser(@PathVariable(name = "id") Integer id) {
         return ResponseEntity.ok(userFeignClient.getActiveSessions(id));
     }
 
