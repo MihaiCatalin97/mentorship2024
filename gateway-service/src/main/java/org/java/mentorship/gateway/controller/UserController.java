@@ -30,8 +30,11 @@ public class UserController {
 
     @PostMapping("/register")
     ResponseEntity<User> registerUser(@RequestBody UserRegistrationRequest registrationRequest) {
-        // TODO: Users can't read other users
         return ResponseEntity.ok(userFeignClient.registerUser(registrationRequest));
     }
 
+    @PostMapping("/verify/{id}/{token")
+    ResponseEntity<Boolean> verifyUser(@PathVariable(name="id") Integer id, @PathVariable(name="token") String token) {
+        return ResponseEntity.ok(userFeignClient.verifyUser(id, token));
+    }
 }
