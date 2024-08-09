@@ -1,6 +1,7 @@
 package org.java.mentorship.user.repository;
 
 import org.java.mentorship.contracts.user.dto.Session;
+import org.java.mentorship.user.service.SessionService;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
@@ -38,7 +39,7 @@ public class SessionRepository {
         return sessions.stream()
                 .filter(session ->
                         session.getUserId().equals(id) &&
-                                session.getExpiresAt() <= Instant.now().getEpochSecond())
+                                !SessionService.isExpired(session))
                 .collect(Collectors.toList());
     }
 }
