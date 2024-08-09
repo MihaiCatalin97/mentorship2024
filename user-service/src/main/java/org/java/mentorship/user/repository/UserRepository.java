@@ -20,10 +20,10 @@ public class UserRepository {
         return users.stream().filter(user -> user.getId().equals(id)).findAny();
     }
 
-    public boolean saveUser(UserEntity user) {
+    public UserEntity saveUser(UserEntity user) {
         user.setId(++currentId);
         users.add(user);
-        return true;
+        return user;
     }
 
     public Optional<UserEntity> getUserByEmail(String email) {
