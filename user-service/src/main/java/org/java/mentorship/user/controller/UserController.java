@@ -1,9 +1,7 @@
 package org.java.mentorship.user.controller;
 
 import lombok.AllArgsConstructor;
-import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.User;
-import org.java.mentorship.contracts.user.dto.UserLoginRequest;
 import org.java.mentorship.contracts.user.dto.UserRegistrationRequest;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.service.SessionService;
@@ -33,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable(name="id") Integer id) {
+    public ResponseEntity<User> getUserById(@PathVariable(name = "id") Integer id) {
         Optional<UserEntity> user = userService.getUserById(id);
         return user
                 .map(userEntity -> ResponseEntity.ok(userEntity.ToContract()))
