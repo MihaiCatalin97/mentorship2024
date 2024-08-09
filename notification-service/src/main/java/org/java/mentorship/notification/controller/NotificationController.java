@@ -1,5 +1,7 @@
 package org.java.mentorship.notification.controller;
 
+import lombok.Generated;
+import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.notification.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class NotificationController {
 
-    @Autowired
-    private NotificationService notificationService;
+    private final NotificationService notificationService;
 
     @GetMapping("/notifications/{id}/web")
     public ResponseEntity<List<Notification>> getWebNotifications(@PathVariable(value = "id") Integer userId) {
