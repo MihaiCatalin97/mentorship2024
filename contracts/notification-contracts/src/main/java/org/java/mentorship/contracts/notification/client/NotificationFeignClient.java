@@ -1,6 +1,5 @@
 package org.java.mentorship.contracts.notification.client;
 
-
 import org.java.mentorship.contracts.notification.dto.Notification;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
