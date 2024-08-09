@@ -48,7 +48,7 @@ public class SessionService {
         return Optional.of(sessionRepository.createSession(session));
     }
 
-    private List<Session> getActiveSessionsByUser(Integer id) {
+    public List<Session> getActiveSessionsByUser(Integer id) {
         return sessionRepository.getActiveSessionsByUser(id);
     }
 
@@ -58,5 +58,13 @@ public class SessionService {
 
     public List<Session> getSessionsByUser(Integer id) {
         return sessionRepository.getSessionsByUser(id);
+    }
+
+    public static boolean isExpired(Session session) {
+        return session.getExpiresAt() < Instant.now().getEpochSecond();
+    }
+
+    public Optional<Session> getActiveSession(String key) {
+        return getSession(key).map(session -> isExpired(session) ? null : session);
     }
 }
