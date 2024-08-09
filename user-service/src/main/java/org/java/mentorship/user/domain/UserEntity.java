@@ -10,8 +10,14 @@ public class UserEntity {
     private String email;
     private String firstName;
     private String lastName;
-    private Boolean verified;
-    private String hashedPassword;
-    private String verificationToken;
 
+    public User ToContract() {
+        final User userContract = new User();
+
+        userContract.setId(this.id);
+        userContract.setFirstName(this.firstName);
+        userContract.setLastName(this.lastName);
+
+        return userContract;
+    }
 }
