@@ -7,8 +7,6 @@ import org.java.mentorship.user.service.SessionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @AllArgsConstructor
 public class SessionController {
@@ -22,20 +20,10 @@ public class SessionController {
     }
 
     @GetMapping("/sessions/{key}")
-    public ResponseEntity<Session> getSession(@PathVariable(name = "key") String key) {
-        return sessionService.getActiveSession(key)
+    public ResponseEntity<Session> getSession(@PathVariable(name="key") String key) {
+        return sessionService.getSession(key)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/sessions/user/{id}")
-    public ResponseEntity<List<Session>> getSessionsByUser(@PathVariable(name = "id") Integer id) {
-        return ResponseEntity.ok(sessionService.getSessionsByUser(id));
-    }
-
-    @GetMapping("/sessions/user/{id}/active")
-    public ResponseEntity<List<Session>> getActiveSessionsByUser(@PathVariable(name = "id") Integer id) {
-        return ResponseEntity.ok(sessionService.getActiveSessionsByUser(id));
     }
 
 }

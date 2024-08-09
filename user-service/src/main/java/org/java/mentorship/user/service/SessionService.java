@@ -35,7 +35,7 @@ public class SessionService {
         }
 
         // Too many sessions for a user
-        if (getActiveSessionsByUser(user.getId()).size() >= 3) {
+        if (getSessionsByUser(user.getId()).size() >= 3) {
             return Optional.empty();
         }
 
@@ -48,23 +48,11 @@ public class SessionService {
         return Optional.of(sessionRepository.createSession(session));
     }
 
-    public List<Session> getActiveSessionsByUser(Integer id) {
-        return sessionRepository.getActiveSessionsByUser(id);
-    }
-
     public Optional<Session> getSession(String sessionKey) {
         return sessionRepository.getSessionByKey(sessionKey);
     }
 
     public List<Session> getSessionsByUser(Integer id) {
         return sessionRepository.getSessionsByUser(id);
-    }
-
-    public static boolean isExpired(Session session) {
-        return session.getExpiresAt() < Instant.now().getEpochSecond();
-    }
-
-    public Optional<Session> getActiveSession(String key) {
-        return getSession(key).map(session -> isExpired(session) ? null : session);
     }
 }
