@@ -13,6 +13,7 @@ persists them in the database and sends them further for sending to the Email Se
 It is designed in a three-layered architecture, having a Presentation, Business and Data layer.
 
 ## Technologies
+
 - Java 21+
 - Maven
 - Spring Boot
