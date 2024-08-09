@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,7 +36,7 @@ public class SessionService {
         }
 
         // Too many sessions for a user
-        if (getSessionsByUser(user.getId()).size() >= 3) {
+        if (getActiveSessionsByUser(user.getId()).size() >= 3) {
             return Optional.empty();
         }
 
@@ -46,6 +47,10 @@ public class SessionService {
         session.setExpiresAt(Instant.now().plus(30, ChronoUnit.DAYS).getEpochSecond());
 
         return Optional.of(sessionRepository.createSession(session));
+    }
+
+    private List<Session> getActiveSessionsByUser(Integer id) {
+        return sessionRepository.getActiveSessionsByUser(id);
     }
 
     public Optional<Session> getSession(String sessionKey) {
