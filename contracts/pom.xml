@@ -9,6 +9,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>database</artifactId>
+    <artifactId>contracts</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>user-contracts</module>
+    </modules>
 
 </project>

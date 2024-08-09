@@ -1,12 +1,12 @@
-package org.java.mentorship.budget;
+package org.java.mentorship.notification;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Application {
-
+public class NotificationApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(NotificationApplication.class, args);
+
     }
 }

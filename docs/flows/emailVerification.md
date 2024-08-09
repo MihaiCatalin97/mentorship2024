@@ -9,6 +9,10 @@ __And__ the Gateway calls the User Service\
 __And__ the User Service validates the data\
 __And__ the username / email and verification token match\
 __Then__ a successful verification message is propagated back to the user\
+__And__ the verification link is invalidated
+__And__ the User Service calls the Notification Service\
+__And__ the Notification Service calls the Email Service\
+__And__ an welcoming email is sent to the user
 
 ### Resend verification email
 __When__ a user prompts the resending of its verification email \
