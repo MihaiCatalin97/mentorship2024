@@ -12,6 +12,7 @@ public class UserEntity {
     private String lastName;
     private Boolean verified;
     private String hashedPassword;
+    private String verificationToken;
 
     public User ToContract() {
         final User userContract = new User();
