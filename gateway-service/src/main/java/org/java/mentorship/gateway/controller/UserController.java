@@ -33,7 +33,7 @@ public class UserController {
         return ResponseEntity.ok(userFeignClient.registerUser(registrationRequest));
     }
 
-    @PostMapping("/verify/{id}/{token")
+    @PostMapping("/verify/{id}/{token}")
     ResponseEntity<Boolean> verifyUser(@PathVariable(name="id") Integer id, @PathVariable(name="token") String token) {
         return ResponseEntity.ok(userFeignClient.verifyUser(id, token));
     }
