@@ -3,6 +3,7 @@
 ## Happy Flows
 
 ### Creation
+
 __When__ the user creates an income in the application
 __And__ the Gateway Service receives the request\
 __And__ the Gateway calls the Budget Service\

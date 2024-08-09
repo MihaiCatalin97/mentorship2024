@@ -11,6 +11,7 @@ related to the user: creating an user, fetching an user, creating a verification
 It is designed in a three-layered architecture, having a Presentation, Business and Data layer.
 
 ## Technologies
+
 - Java 21+
 - Maven
 - Spring Boot

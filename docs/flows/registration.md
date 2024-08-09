@@ -20,6 +20,7 @@ __And__ the verification link has a limited lifespan
 ## Negative Flows
 
 ### Unique constraint violation
+
 __Given__ a user registers into the application\
 __And__ the Gateway Service receives the request\
 __And__ the Gateway calls the User Service\
@@ -29,6 +30,7 @@ __Then__ an error is propagated back to the user
 __And__ the error message clearly explains the encountered issue
 
 ### Null or blank fields
+
 __Given__ a user registers into the application\
 __And__ the Gateway Service receives the request\
 __And__ the Gateway calls the User Service\
@@ -38,6 +40,7 @@ __Then__ an error is propagated back to the user
 __And__ the error message clearly explains the encountered issue
 
 ### Any other internal error
+
 __Given__ a user registers into the application\
 __And__ the Gateway Service receives the request\
 __And__ the Gateway calls the User Service\
