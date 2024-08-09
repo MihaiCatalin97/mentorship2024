@@ -10,6 +10,8 @@ public class UserEntity {
     private String email;
     private String firstName;
     private String lastName;
+    private Boolean verified;
+    private String hashedPassword;
 
     public User ToContract() {
         final User userContract = new User();
@@ -17,6 +19,8 @@ public class UserEntity {
         userContract.setId(this.id);
         userContract.setFirstName(this.firstName);
         userContract.setLastName(this.lastName);
+        userContract.setVerified(this.verified);
+        userContract.setEmail(this.email);
 
         return userContract;
     }
