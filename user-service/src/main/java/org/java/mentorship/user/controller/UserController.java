@@ -10,6 +10,7 @@ import org.java.mentorship.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,20 +40,6 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserRegistrationRequest registrationRequest) {
-        return userService.registerUser(registrationRequest).map(userEntity -> ResponseEntity.ok(UserContractMapper.userToContract(userEntity)))
-                .orElse(ResponseEntity.badRequest().build());
+        return ResponseEntity.ok(Collections.singletonList(user));
     }
-
-    @PostMapping("/verify/{id}/{token}")
-    public ResponseEntity<Boolean> verifyUser(@PathVariable(name = "id") Integer id,
-                                              @PathVariable(name = "token") String token) {
-        if (userService.verifyUserUsingToken(id, token)) {
-            return ResponseEntity.ok(true);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
 }
