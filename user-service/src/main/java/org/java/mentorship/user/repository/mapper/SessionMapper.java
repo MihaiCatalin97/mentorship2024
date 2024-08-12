@@ -1,9 +1,6 @@
 package org.java.mentorship.user.repository.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.java.mentorship.contracts.user.dto.Session;
 
 import java.util.List;
