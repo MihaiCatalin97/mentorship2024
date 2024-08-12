@@ -8,6 +8,7 @@ import org.java.mentorship.user.repository.mapper.SessionMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,7 +43,7 @@ public class SessionService {
         Session session = new Session();
         session.setSessionKey(String.valueOf(sessionKey));
         session.setUserId(user.getId());
-        session.setExpiresAt(LocalDateTime.now().plusDays(30));
+        session.setExpiresAt(OffsetDateTime.now().plusDays(30));
 
         sessionMapper.insertSession(session);
 
@@ -62,7 +63,7 @@ public class SessionService {
     }
 
     public static boolean isExpired(Session session) {
-        return session.getExpiresAt().isBefore(LocalDateTime.now());
+        return session.getExpiresAt().isBefore(OffsetDateTime.now());
     }
 
     public Optional<Session> getActiveSession(String key) {
