@@ -24,5 +24,5 @@ public interface UserMapper {
     void insertUser(UserEntity user);
 
     @Update("UPDATE users SET verified = #{verified} WHERE id = #{id}")
-    boolean setUserVerifiedStatus(Integer id, boolean verified);
+    boolean setUserVerifiedStatus(@Param("id") Integer id, @Param("verified") Boolean verified);
 }
