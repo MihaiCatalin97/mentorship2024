@@ -51,7 +51,7 @@ public class UserController {
         if (userService.verifyUserUsingToken(id, token))
             return ResponseEntity.ok(true);
          else
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.ok(false);
     }
 
 }
