@@ -12,7 +12,6 @@ public class Budget {
     private String name;
     private Integer maximumAllowed;
     private BudgetInterval interval;
-    private List<TransactionType> transactionTypes;
     private Integer currentUsage;
     private List<Account> accounts;
     private List<Transaction> transactions;
