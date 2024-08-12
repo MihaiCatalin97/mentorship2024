@@ -14,15 +14,4 @@ public class UserEntity {
     private String hashedPassword;
     private String verificationToken;
 
-    public User ToContract() {
-        final User userContract = new User();
-
-        userContract.setId(this.id);
-        userContract.setFirstName(this.firstName);
-        userContract.setLastName(this.lastName);
-        userContract.setVerified(this.verified);
-        userContract.setEmail(this.email);
-
-        return userContract;
-    }
 }
