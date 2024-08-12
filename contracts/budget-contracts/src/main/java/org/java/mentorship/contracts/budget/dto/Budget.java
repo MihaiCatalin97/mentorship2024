@@ -14,5 +14,7 @@ public class Budget {
     private BudgetInterval interval;
     private List<TransactionType> transactionTypes;
     private Integer currentUsage;
+    private List<Account> accounts;
+    private List<Transaction> transactions;
 
 }

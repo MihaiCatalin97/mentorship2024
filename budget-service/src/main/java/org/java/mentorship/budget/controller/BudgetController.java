@@ -2,12 +2,12 @@ package org.java.mentorship.budget.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.budget.service.BudgetService;
+import org.java.mentorship.budget.exception.NoEntityFoundException;
 import org.java.mentorship.contracts.budget.dto.Budget;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -29,9 +29,12 @@ public class BudgetController {
     // Get a budget by ID
     @GetMapping("/{id}")
     public ResponseEntity<Budget> getBudgetById(@PathVariable("id") Integer id) {
-        Optional<Budget> budget = budgetService.getBudgetById(id);
-        return budget.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(NOT_FOUND).build());
+        try {
+            Budget budget = budgetService.getBudgetById(id);
+            return ResponseEntity.ok(budget);
+        } catch (NoEntityFoundException e) {
+            return ResponseEntity.status(NOT_FOUND).build();
+        }
     }
 
     // Create a new budget
@@ -44,17 +47,23 @@ public class BudgetController {
     // Update an existing budget by ID
     @PutMapping("/{id}")
     public ResponseEntity<Budget> updateBudget(@PathVariable("id") Integer id, @RequestBody Budget updatedBudget) {
-        Optional<Budget> budget = budgetService.updateBudget(id, updatedBudget);
-        return budget.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(NOT_FOUND).build());
+        try {
+            Budget updated = budgetService.updateBudget(id, updatedBudget);
+            return ResponseEntity.ok(updated);
+        } catch (NoEntityFoundException e) {
+            return ResponseEntity.status(NOT_FOUND).build();
+        }
     }
 
     // Delete a budget by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Budget> deleteBudget(@PathVariable("id") Integer id) {
-        Optional<Budget> deletedBudget = budgetService.deleteBudget(id);
-        return deletedBudget.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(NOT_FOUND).build());
+        try {
+            Budget deletedBudget = budgetService.deleteBudget(id);
+            return ResponseEntity.ok(deletedBudget);
+        } catch (NoEntityFoundException e) {
+            return ResponseEntity.status(NOT_FOUND).build();
+        }
     }
 
     // Get all budgets for a specific user
