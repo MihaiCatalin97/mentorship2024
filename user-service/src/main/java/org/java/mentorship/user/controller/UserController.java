@@ -23,11 +23,11 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok(
-                userService
-                        .getAllUsers()
-                        .stream()
-                        .map(UserContractMapper::userToContract)
-                        .collect(Collectors.toList())
+            userService
+                .getAllUsers()
+                .stream()
+                .map(UserContractMapper::userToContract)
+                .collect(Collectors.toList())
         );
     }
 
@@ -35,24 +35,23 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable(name = "id") Integer id) {
         Optional<UserEntity> user = userService.getUserById(id);
         return user
-                .map(userEntity -> ResponseEntity.ok(UserContractMapper.userToContract(userEntity)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+            .map(userEntity -> ResponseEntity.ok(UserContractMapper.userToContract(userEntity)))
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody UserRegistrationRequest registrationRequest) {
         return userService.registerUser(registrationRequest).map(userEntity -> ResponseEntity.ok(UserContractMapper.userToContract(userEntity)))
-                .orElse(ResponseEntity.badRequest().build());
+            .orElse(ResponseEntity.badRequest().build());
     }
 
     @PostMapping("/verify/{id}/{token}")
     public ResponseEntity<Boolean> verifyUser(@PathVariable(name = "id") Integer id,
                                               @PathVariable(name = "token") String token) {
-        if (userService.verifyUserUsingToken(id, token)) {
+        if (userService.verifyUserUsingToken(id, token))
             return ResponseEntity.ok(true);
-        } else {
+         else
             return ResponseEntity.badRequest().build();
-        }
     }
 
 }
