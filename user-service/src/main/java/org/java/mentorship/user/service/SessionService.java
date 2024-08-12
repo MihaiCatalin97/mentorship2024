@@ -5,9 +5,11 @@ import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.UserLoginRequest;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.repository.SessionRepository;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -43,7 +45,7 @@ public class SessionService {
         Session session = new Session();
         session.setSessionKey(String.valueOf(sessionKey));
         session.setUserId(user.getId());
-        session.setExpiresAt(Instant.now().plus(30, ChronoUnit.DAYS).getEpochSecond());
+        session.setExpiresAt(LocalDateTime.now().plusDays(30));
 
         return Optional.of(sessionRepository.createSession(session));
     }
@@ -61,7 +63,7 @@ public class SessionService {
     }
 
     public static boolean isExpired(Session session) {
-        return session.getExpiresAt() < Instant.now().getEpochSecond();
+        return session.getExpiresAt().isBefore(LocalDateTime.now());
     }
 
     public Optional<Session> getActiveSession(String key) {
