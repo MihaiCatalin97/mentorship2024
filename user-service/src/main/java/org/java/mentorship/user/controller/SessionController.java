@@ -17,15 +17,15 @@ public class SessionController {
     @PostMapping("/sessions")
     public ResponseEntity<Session> createSession(@RequestBody UserLoginRequest loginRequest) {
         return sessionService.createSession(loginRequest)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.badRequest().build());
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
     @GetMapping("/sessions/{key}")
     public ResponseEntity<Session> getSession(@PathVariable(name = "key") String key) {
         return sessionService.getActiveSession(key)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/sessions/user/{id}")
