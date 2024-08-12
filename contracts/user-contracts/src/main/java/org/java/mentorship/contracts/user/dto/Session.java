@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class Session {
+    private Integer id;
     private String sessionKey;
     private LocalDateTime expiresAt;
     private Integer userId;

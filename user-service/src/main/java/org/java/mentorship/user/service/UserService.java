@@ -3,10 +3,9 @@ package org.java.mentorship.user.service;
 import lombok.AllArgsConstructor;
 import org.java.mentorship.contracts.user.dto.UserRegistrationRequest;
 import org.java.mentorship.user.domain.UserEntity;
-import org.java.mentorship.user.repository.UserRepository;
+import org.java.mentorship.user.repository.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,18 +15,19 @@ import static org.java.mentorship.user.crypt.MD5.getMd5;
 @Service
 @AllArgsConstructor
 public class UserService {
-    UserRepository repository;
+//    UserRepository repository;
+    UserMapper mapper;
 
     public List<UserEntity> getAllUsers() {
-        return repository.getAllUsers();
+        return mapper.findAll();
     }
 
     public Optional<UserEntity> getUserById(Integer id) {
-        return repository.getUserById(id);
+        return mapper.findById(id);
     }
 
     public Optional<UserEntity> getUserByEmail(String email) {
-        return repository.getUserByEmail(email);
+        return mapper.findByEmail(email);
     }
 
     public Optional<UserEntity> registerUser(UserRegistrationRequest registrationRequest) {
@@ -44,12 +44,14 @@ public class UserService {
         user.setVerificationToken(UUID.randomUUID().toString());
 
         // TODO: Call notification service with VERIFICATION message type
+        mapper.insertUser(user);
 
-        return Optional.of(repository.saveUser(user));
+        return Optional.of(user);
     }
 
     public boolean verifyUserHash(Integer id, String password) {
         Optional<UserEntity> user = getUserById(id);
+        System.out.println(user);
         return user
                 .map(userEntity -> userEntity.getHashedPassword().equals(getMd5(password)))
                 .orElse(false);
@@ -60,6 +62,6 @@ public class UserService {
         if (user.isEmpty()) { return false; }
         if (!user.get().getVerificationToken().equals(token)) { return false; }
 
-        return repository.setUserVerified(id);
+        return mapper.setUserVerifiedStatus(id, true);
     }
 }
