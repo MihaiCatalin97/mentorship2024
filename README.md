@@ -1,5 +1,9 @@
 # Budget Tracker
 
+## How to run
+
+Run with docker locally by using the command `docker-compose -f  .\docker-compose.yml up -d`.
+
 ## Description
 
 ## [Architecture](./docs/architecture.md)
