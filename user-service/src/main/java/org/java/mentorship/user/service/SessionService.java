@@ -2,12 +2,11 @@ package org.java.mentorship.user.service;
 
 import lombok.AllArgsConstructor;
 import org.java.mentorship.contracts.user.dto.Session;
-import org.java.mentorship.contracts.user.dto.UserLoginRequest;
+import org.java.mentorship.contracts.user.dto.request.LoginRequest;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.repository.mapper.SessionMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +18,7 @@ public class SessionService {
     private final SessionMapper sessionMapper;
     private final UserService userService;
 
-    public Optional<Session> createSession(UserLoginRequest loginRequest) {
+    public Optional<Session> createSession(LoginRequest loginRequest) {
         // TODO: Return proper exceptions
 
         Optional<UserEntity> userEntity = userService.getUserByEmail(loginRequest.getEmail());
