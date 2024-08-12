@@ -1,9 +1,9 @@
-package org.java.mentorship.contracts.user.dto;
+package org.java.mentorship.contracts.user.dto.request;
 
 import lombok.Data;
 
 @Data
-public class UserRegistrationRequest {
+public class RegistrationRequest {
 
     private String email;
     private String password;

@@ -1,11 +1,9 @@
 package org.java.mentorship.contracts.user.client;
 
-import feign.Param;
-import feign.RequestLine;
 import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.User;
-import org.java.mentorship.contracts.user.dto.UserLoginRequest;
-import org.java.mentorship.contracts.user.dto.UserRegistrationRequest;
+import org.java.mentorship.contracts.user.dto.request.LoginRequest;
+import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +29,7 @@ public interface UserFeignClient {
             method = RequestMethod.POST,
             value = "/register"
     )
-    User registerUser(@RequestBody UserRegistrationRequest registrationRequest);
+    User registerUser(@RequestBody RegistrationRequest registrationRequest);
 
     @RequestMapping(
             method = RequestMethod.POST,
@@ -44,7 +42,7 @@ public interface UserFeignClient {
             method = RequestMethod.POST,
             value = "/sessions"
     )
-    Session createSession(@RequestBody UserLoginRequest loginRequest);
+    Session createSession(@RequestBody LoginRequest loginRequest);
 
     @RequestMapping(
             method = RequestMethod.GET,

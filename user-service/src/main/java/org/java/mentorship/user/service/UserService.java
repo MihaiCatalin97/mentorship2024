@@ -1,7 +1,7 @@
 package org.java.mentorship.user.service;
 
 import lombok.AllArgsConstructor;
-import org.java.mentorship.contracts.user.dto.UserRegistrationRequest;
+import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.repository.mapper.UserMapper;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class UserService {
         return mapper.findByEmail(email);
     }
 
-    public Optional<UserEntity> registerUser(UserRegistrationRequest registrationRequest) {
+    public Optional<UserEntity> registerUser(RegistrationRequest registrationRequest) {
         if (getUserByEmail(registrationRequest.getEmail()).isPresent()) {
             return Optional.empty();
         }
