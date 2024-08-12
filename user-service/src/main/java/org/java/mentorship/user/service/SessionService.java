@@ -4,13 +4,10 @@ import lombok.AllArgsConstructor;
 import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.UserLoginRequest;
 import org.java.mentorship.user.domain.UserEntity;
-import org.java.mentorship.user.repository.SessionRepository;
-import org.springframework.cglib.core.Local;
+import org.java.mentorship.user.repository.mapper.SessionMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,7 +15,7 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class SessionService {
-    private final SessionRepository sessionRepository;
+    private final SessionMapper sessionMapper;
     private final UserService userService;
 
     public Optional<Session> createSession(UserLoginRequest loginRequest) {
@@ -47,19 +44,21 @@ public class SessionService {
         session.setUserId(user.getId());
         session.setExpiresAt(LocalDateTime.now().plusDays(30));
 
-        return Optional.of(sessionRepository.createSession(session));
+        sessionMapper.insertSession(session);
+
+        return Optional.of(session);
     }
 
     public List<Session> getActiveSessionsByUser(Integer id) {
-        return sessionRepository.getActiveSessionsByUser(id);
+        return sessionMapper.getActiveSessionsByUser(id);
     }
 
     public Optional<Session> getSession(String sessionKey) {
-        return sessionRepository.getSessionByKey(sessionKey);
+        return sessionMapper.getSessionByKey(sessionKey);
     }
 
     public List<Session> getSessionsByUser(Integer id) {
-        return sessionRepository.getSessionsByUser(id);
+        return sessionMapper.getSessionsByUser(id);
     }
 
     public static boolean isExpired(Session session) {
