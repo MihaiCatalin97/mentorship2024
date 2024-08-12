@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.contracts.user.dto.UserRegistrationRequest;
 import org.java.mentorship.user.domain.UserEntity;
+import org.java.mentorship.user.domain.mapper.UserContractMapper;
 import org.java.mentorship.user.service.SessionService;
 import org.java.mentorship.user.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class UserController {
                 userService
                         .getAllUsers()
                         .stream()
-                        .map(UserEntity::ToContract)
+                        .map(UserContractMapper::userToContract)
                         .collect(Collectors.toList())
         );
     }
@@ -34,13 +35,13 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable(name = "id") Integer id) {
         Optional<UserEntity> user = userService.getUserById(id);
         return user
-                .map(userEntity -> ResponseEntity.ok(userEntity.ToContract()))
+                .map(userEntity -> ResponseEntity.ok(UserContractMapper.userToContract(userEntity)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody UserRegistrationRequest registrationRequest) {
-        return userService.registerUser(registrationRequest).map(userEntity -> ResponseEntity.ok(userEntity.ToContract()))
+        return userService.registerUser(registrationRequest).map(userEntity -> ResponseEntity.ok(UserContractMapper.userToContract(userEntity)))
                 .orElse(ResponseEntity.badRequest().build());
     }
 
