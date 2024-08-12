@@ -46,7 +46,7 @@ public class SessionService {
 
         sessionMapper.insertSession(session);
 
-        return Optional.of(session);
+        return sessionMapper.getSessionByKey(session.getSessionKey());
     }
 
     public List<Session> getActiveSessionsByUser(Integer id) {
