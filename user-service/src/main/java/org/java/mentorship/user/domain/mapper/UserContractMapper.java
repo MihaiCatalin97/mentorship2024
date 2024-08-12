@@ -1,20 +1,2 @@
-package org.java.mentorship.user.domain.mapper;
-
-import org.java.mentorship.contracts.user.dto.User;
-import org.java.mentorship.user.domain.UserEntity;
-
-public class UserContractMapper {
-
-    public static User userToContract(UserEntity userEntity) {
-        final User userContract = new User();
-
-        userContract.setId(userEntity.getId());
-        userContract.setFirstName(userEntity.getFirstName());
-        userContract.setLastName(userEntity.getLastName());
-        userContract.setVerified(userEntity.getVerified());
-        userContract.setEmail(userEntity.getEmail());
-
-        return userContract;
-    }
-
+package org.java.mentorship.user.domain.mapper;public class UserContractMapper {
 }
