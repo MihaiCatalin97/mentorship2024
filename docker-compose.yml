@@ -1,4 +1,33 @@
 services:
+  database:
+    image: postgres:16.4
+    hostname: database
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=ChangeMe
+      - POSTGRES_DB=budget-tracker
+    networks:
+      - budget-tracker-internal
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d budget-tracker -U admin"]
+      interval: 1s
+      timeout: 10s
+      retries: 30
+
+  flyway-migrate:
+    image: flyway/flyway:10.17
+    command: migrate
+    networks:
+      - budget-tracker-internal
+    volumes:
+      - ./database/flyway-docker.conf:/flyway/conf/flyway.conf
+      - ./database/src/main/resources/migrations/ddl:/flyway/sql
+    depends_on:
+      database:
+        condition: service_healthy
+
   gateway-service:
     image: gateway-service:latest
     hostname: gateway
