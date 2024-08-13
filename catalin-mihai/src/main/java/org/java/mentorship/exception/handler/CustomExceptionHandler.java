@@ -3,7 +3,9 @@ package org.java.mentorship.exception.handler;
 import lombok.extern.slf4j.Slf4j;
 import org.java.mentorship.exception.FieldIsNullException;
 import org.java.mentorship.exception.domain.ErrorResponse;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -18,6 +20,16 @@ public class CustomExceptionHandler {
 
         return ResponseEntity.badRequest()
                 .body(new ErrorResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handle(final MethodArgumentNotValidException exception) {
+        return ResponseEntity.badRequest()
+                .body(new ErrorResponse(exception.getBindingResult()
+                        .getFieldErrors()
+                        .stream()
+                        .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                        .toList()));
     }
 
     @ExceptionHandler(RuntimeException.class)

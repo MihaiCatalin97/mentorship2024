@@ -1,5 +1,6 @@
 package org.java.mentorship.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.domain.Song;
 import org.java.mentorship.service.SongService;
@@ -17,7 +18,7 @@ public class SongController {
     private final SongService songService;
 
     @PostMapping("/songs")
-    public ResponseEntity<Song> create(@RequestBody final Song song) {
+    public ResponseEntity<Song> create(@RequestBody @Valid final Song song) {
         return ResponseEntity
                 .status(CREATED)
                 .body(songService.save(song));
