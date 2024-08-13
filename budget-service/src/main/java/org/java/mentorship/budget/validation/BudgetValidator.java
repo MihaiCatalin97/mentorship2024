@@ -74,6 +74,9 @@ public class BudgetValidator {
             if (isNull(transaction.getSourceAccountId())) {
                 throw new FieldIsNullException("transaction.sourceAccountId");
             }
+            if (isNull(transaction.getToAccountId())) {
+                throw new FieldIsNullException("transaction.toAccountId");
+            }
             if (isNull(transaction.getDescription())) {
                 throw new FieldIsNullException("transaction.description");
             }
