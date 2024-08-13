@@ -2,6 +2,7 @@ package org.java.mentorship.notification.controller;
 
 import lombok.Generated;
 import lombok.RequiredArgsConstructor;
+
 import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.notification.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
