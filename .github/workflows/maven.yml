@@ -16,9 +16,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 21
@@ -27,5 +25,9 @@ jobs:
         java-version: '21'
         distribution: 'zulu'
         cache: maven
-    - name: Build with Maven
-      run: mvn clean install
+    - name: Build
+      run: mvn compile
+    - name: Test
+      run: mvn test
+    - name: Coverage check
+      run: mvn install -DskipTests
