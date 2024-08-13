@@ -154,7 +154,7 @@ public class SessionServiceTest {
                 .expiresAt(OffsetDateTime.now().plusDays(10))
                 .build();
 
-        assertTrue(SessionService.isExpired(session));
+        assertFalse(SessionService.isExpired(session));
     }
 
     @Test
