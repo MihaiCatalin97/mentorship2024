@@ -48,10 +48,7 @@ public class UserController {
     @PostMapping("/verify/{id}/{token}")
     public ResponseEntity<Boolean> verifyUser(@PathVariable(name = "id") Integer id,
                                               @PathVariable(name = "token") String token) {
-        if (userService.verifyUserUsingToken(id, token))
-            return ResponseEntity.ok(true);
-         else
-            return ResponseEntity.ok(false);
+        return ResponseEntity.ok(userService.verifyUserUsingToken(id, token));
     }
 
 }
