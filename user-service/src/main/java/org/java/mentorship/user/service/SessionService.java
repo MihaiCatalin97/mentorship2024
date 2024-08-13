@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
 import org.java.mentorship.user.domain.UserEntity;
+import org.java.mentorship.user.exception.domain.TooManySessionsException;
+import org.java.mentorship.user.exception.domain.UserNotFoundException;
+import org.java.mentorship.user.exception.domain.WrongPasswordException;
 import org.java.mentorship.user.repository.mapper.SessionMapper;
 import org.springframework.stereotype.Service;
 
@@ -23,19 +26,19 @@ public class SessionService {
 
         Optional<UserEntity> userEntity = userService.getUserByEmail(loginRequest.getEmail());
         if (userEntity.isEmpty()) {
-            return Optional.empty();
+            throw new UserNotFoundException();
         }
 
         UserEntity user = userEntity.get();
 
         // Wrong Password
         if (!userService.verifyUserHash(user.getId(), loginRequest.getPassword())) {
-            return Optional.empty();
+            throw new WrongPasswordException();
         }
 
         // Too many sessions for a user
         if (getActiveSessionsByUser(user.getId()).size() >= 3) {
-            return Optional.empty();
+            throw new TooManySessionsException();
         }
 
         UUID sessionKey = UUID.randomUUID();

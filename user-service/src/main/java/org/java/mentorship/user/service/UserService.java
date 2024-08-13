@@ -51,7 +51,6 @@ public class UserService {
 
     public boolean verifyUserHash(Integer id, String password) {
         Optional<UserEntity> user = getUserById(id);
-        System.out.println(user);
         return user
                 .map(userEntity -> userEntity.getHashedPassword().equals(getMd5(password)))
                 .orElse(false);

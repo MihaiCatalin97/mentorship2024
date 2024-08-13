@@ -1,9 +1,14 @@
 package org.java.mentorship.user.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.java.mentorship.contracts.user.dto.User;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserEntity {
     private Integer id;
 
