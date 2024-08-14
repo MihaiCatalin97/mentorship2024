@@ -52,7 +52,7 @@ public class SessionControllerTest {
     @Test
     void getSessionsByUserShouldReturnDataFromFeign() {
         when(userFeignClient.getSessions(anyInt()))
-                .thenReturn(List.of(Session.builder().build()));
+                .thenReturn(Collections.singletonList(Session.builder().build()));
 
         ResponseEntity<List<Session>> response = sessionController.getSessionsByUser(anyInt());
 
@@ -64,7 +64,7 @@ public class SessionControllerTest {
     @Test
     void getActiveSessionsByUserShouldReturnDataFromFeign() {
         when(userFeignClient.getActiveSessions(anyInt()))
-                .thenReturn(List.of(Session.builder().build()));
+                .thenReturn(Collections.singletonList(Session.builder().build()));
 
         ResponseEntity<List<Session>> response = sessionController.getActiveSessionsByUser(anyInt());
 

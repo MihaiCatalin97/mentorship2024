@@ -30,7 +30,7 @@ public class UserControllerTest {
     @Test
     void getUsersShouldReturnDataFromFeign() {
         when(userFeignClient.getUsers())
-                .thenReturn(List.of(new User()));
+                .thenReturn(Collections.singletonList(new User()));
 
         ResponseEntity<List<User>> response = userController.getUsers();
 

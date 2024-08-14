@@ -8,7 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,7 +26,7 @@ class RestValidatorHandlerTest {
         HttpServletRequest request = mock(HttpServletRequest.class);
         BindingResult bindingResult = mock(BindingResult.class);
 
-        when(bindingResult.getFieldErrors()).thenReturn(List.of(new FieldError("object", "name", "Name should not be empty")));
+        when(bindingResult.getFieldErrors()).thenReturn(Collections.singletonList(new FieldError("object", "name", "Name should not be empty")));
         when(exception.getBindingResult()).thenReturn(bindingResult);
 
         ResponseEntity<UserServiceError> responseEntity = handler.handleException(exception, request);
