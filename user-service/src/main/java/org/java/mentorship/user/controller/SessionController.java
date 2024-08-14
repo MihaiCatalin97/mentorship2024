@@ -21,21 +21,16 @@ public class SessionController {
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
+    @GetMapping("/sessions")
+    public ResponseEntity<List<Session>> getSessions(@RequestParam(name = "userId", required = false) Integer userId,
+                                                     @RequestParam(name = "isActive", required = false) Boolean isActive) {
+        return ResponseEntity.ok(sessionService.find(userId, isActive));
+    }
+
     @GetMapping("/sessions/{key}")
     public ResponseEntity<Session> getSession(@PathVariable(name = "key") String key) {
-        return sessionService.getActiveSession(key)
+        return sessionService.getSession(key)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-    @GetMapping("/sessions/user/{id}")
-    public ResponseEntity<List<Session>> getSessionsByUser(@PathVariable(name = "id") Integer id) {
-        return ResponseEntity.ok(sessionService.getSessionsByUser(id));
-    }
-
-    @GetMapping("/sessions/user/{id}/active")
-    public ResponseEntity<List<Session>> getActiveSessionsByUser(@PathVariable(name = "id") Integer id) {
-        return ResponseEntity.ok(sessionService.getActiveSessionsByUser(id));
-    }
-
 }

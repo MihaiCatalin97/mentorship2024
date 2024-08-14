@@ -1,8 +1,6 @@
 package org.java.mentorship.contracts.user.client;
 
-import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.User;
-import org.java.mentorship.contracts.user.dto.request.LoginRequest;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,9 +21,9 @@ public interface UserFeignClient {
 
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/users/{id}"
+            value = "/users/{userId}"
     )
-    User getUser(@PathVariable("id") Integer id);
+    User getUser(@PathVariable("userId") Integer userId);
 
     @RequestMapping(
             method = RequestMethod.POST,
@@ -35,7 +33,7 @@ public interface UserFeignClient {
 
     @RequestMapping(
             method = RequestMethod.POST,
-            value = "/verify/{id}/{token}"
+            value = "/verify/{userId}/{token}"
     )
-    Boolean verifyUser(@PathVariable("id") Integer id, @PathVariable("token") String token);
+    Boolean verifyUser(@PathVariable("userId") Integer userId, @PathVariable("token") String token);
 }

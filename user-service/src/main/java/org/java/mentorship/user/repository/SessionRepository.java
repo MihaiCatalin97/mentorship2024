@@ -11,8 +11,15 @@ import java.util.Optional;
 
 @Mapper
 public interface SessionRepository {
-    @Select("SELECT * FROM sessions")
-    List<Session> findAll();
+    @Select("<script>" +
+            "SELECT * FROM sessions " +
+            "<where> " +
+            "<if test='userId != null'> " +
+            "AND user_id=#{userId} " +
+            "</if>" +
+            "</where> " +
+            "</script> ")
+    List<Session> find(Integer userId);
 
     @Insert("INSERT INTO sessions(session_key, expires_at, user_id) VALUES (#{sessionKey}, #{expiresAt}, #{userId})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
@@ -20,10 +27,4 @@ public interface SessionRepository {
 
     @Select("SELECT * FROM sessions WHERE session_key=#{sessionKey}")
     Optional<Session> getByKey(String key);
-
-    @Select("SELECT * FROM sessions WHERE user_id=#{id}")
-    List<Session> getByUser(Integer id);
-
-    @Select("SELECT * FROM sessions WHERE user_id=#{id} AND expires_at > NOW()")
-    List<Session> getActiveByUser(Integer id);
 }

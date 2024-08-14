@@ -25,10 +25,10 @@ public class RegistrationRequest {
     private String password;
 
     @NotBlank(message = "First name must not be empty")
-    @Length(max = 32, min = 3, message = "First name must be between 3 and 32 characters long")
+    @Length(min = 3, max = 32, message = "First name must be between 3 and 32 characters long")
     private String firstName;
 
     @NotBlank(message = "Last name must not be empty")
-    @Length(max = 32, min = 3, message = "Last name must be between 3 and 32 characters long")
+    @Length(min = 3, max = 32, message = "Last name must be between 3 and 32 characters long")
     private String lastName;
 }

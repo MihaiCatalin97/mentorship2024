@@ -1,7 +1,6 @@
 package org.java.mentorship.gateway.controller;
 
 import org.java.mentorship.contracts.user.client.SessionFeignClient;
-import org.java.mentorship.contracts.user.client.UserFeignClient;
 import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
 import org.junit.jupiter.api.Test;
@@ -11,12 +10,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Collections;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,30 +45,6 @@ class SessionControllerTest {
 
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());
-    }
-
-    @Test
-    void getSessionsByUserShouldReturnDataFromFeign() {
-        when(sessionFeignClient.getSessions(anyInt()))
-                .thenReturn(Collections.singletonList(Session.builder().build()));
-
-        ResponseEntity<List<Session>> response = sessionController.getSessionsByUser(anyInt());
-
-        assertEquals(200, response.getStatusCode().value());
-        assertNotNull(response.getBody());
-        assertEquals(1, response.getBody().size());
-    }
-
-    @Test
-    void getActiveSessionsByUserShouldReturnDataFromFeign() {
-        when(sessionFeignClient.getActiveSessions(anyInt()))
-                .thenReturn(Collections.singletonList(Session.builder().build()));
-
-        ResponseEntity<List<Session>> response = sessionController.getActiveSessionsByUser(anyInt());
-
-        assertEquals(200, response.getStatusCode().value());
-        assertNotNull(response.getBody());
-        assertEquals(1, response.getBody().size());
     }
 }
 

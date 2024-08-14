@@ -25,7 +25,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class SessionServiceTest {
-
     @Mock
     private SessionRepository sessionRepository;
 
@@ -50,7 +49,7 @@ class SessionServiceTest {
                         .email("admin@localhost").build())
         );
         when(userService.verifyUserHash(1, "SecretPassword")).thenReturn(true);
-        when(sessionRepository.getActiveByUser(1)).thenReturn(
+        when(sessionRepository.find(1)).thenReturn(
                 Arrays.asList(
                         mock(Session.class, RETURNS_DEEP_STUBS),
                         mock(Session.class, RETURNS_DEEP_STUBS)
@@ -81,7 +80,7 @@ class SessionServiceTest {
         );
 
         when(userService.verifyUserHash(1, "SecretPassword")).thenReturn(true);
-        when(sessionRepository.getActiveByUser(1)).thenReturn(
+        when(sessionRepository.find(1)).thenReturn(
                 Arrays.asList(
                         mock(Session.class, RETURNS_DEEP_STUBS),
                         mock(Session.class, RETURNS_DEEP_STUBS),
@@ -135,12 +134,6 @@ class SessionServiceTest {
     }
 
     @Test
-    void getSessionsByUserShouldCallRepository() {
-        sessionService.getSessionsByUser(1);
-        verify(sessionRepository, times(1)).getByUser(1);
-    }
-
-    @Test
     void isExpiredShouldReturnTrueWhenSessionExpired() {
         Session session = Session.builder()
                 .expiresAt(OffsetDateTime.now().minusSeconds(10))
@@ -156,25 +149,5 @@ class SessionServiceTest {
                 .build();
 
         assertFalse(SessionService.isExpired(session));
-    }
-
-    @Test
-    void getActiveSessionShouldReturnActiveSession() {
-        String sessionKey = UUID.randomUUID().toString();
-        when(sessionRepository.getByKey(sessionKey)).thenReturn(
-                Optional.of(Session.builder().expiresAt(OffsetDateTime.now().plusDays(10)).build())
-        );
-        Optional<Session> session = sessionService.getActiveSession(sessionKey);
-        assertTrue(session.isPresent());
-    }
-
-    @Test
-    void getActiveSessionShouldNotReturnExpiredSession() {
-        String sessionKey = UUID.randomUUID().toString();
-        when(sessionRepository.getByKey(sessionKey)).thenReturn(
-                Optional.of(Session.builder().expiresAt(OffsetDateTime.now().minusDays(10)).build())
-        );
-        Optional<Session> session = sessionService.getActiveSession(sessionKey);
-        assertTrue(session.isEmpty());
     }
 }

@@ -89,7 +89,7 @@ class UserServiceTest {
     @Test
     void getAllUsersShouldCallRepository() {
         userService.getAllUsers();
-        verify(userRepository, times(1)).findAll();
+        verify(userRepository, times(1)).find();
     }
 
     @Test

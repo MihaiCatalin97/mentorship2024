@@ -1,26 +1,15 @@
 package org.java.mentorship.contracts.user.client;
 
 import org.java.mentorship.contracts.user.dto.Session;
-import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
-import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @FeignClient(value = "sessionClient",
         url = "${service.user.url}")
 public interface SessionFeignClient {
-    @RequestMapping(
-            method = RequestMethod.POST,
-            value = "/verify/{id}/{token}"
-    )
-    Boolean verifyUser(@PathVariable("id") Integer id, @PathVariable("token") String token);
-
     @RequestMapping(
             method = RequestMethod.POST,
             value = "/sessions"
@@ -35,13 +24,7 @@ public interface SessionFeignClient {
 
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/sessions/user/{id}"
+            value = "/sessions"
     )
-    List<Session> getSessions(@PathVariable("id") Integer id);
-
-    @RequestMapping(
-            method = RequestMethod.GET,
-            value = "/sessions/user/{id}/active"
-    )
-    List<Session> getActiveSessions(@PathVariable("id") Integer id);
+    List<Session> find(@RequestParam(name = "userId") Integer userId, @RequestParam(name = "isActive") Boolean isActive);
 }

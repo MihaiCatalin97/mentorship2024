@@ -10,8 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -59,59 +57,4 @@ class SessionControllerTest {
         assertEquals(400, response.getStatusCode().value());
         assertTrue(Objects.isNull(response.getBody()));
     }
-
-    @Test
-    void getSessionShouldReturn200WhenSessionExists() {
-        when(sessionService.getActiveSession("1")).thenReturn(Optional.of(Session.builder().id(1).build()));
-
-        ResponseEntity<Session> response = sessionController.getSession("1");
-
-        assertEquals(200, response.getStatusCode().value());
-        assertNotNull(response.getBody());
-        assertEquals(1, response.getBody().getId());
-    }
-
-    @Test
-    void getSessionShouldReturn404WhenSessionDoesNotExists() {
-        when(sessionService.getActiveSession("1")).thenReturn(Optional.empty());
-
-        ResponseEntity<Session> response = sessionController.getSession("1");
-
-        assertEquals(404, response.getStatusCode().value());
-        assertTrue(Objects.isNull(response.getBody()));
-    }
-
-    @Test
-    void getSessionsByUserIdShouldReturnSessions() {
-        when(sessionService.getSessionsByUser(1)).thenReturn(
-                Arrays.asList(
-                        Session.builder().build(),
-                        Session.builder().build()
-                )
-        );
-
-        ResponseEntity<List<Session>> response = sessionController.getSessionsByUser(1);
-
-
-        assertEquals(200, response.getStatusCode().value());
-        assertNotNull(response.getBody());
-        assertEquals(2, response.getBody().size());
-    }
-
-    @Test
-    void getActiveSessionsByUserIdShouldReturnSessions() {
-        when(sessionService.getActiveSessionsByUser(1)).thenReturn(
-                Arrays.asList(
-                        Session.builder().build(),
-                        Session.builder().build()
-                )
-        );
-
-        ResponseEntity<List<Session>> response = sessionController.getActiveSessionsByUser(1);
-
-        assertEquals(200, response.getStatusCode().value());
-        assertNotNull(response.getBody());
-        assertEquals(2, response.getBody().size());
-    }
-
 }

@@ -20,7 +20,7 @@ public class UserService {
     private final UserRepository mapper;
 
     public List<UserEntity> getAllUsers() {
-        return mapper.findAll();
+        return mapper.find();
     }
 
     public Optional<UserEntity> getUserById(Integer id) {

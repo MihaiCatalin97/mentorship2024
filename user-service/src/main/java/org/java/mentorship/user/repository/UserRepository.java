@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface UserRepository {
 
     @Select("SELECT * FROM users")
-    List<UserEntity> findAll();
+    List<UserEntity> find();
 
     @Select("SELECT * FROM users where id = #{id}")
     Optional<UserEntity> findById(Integer id);

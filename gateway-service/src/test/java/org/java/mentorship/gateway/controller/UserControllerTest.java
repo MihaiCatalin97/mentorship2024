@@ -29,7 +29,6 @@ class UserControllerTest {
     void getUsersShouldReturnDataFromFeign() {
         when(userFeignClient.getUsers())
                 .thenReturn(Collections.singletonList(new User()));
-
         ResponseEntity<List<User>> response = userController.getUsers();
 
         assertEquals(200, response.getStatusCode().value());
@@ -47,7 +46,6 @@ class UserControllerTest {
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());
     }
-
 
     @Test
     void registerUserShouldReturnDataFromFeign() {

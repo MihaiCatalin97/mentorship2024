@@ -12,8 +12,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +26,15 @@ public class SessionService {
 
     public static boolean isExpired(Session session) {
         return session.getExpiresAt().isBefore(OffsetDateTime.now());
+    }
+
+    public List<Session> find(Integer userId, Boolean isActive) {
+        Stream<Session> stream = sessionRepository.find(userId).stream();
+
+        if (Objects.isNull(isActive)) return stream.collect(Collectors.toList());
+        ;
+        if (isActive) return stream.filter(session -> !isExpired(session)).collect(Collectors.toList());
+        return stream.filter(SessionService::isExpired).collect(Collectors.toList());
     }
 
     public Optional<Session> createSession(LoginRequest loginRequest) {
@@ -39,7 +51,7 @@ public class SessionService {
         }
 
         // Too many sessions for a user
-        if (getActiveSessionsByUser(user.getId()).size() >= 3) {
+        if (find(user.getId(), true).size() >= 3) {
             throw new TooManySessionsException();
         }
 
@@ -54,19 +66,10 @@ public class SessionService {
         return sessionRepository.getByKey(session.getSessionKey());
     }
 
-    public List<Session> getActiveSessionsByUser(Integer id) {
-        return sessionRepository.getActiveByUser(id);
-    }
-
     public Optional<Session> getSession(String sessionKey) {
-        return sessionRepository.getByKey(sessionKey);
-    }
-
-    public List<Session> getSessionsByUser(Integer id) {
-        return sessionRepository.getByUser(id);
-    }
-
-    public Optional<Session> getActiveSession(String key) {
-        return getSession(key).map(session -> isExpired(session) ? null : session);
+        Optional<Session> session = sessionRepository.getByKey(sessionKey);
+        if (session.isEmpty()) return Optional.empty();
+        if (isExpired(session.get())) return Optional.empty();
+        return session;
     }
 }
