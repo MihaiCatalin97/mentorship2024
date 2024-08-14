@@ -1,4 +1,4 @@
-package org.java.mentorship.user.repository.mapper;
+package org.java.mentorship.user.repository;
 
 import org.apache.ibatis.annotations.*;
 import org.java.mentorship.user.domain.UserEntity;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Mapper
-public interface UserMapper {
+public interface UserRepository {
 
     @Select("SELECT * FROM users")
     List<UserEntity> findAll();

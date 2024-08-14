@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ServiceExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<UserServiceError> handleException(final UserServiceException ex, final HttpServletRequest request) {
+    public ResponseEntity<UserServiceError> handleException(final UserServiceException ex) {
         return ResponseEntity.status(ex.getHttpStatus()).body(new UserServiceError(ex.getMessage()));
     }
 

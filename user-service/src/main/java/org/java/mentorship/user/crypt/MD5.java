@@ -1,9 +1,10 @@
 package org.java.mentorship.user.crypt;
 
 import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 import org.springframework.util.DigestUtils;
 
-@NoArgsConstructor
+@UtilityClass
 public class MD5 {
 
     public static String getMd5(String plaintext) {

@@ -5,7 +5,7 @@ import org.java.mentorship.user.crypt.MD5;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.exception.domain.AlreadyRegisteredException;
 import org.java.mentorship.user.exception.domain.UserNotFoundException;
-import org.java.mentorship.user.repository.mapper.UserMapper;
+import org.java.mentorship.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -26,7 +26,7 @@ public class UserServiceTest {
     private UserService userService;
 
     @Mock
-    private UserMapper userMapper;
+    private UserRepository userRepository;
 
     @Captor
     private ArgumentCaptor<UserEntity> userArgumentCaptor;
@@ -42,8 +42,8 @@ public class UserServiceTest {
 
         userService.registerUser(registrationRequest);
 
-        verify(userMapper).insertUser(userArgumentCaptor.capture());
-        verify(userMapper, times(2)).findByEmail("admin@localhost");
+        verify(userRepository).insertUser(userArgumentCaptor.capture());
+        verify(userRepository, times(2)).findByEmail("admin@localhost");
 
         UserEntity savedEntity = userArgumentCaptor.getValue();
         assertEquals(registrationRequest.getFirstName(), savedEntity.getFirstName());
@@ -63,7 +63,7 @@ public class UserServiceTest {
 
         userService.registerUser(registrationRequest);
 
-        verify(userMapper).insertUser(userArgumentCaptor.capture());
+        verify(userRepository).insertUser(userArgumentCaptor.capture());
         UserEntity savedEntity = userArgumentCaptor.getValue();
 
         assertEquals(MD5.getMd5(registrationRequest.getPassword()), savedEntity.getHashedPassword());
@@ -78,35 +78,35 @@ public class UserServiceTest {
                 .email("admin@localhost")
                 .build();
 
-        when(userMapper.findByEmail(anyString())).thenReturn(Optional.ofNullable(UserEntity.builder().build()));
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.ofNullable(UserEntity.builder().build()));
 
         assertThrows(AlreadyRegisteredException.class, () -> userService.registerUser(registrationRequest));
 
-        verify(userMapper, never()).insertUser(any());
-        verify(userMapper, times(1)).findByEmail("admin@localhost");
+        verify(userRepository, never()).insertUser(any());
+        verify(userRepository, times(1)).findByEmail("admin@localhost");
     }
 
     @Test
     void getAllUsersShouldCallRepository() {
         userService.getAllUsers();
-        verify(userMapper, times(1)).findAll();
+        verify(userRepository, times(1)).findAll();
     }
 
     @Test
     void getUserByIdShouldCallRepository() {
         userService.getUserById(1);
-        verify(userMapper, times(1)).findById(1);
+        verify(userRepository, times(1)).findById(1);
     }
 
     @Test
     void getUserByEmailShouldCallRepository() {
         userService.getUserByEmail("admin@localhost");
-        verify(userMapper, times(1)).findByEmail("admin@localhost");
+        verify(userRepository, times(1)).findByEmail("admin@localhost");
     }
 
     @Test
     void verifyUserHashShouldReturnTrueWhenPasswordsMatch() {
-        when(userMapper.findById(1)).thenReturn(Optional.ofNullable(
+        when(userRepository.findById(1)).thenReturn(Optional.ofNullable(
                 UserEntity.builder().hashedPassword(MD5.getMd5("SecretPassword")).build()
         ));
 
@@ -117,7 +117,7 @@ public class UserServiceTest {
 
     @Test
     void verifyUserHashShouldReturnFalseWhenPasswordsDontMatch() {
-        when(userMapper.findById(1)).thenReturn(Optional.ofNullable(
+        when(userRepository.findById(1)).thenReturn(Optional.ofNullable(
                 UserEntity.builder().hashedPassword(MD5.getMd5("SecretPassword2")).build()
         ));
 
@@ -130,38 +130,38 @@ public class UserServiceTest {
     void verifyUserUsingTokenShouldEditUserWhenTokenMatches() {
         String verificationToken = UUID.randomUUID().toString();
 
-        when(userMapper.findById(1)).thenReturn(Optional.ofNullable(
+        when(userRepository.findById(1)).thenReturn(Optional.ofNullable(
                 UserEntity.builder().verificationToken(verificationToken).build()
         ));
-        when(userMapper.setUserVerifiedStatus(1, true)).thenReturn(true);
+        when(userRepository.setUserVerifiedStatus(1, true)).thenReturn(true);
 
         boolean result = userService.verifyUserUsingToken(1, verificationToken);
 
         assertTrue(result);
-        verify(userMapper, times(1)).findById(1);
-        verify(userMapper, times(1)).setUserVerifiedStatus(1, true);
+        verify(userRepository, times(1)).findById(1);
+        verify(userRepository, times(1)).setUserVerifiedStatus(1, true);
     }
 
     @Test
     void verifyUserUsingTokenShouldNotEditUserWhenTokenWrong() {
         String verificationToken = UUID.randomUUID().toString();
 
-        when(userMapper.findById(1)).thenReturn(Optional.ofNullable(
+        when(userRepository.findById(1)).thenReturn(Optional.ofNullable(
                 UserEntity.builder().verificationToken(UUID.randomUUID().toString()).build()
         ));
 
         boolean result = userService.verifyUserUsingToken(1, verificationToken);
 
         assertFalse(result);
-        verify(userMapper, times(1)).findById(1);
-        verify(userMapper, times(0)).setUserVerifiedStatus(anyInt(), anyBoolean());
+        verify(userRepository, times(1)).findById(1);
+        verify(userRepository, times(0)).setUserVerifiedStatus(anyInt(), anyBoolean());
     }
 
     @Test
     void verifyUserUsingTokenShouldThrowWhenUserDoesntExist() {
         String verificationToken = UUID.randomUUID().toString();
 
-        when(userMapper.findById(1)).thenReturn(Optional.empty());
+        when(userRepository.findById(1)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.verifyUserUsingToken(1, verificationToken));
     }

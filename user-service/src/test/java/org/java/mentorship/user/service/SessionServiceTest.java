@@ -6,7 +6,7 @@ import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.exception.domain.TooManySessionsException;
 import org.java.mentorship.user.exception.domain.UserNotFoundException;
 import org.java.mentorship.user.exception.domain.WrongPasswordException;
-import org.java.mentorship.user.repository.mapper.SessionMapper;
+import org.java.mentorship.user.repository.SessionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 public class SessionServiceTest {
 
     @Mock
-    SessionMapper sessionMapper;
+    SessionRepository sessionRepository;
 
     @Mock
     UserService userService;
@@ -50,7 +50,7 @@ public class SessionServiceTest {
                         .email("admin@localhost").build())
         );
         when(userService.verifyUserHash(1, "SecretPassword")).thenReturn(true);
-        when(sessionMapper.getActiveSessionsByUser(1)).thenReturn(
+        when(sessionRepository.getActiveByUser(1)).thenReturn(
                 Arrays.asList(
                         mock(Session.class, RETURNS_DEEP_STUBS),
                         mock(Session.class, RETURNS_DEEP_STUBS)
@@ -59,13 +59,13 @@ public class SessionServiceTest {
 
         sessionService.createSession(loginRequest);
 
-        verify(sessionMapper, times(1)).insertSession(sessionCaptor.capture());
+        verify(sessionRepository, times(1)).insert(sessionCaptor.capture());
 
         assertEquals(1, sessionCaptor.getValue().getUserId());
         assertTrue(sessionCaptor.getValue().getExpiresAt().isAfter(OffsetDateTime.now().plusDays(29)));
         assertTrue(sessionCaptor.getValue().getExpiresAt().isBefore(OffsetDateTime.now().plusDays(31)));
 
-        verify(sessionMapper, times(1)).getSessionByKey(sessionCaptor.getValue().getSessionKey());
+        verify(sessionRepository, times(1)).getByKey(sessionCaptor.getValue().getSessionKey());
     }
 
     @Test
@@ -79,8 +79,9 @@ public class SessionServiceTest {
                         .id(1)
                         .email("admin@localost").build())
         );
+
         when(userService.verifyUserHash(1, "SecretPassword")).thenReturn(true);
-        when(sessionMapper.getActiveSessionsByUser(1)).thenReturn(
+        when(sessionRepository.getActiveByUser(1)).thenReturn(
                 Arrays.asList(
                         mock(Session.class, RETURNS_DEEP_STUBS),
                         mock(Session.class, RETURNS_DEEP_STUBS),
@@ -130,13 +131,13 @@ public class SessionServiceTest {
     void getSessionShouldCallRepository() {
         String sessionKey = UUID.randomUUID().toString();
         sessionService.getSession(sessionKey);
-        verify(sessionMapper, times(1)).getSessionByKey(sessionKey);
+        verify(sessionRepository, times(1)).getByKey(sessionKey);
     }
 
     @Test
     void getSessionsByUserShouldCallRepository() {
         sessionService.getSessionsByUser(1);
-        verify(sessionMapper, times(1)).getSessionsByUser(1);
+        verify(sessionRepository, times(1)).getByUser(1);
     }
 
     @Test
@@ -160,7 +161,7 @@ public class SessionServiceTest {
     @Test
     void getActiveSessionShouldReturnActiveSession() {
         String sessionKey = UUID.randomUUID().toString();
-        when(sessionMapper.getSessionByKey(sessionKey)).thenReturn(
+        when(sessionRepository.getByKey(sessionKey)).thenReturn(
                 Optional.of(Session.builder().expiresAt(OffsetDateTime.now().plusDays(10)).build())
         );
         Optional<Session> session = sessionService.getActiveSession(sessionKey);
@@ -170,7 +171,7 @@ public class SessionServiceTest {
     @Test
     void getActiveSessionShouldNotReturnExpiredSession() {
         String sessionKey = UUID.randomUUID().toString();
-        when(sessionMapper.getSessionByKey(sessionKey)).thenReturn(
+        when(sessionRepository.getByKey(sessionKey)).thenReturn(
                 Optional.of(Session.builder().expiresAt(OffsetDateTime.now().minusDays(10)).build())
         );
         Optional<Session> session = sessionService.getActiveSession(sessionKey);

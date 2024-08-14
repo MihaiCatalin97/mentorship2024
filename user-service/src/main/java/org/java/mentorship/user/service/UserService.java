@@ -1,11 +1,12 @@
 package org.java.mentorship.user.service;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.exception.domain.AlreadyRegisteredException;
 import org.java.mentorship.user.exception.domain.UserNotFoundException;
-import org.java.mentorship.user.repository.mapper.UserMapper;
+import org.java.mentorship.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +16,9 @@ import java.util.UUID;
 import static org.java.mentorship.user.crypt.MD5.getMd5;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
-    //    UserRepository repository;
-    UserMapper mapper;
+    private final UserRepository mapper;
 
     public List<UserEntity> getAllUsers() {
         return mapper.findAll();

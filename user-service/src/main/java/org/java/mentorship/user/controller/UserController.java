@@ -2,6 +2,7 @@ package org.java.mentorship.user.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.user.domain.UserEntity;
@@ -15,9 +16,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
-    UserService userService;
+    private final UserService userService;
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getUsers() {

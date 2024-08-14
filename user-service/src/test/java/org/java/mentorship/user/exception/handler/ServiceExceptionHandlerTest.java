@@ -20,10 +20,7 @@ public class ServiceExceptionHandlerTest {
     @Test
     void handlerShouldHandleValidationException() {
         UserServiceException exception = new UserServiceException(HttpStatus.INTERNAL_SERVER_ERROR, "Message");
-
-        HttpServletRequest request = mock(HttpServletRequest.class);
-
-        ResponseEntity<UserServiceError> responseEntity = handler.handleException(exception, request);
+        ResponseEntity<UserServiceError> responseEntity = handler.handleException(exception);
 
         assertEquals(500, responseEntity.getStatusCode().value());
         assertTrue(Objects.nonNull(responseEntity.getBody()));
