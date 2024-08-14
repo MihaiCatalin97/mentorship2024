@@ -14,10 +14,10 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
@@ -73,7 +73,7 @@ class UserControllerTest {
         ResponseEntity<User> response = userController.getUserById(3);
 
         assertEquals(404, response.getStatusCode().value());
-        assertNotNull(response.getBody());
+        assertTrue(Objects.isNull(response.getBody()));
     }
 
     @Test
