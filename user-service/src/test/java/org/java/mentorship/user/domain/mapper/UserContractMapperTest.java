@@ -25,11 +25,11 @@ public class UserContractMapperTest {
 
         User user = UserContractMapper.userToContract(userEntity);
 
-        assertEquals(user.getId(), userEntity.getId());
-        assertEquals(user.getEmail(), userEntity.getEmail());
-        assertEquals(user.getFirstName(), userEntity.getFirstName());
-        assertEquals(user.getLastName(), userEntity.getLastName());
-        assertEquals(user.getVerified(), userEntity.getVerified());
+        assertEquals(userEntity.getId(), user.getId());
+        assertEquals(userEntity.getEmail(), user.getEmail());
+        assertEquals(userEntity.getFirstName(), user.getFirstName());
+        assertEquals(userEntity.getLastName(), user.getLastName());
+        assertEquals(userEntity.getVerified(), user.getVerified());
     }
 
 }

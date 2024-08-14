@@ -4,6 +4,7 @@ import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.user.crypt.MD5;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.exception.domain.AlreadyRegisteredException;
+import org.java.mentorship.user.exception.domain.UserNotFoundException;
 import org.java.mentorship.user.repository.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -126,7 +127,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void verifyUserUsingTokenShouldEditUser() {
+    void verifyUserUsingTokenShouldEditUserWhenTokenMatches() {
         String verificationToken = UUID.randomUUID().toString();
 
         when(userMapper.findById(1)).thenReturn(Optional.ofNullable(
@@ -142,7 +143,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void verifyUserUsingTokenShouldNotEditUser() {
+    void verifyUserUsingTokenShouldNotEditUserWhenTokenWrong() {
         String verificationToken = UUID.randomUUID().toString();
 
         when(userMapper.findById(1)).thenReturn(Optional.ofNullable(
@@ -154,5 +155,14 @@ public class UserServiceTest {
         assertFalse(result);
         verify(userMapper, times(1)).findById(1);
         verify(userMapper, times(0)).setUserVerifiedStatus(anyInt(), anyBoolean());
+    }
+
+    @Test
+    void verifyUserUsingTokenShouldThrowWhenUserDoesntExist() {
+        String verificationToken = UUID.randomUUID().toString();
+
+        when(userMapper.findById(1)).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.verifyUserUsingToken(1, verificationToken));
     }
 }

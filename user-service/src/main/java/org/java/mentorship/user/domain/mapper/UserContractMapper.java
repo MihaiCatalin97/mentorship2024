@@ -3,7 +3,7 @@ package org.java.mentorship.user.domain.mapper;
 import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.user.domain.UserEntity;
 
-public class UserContractMapper {
+public abstract class UserContractMapper {
 
     public static User userToContract(UserEntity userEntity) {
         final User userContract = new User();

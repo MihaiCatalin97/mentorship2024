@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @RestController
 @AllArgsConstructor
 public class UserController {
-    private final SessionService sessionService;
     UserService userService;
 
     @GetMapping("/users")

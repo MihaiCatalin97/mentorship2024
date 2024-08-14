@@ -18,7 +18,7 @@ public class SessionController {
     private final UserFeignClient userFeignClient;
 
     @PostMapping()
-    public ResponseEntity<Session> createSession(@RequestBody @Valid LoginRequest loginRequest) {
+    public ResponseEntity<Session> createSession(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(userFeignClient.createSession(loginRequest));
     }
 

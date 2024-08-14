@@ -13,7 +13,7 @@ public class RestValidatorHandler {
     @ExceptionHandler
     public ResponseEntity<UserServiceError> handleException(final MethodArgumentNotValidException ex, final HttpServletRequest request) {
         return ResponseEntity.badRequest().body(
-                new UserServiceError(ex.getBindingResult().getAllErrors().getFirst().getDefaultMessage())
+                new UserServiceError(ex.getBindingResult().getFieldErrors().getFirst().getDefaultMessage())
         );
     }
 
