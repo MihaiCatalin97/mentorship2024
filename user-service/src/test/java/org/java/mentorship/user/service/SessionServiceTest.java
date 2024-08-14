@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -129,8 +130,30 @@ class SessionServiceTest {
     @Test
     void getSessionShouldCallRepository() {
         String sessionKey = UUID.randomUUID().toString();
-        sessionService.getSession(sessionKey);
+        when(sessionRepository.getByKey(anyString())).thenReturn(
+                Optional.of(Session.builder()
+                        .expiresAt(OffsetDateTime.now().plusDays(20)).build())
+        );
+
+        Optional<Session> session = sessionService.getSession(sessionKey);
+
         verify(sessionRepository, times(1)).getByKey(sessionKey);
+
+        assertTrue(session.isPresent());
+    }
+
+    @Test
+    void getSessionShouldReturnEmptyWhenSessionExpired() {
+        String sessionKey = UUID.randomUUID().toString();
+        when(sessionRepository.getByKey(sessionKey)).thenReturn(
+                Optional.of(Session.builder()
+                        .expiresAt(OffsetDateTime.now().minusDays(10))
+                        .build())
+        );
+
+        Optional<Session> session = sessionService.getSession(sessionKey);
+
+        assertTrue(session.isEmpty());
     }
 
     @Test
@@ -149,5 +172,53 @@ class SessionServiceTest {
                 .build();
 
         assertFalse(SessionService.isExpired(session));
+    }
+
+    @Test
+    void findShouldReturnSessionsFromRepository() {
+        when(sessionRepository.find(1)).thenReturn(
+                Arrays.asList(
+                        Session.builder()
+                                .expiresAt(OffsetDateTime.now().plusDays(20)).build(),
+                        Session.builder()
+                                .expiresAt(OffsetDateTime.now().minusDays(20)).build()
+                )
+        );
+
+        List<Session> sessions = sessionService.find(1, null);
+
+        assertEquals(2, sessions.size());
+    }
+
+    @Test
+    void findShouldReturnActiveSessionsFromRepository() {
+        when(sessionRepository.find(1)).thenReturn(
+                Arrays.asList(
+                        Session.builder()
+                                .expiresAt(OffsetDateTime.now().plusDays(20)).build(),
+                        Session.builder()
+                                .expiresAt(OffsetDateTime.now().minusDays(20)).build()
+                )
+        );
+
+        List<Session> sessions = sessionService.find(1, true);
+
+        assertEquals(1, sessions.size());
+    }
+
+    @Test
+    void findShouldReturnExpiredSessionsFromRepository() {
+        when(sessionRepository.find(1)).thenReturn(
+                Arrays.asList(
+                        Session.builder()
+                                .expiresAt(OffsetDateTime.now().plusDays(20)).build(),
+                        Session.builder()
+                                .expiresAt(OffsetDateTime.now().minusDays(20)).build()
+                )
+        );
+
+        List<Session> sessions = sessionService.find(1, false);
+
+        assertEquals(1, sessions.size());
     }
 }

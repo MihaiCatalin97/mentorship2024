@@ -10,6 +10,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -45,6 +48,17 @@ class SessionControllerTest {
 
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());
+    }
+
+    @Test
+    void getSessionsShouldReturnDataFromFeign() {
+        when(sessionFeignClient.find(1, true)).thenReturn(Collections.singletonList(Session.builder().build()));
+
+        ResponseEntity<List<Session>> response = sessionController.findSessions(1, true);
+
+        assertEquals(200, response.getStatusCode().value());
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().size());
     }
 }
 

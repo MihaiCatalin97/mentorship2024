@@ -32,7 +32,6 @@ public class SessionService {
         Stream<Session> stream = sessionRepository.find(userId).stream();
 
         if (Objects.isNull(isActive)) return stream.collect(Collectors.toList());
-        ;
         if (isActive) return stream.filter(session -> !isExpired(session)).collect(Collectors.toList());
         return stream.filter(SessionService::isExpired).collect(Collectors.toList());
     }
