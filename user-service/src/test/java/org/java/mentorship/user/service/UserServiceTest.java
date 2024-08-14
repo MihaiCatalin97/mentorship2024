@@ -3,6 +3,7 @@ package org.java.mentorship.user.service;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.user.crypt.MD5;
 import org.java.mentorship.user.domain.UserEntity;
+import org.java.mentorship.user.exception.domain.AlreadyRegisteredException;
 import org.java.mentorship.user.repository.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,12 +79,10 @@ public class UserServiceTest {
 
         when(userMapper.findByEmail(anyString())).thenReturn(Optional.ofNullable(UserEntity.builder().build()));
 
-        Optional<UserEntity> userEntityOptional = userService.registerUser(registrationRequest);
+        assertThrows(AlreadyRegisteredException.class, () -> userService.registerUser(registrationRequest));
 
         verify(userMapper, never()).insertUser(any());
         verify(userMapper, times(1)).findByEmail("admin@localhost");
-
-        assertFalse(userEntityOptional.isPresent());
     }
 
     @Test

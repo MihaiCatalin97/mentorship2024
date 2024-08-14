@@ -1,5 +1,6 @@
 package org.java.mentorship.user.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody RegistrationRequest registrationRequest) {
+    public ResponseEntity<User> registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
         return userService.registerUser(registrationRequest).map(userEntity -> ResponseEntity.ok(UserContractMapper.userToContract(userEntity)))
             .orElse(ResponseEntity.badRequest().build());
     }

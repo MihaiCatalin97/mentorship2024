@@ -1,5 +1,6 @@
 package org.java.mentorship.gateway.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.client.UserFeignClient;
 import org.java.mentorship.contracts.user.dto.Session;
@@ -17,7 +18,7 @@ public class SessionController {
     private final UserFeignClient userFeignClient;
 
     @PostMapping()
-    public ResponseEntity<Session> createSession(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<Session> createSession(@RequestBody @Valid LoginRequest loginRequest) {
         return ResponseEntity.ok(userFeignClient.createSession(loginRequest));
     }
 
