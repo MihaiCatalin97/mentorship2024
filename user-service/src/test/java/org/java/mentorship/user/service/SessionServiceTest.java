@@ -24,19 +24,19 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class SessionServiceTest {
+class SessionServiceTest {
 
     @Mock
-    SessionRepository sessionRepository;
+    private SessionRepository sessionRepository;
 
     @Mock
-    UserService userService;
+    private UserService userService;
 
     @InjectMocks
-    SessionService sessionService;
+    private SessionService sessionService;
 
     @Captor
-    ArgumentCaptor<Session> sessionCaptor;
+    private ArgumentCaptor<Session> sessionCaptor;
 
     @Test
     void createSessionShouldCreateSession() {

@@ -19,13 +19,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class SessionControllerTest {
+class SessionControllerTest {
 
     @Mock
-    SessionService sessionService;
+    private SessionService sessionService;
 
     @InjectMocks
-    SessionController sessionController;
+    private SessionController sessionController;
 
     @Test
     void createSessionShouldReturn200WhenCredentialsValid() {

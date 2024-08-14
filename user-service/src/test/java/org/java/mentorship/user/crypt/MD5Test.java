@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MD5Test {
+class MD5Test {
 
     @Test
     void md5ShouldHash() {

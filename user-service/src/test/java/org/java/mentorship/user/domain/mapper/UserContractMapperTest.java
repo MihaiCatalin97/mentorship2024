@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UserContractMapperTest {
+class UserContractMapperTest {
 
     @Test
     void userToContractShouldReturnContractWithAllFields() {

@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class RestValidatorHandlerTest {
+class RestValidatorHandlerTest {
 
     private final RestValidatorHandler handler = new RestValidatorHandler();
 
