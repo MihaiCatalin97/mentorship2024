@@ -1,12 +1,16 @@
 package org.java.mentorship.budget.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.java.mentorship.budget.domain.BudgetEntity;
+import org.java.mentorship.budget.domain.mapper.BudgetContractMapper;
 import org.java.mentorship.budget.service.BudgetService;
 import org.java.mentorship.contracts.budget.dto.Budget;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -17,45 +21,47 @@ public class BudgetController {
 
     private final BudgetService budgetService;
 
-    // Get all budgets
     @GetMapping
-    public ResponseEntity<List<Budget>> getBudgets() {
-        List<Budget> budgets = budgetService.getBudgets();
+    public ResponseEntity<List<Budget>> getAllBudgets() {
+        List<BudgetEntity> budgetEntities = budgetService.findAll();
+        List<Budget> budgets = budgetEntities.stream()
+                .map(BudgetContractMapper::entityToContract)
+                .collect(Collectors.toList());
         return ResponseEntity.ok(budgets);
     }
 
-    // Get a budget by ID
     @GetMapping("/{id}")
     public ResponseEntity<Budget> getBudgetById(@PathVariable("id") Integer id) {
-        Budget budget = budgetService.getBudgetById(id);
+        BudgetEntity budgetEntity = budgetService.findById(id);
+        Budget budget = BudgetContractMapper.entityToContract(budgetEntity);
         return ResponseEntity.ok(budget);
     }
 
-    // Create a new budget
     @PostMapping
-    public ResponseEntity<Budget> createBudget(@RequestBody Budget budget) {
-        Budget createdBudget = budgetService.createBudget(budget);
+    public ResponseEntity<Budget> createBudget(@RequestBody @Valid Budget budget) {
+        BudgetEntity budgetEntity = BudgetContractMapper.contractToEntity(budget);
+        BudgetEntity savedBudget = budgetService.save(budgetEntity);
+        Budget createdBudget = BudgetContractMapper.entityToContract(savedBudget);
         return ResponseEntity.status(CREATED).body(createdBudget);
     }
 
-    // Update an existing budget by ID
     @PutMapping("/{id}")
-    public ResponseEntity<Budget> updateBudget(@PathVariable("id") Integer id, @RequestBody Budget updatedBudget) {
-        Budget updated = budgetService.updateBudget(id, updatedBudget);
-        return ResponseEntity.ok(updated);
+    public ResponseEntity<Budget> updateBudget(@PathVariable("id") Integer id,
+                                               @RequestBody @Valid Budget budget) {
+        BudgetEntity budgetEntity = BudgetContractMapper.contractToEntity(budget);
+        budgetEntity.setId(id);
+        BudgetEntity updatedBudget = budgetService.update(budgetEntity);
+        Budget updatedBudgetContract = BudgetContractMapper.entityToContract(updatedBudget);
+        return ResponseEntity.ok(updatedBudgetContract);
     }
 
-    // Delete a budget by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Budget> deleteBudget(@PathVariable("id") Integer id) {
-        Budget deletedBudget = budgetService.deleteBudget(id);
-        return ResponseEntity.ok(deletedBudget);
-    }
-
-    // Get all budgets for a specific user
-    @GetMapping(params = "userId")
-    public ResponseEntity<List<Budget>> getBudgetsByUserId(@RequestParam("userId") Integer userId) {
-        List<Budget> userBudgets = budgetService.getBudgetsByUserId(userId);
-        return ResponseEntity.ok(userBudgets);
+        BudgetEntity deletedBudget = budgetService.delete(id);
+        if (deletedBudget == null) {
+            return ResponseEntity.notFound().build();
+        }
+        Budget budget = BudgetContractMapper.entityToContract(deletedBudget);
+        return ResponseEntity.ok(budget);
     }
 }

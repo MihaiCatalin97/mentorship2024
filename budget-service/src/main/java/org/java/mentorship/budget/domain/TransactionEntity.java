@@ -1,15 +1,16 @@
-package org.java.mentorship.contracts.budget.dto;
+package org.java.mentorship.budget.domain;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.java.mentorship.contracts.budget.dto.TransactionType;
 
 import java.time.LocalDateTime;
 
 @Data
-public class Transaction {
+public class TransactionEntity {
 
     @NotNull(message = "Field 'id' must not be null")
     @Min(value = 1, message = "Field 'id' must be greater than 0")

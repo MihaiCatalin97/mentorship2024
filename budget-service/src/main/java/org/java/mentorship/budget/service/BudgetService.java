@@ -1,11 +1,12 @@
 package org.java.mentorship.budget.service;
 
 import lombok.RequiredArgsConstructor;
+import org.java.mentorship.budget.domain.BudgetEntity;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
-import org.java.mentorship.budget.repository.BudgetRepository;
+import org.java.mentorship.budget.persistence.BudgetRepository;
 import org.java.mentorship.budget.validation.BudgetValidator;
-import org.java.mentorship.contracts.budget.dto.Budget;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,41 +14,44 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BudgetService {
 
-    private final BudgetRepository budgetRepository;
-    private final BudgetValidator budgetValidator;
+    private final BudgetRepository repository;
+    private final BudgetValidator validator;
 
-    public List<Budget> getBudgets() {
-        return budgetRepository.findAll();
+    @Transactional
+    public BudgetEntity save(final BudgetEntity budgetEntity) {
+        validator.validate(budgetEntity);
+        return repository.save(budgetEntity);
     }
 
-    public Budget getBudgetById(Integer id) {
-        return budgetRepository.findById(id)
-                .orElseThrow(() -> new NoEntityFoundException("Budget with id " + id + " not found"));
+    public List<BudgetEntity> findAll() {
+        return repository.findAll();
     }
 
-    public Budget createBudget(Budget budget) {
-        budgetValidator.validate(budget);
-        return budgetRepository.save(budget);
+    public BudgetEntity findById(final Integer id) {
+        BudgetEntity budgetEntity = repository.findById(id);
+        if (budgetEntity == null) {
+            throw new NoEntityFoundException("Budget with id " + id + " not found");
+        }
+        return budgetEntity;
     }
 
-    public Budget updateBudget(Integer id, Budget updatedBudget) {
-        budgetValidator.validate(updatedBudget);
-        Budget existingBudget = budgetRepository.findById(id)
-                .orElseThrow(() -> new NoEntityFoundException("Budget with id " + id + " not found"));
-
-        updatedBudget.setId(id);
-        return budgetRepository.save(updatedBudget);
+    @Transactional
+    public BudgetEntity update(final BudgetEntity budgetEntity) {
+        validator.validate(budgetEntity);
+        BudgetEntity existingBudget = repository.findById(budgetEntity.getId());
+        if (existingBudget == null) {
+            throw new NoEntityFoundException("Budget with id " + budgetEntity.getId() + " not found");
+        }
+        return repository.update(budgetEntity);
     }
 
-    public Budget deleteBudget(Integer id) {
-        Budget budget = budgetRepository.findById(id)
-                .orElseThrow(() -> new NoEntityFoundException("Budget with id " + id + " not found"));
-
-        budgetRepository.deleteById(id);
-        return budget;
-    }
-
-    public List<Budget> getBudgetsByUserId(Integer userId) {
-        return budgetRepository.findByUserId(userId);
+    @Transactional
+    public BudgetEntity delete(final Integer id) {
+        BudgetEntity budgetEntity = repository.findById(id);
+        if (budgetEntity == null) {
+            throw new NoEntityFoundException("Budget with id " + id + " not found");
+        }
+        repository.delete(id);
+        return budgetEntity;
     }
 }
