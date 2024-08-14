@@ -21,6 +21,10 @@ public class SessionService {
     private final SessionMapper sessionMapper;
     private final UserService userService;
 
+    public static boolean isExpired(Session session) {
+        return session.getExpiresAt().isBefore(OffsetDateTime.now());
+    }
+
     public Optional<Session> createSession(LoginRequest loginRequest) {
         // TODO: Return proper exceptions
 
@@ -62,10 +66,6 @@ public class SessionService {
 
     public List<Session> getSessionsByUser(Integer id) {
         return sessionMapper.getSessionsByUser(id);
-    }
-
-    public static boolean isExpired(Session session) {
-        return session.getExpiresAt().isBefore(OffsetDateTime.now());
     }
 
     public Optional<Session> getActiveSession(String key) {

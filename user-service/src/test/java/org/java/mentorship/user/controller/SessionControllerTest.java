@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
@@ -17,7 +16,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -53,7 +51,7 @@ public class SessionControllerTest {
                 .password("Password").build();
 
         when(sessionService.createSession(loginRequest)).thenReturn(
-            Optional.empty()
+                Optional.empty()
         );
 
         ResponseEntity<Session> response = sessionController.createSession(loginRequest);

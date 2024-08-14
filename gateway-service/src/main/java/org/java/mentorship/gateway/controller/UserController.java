@@ -1,6 +1,5 @@
 package org.java.mentorship.gateway.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.client.UserFeignClient;
 import org.java.mentorship.contracts.user.dto.User;
@@ -24,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<User> getUserById(@PathVariable(name="id") Integer id) {
+    ResponseEntity<User> getUserById(@PathVariable(name = "id") Integer id) {
         // TODO: Users can't read other users
         return ResponseEntity.ok(userFeignClient.getUser(id));
     }
@@ -35,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping("/verify/{id}/{token}")
-    ResponseEntity<Boolean> verifyUser(@PathVariable(name="id") Integer id, @PathVariable(name="token") String token) {
+    ResponseEntity<Boolean> verifyUser(@PathVariable(name = "id") Integer id, @PathVariable(name = "token") String token) {
         return ResponseEntity.ok(userFeignClient.verifyUser(id, token));
     }
 }

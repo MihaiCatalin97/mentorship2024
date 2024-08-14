@@ -5,7 +5,10 @@ import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 

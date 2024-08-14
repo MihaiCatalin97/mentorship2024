@@ -17,7 +17,7 @@ import static org.java.mentorship.user.crypt.MD5.getMd5;
 @Service
 @AllArgsConstructor
 public class UserService {
-//    UserRepository repository;
+    //    UserRepository repository;
     UserMapper mapper;
 
     public List<UserEntity> getAllUsers() {
@@ -61,7 +61,9 @@ public class UserService {
     public boolean verifyUserUsingToken(Integer id, String token) {
         Optional<UserEntity> user = getUserById(id);
         if (user.isEmpty()) throw new UserNotFoundException();
-        if (!user.get().getVerificationToken().equals(token)) { return false; }
+        if (!user.get().getVerificationToken().equals(token)) {
+            return false;
+        }
 
         return mapper.setUserVerifiedStatus(id, true);
     }

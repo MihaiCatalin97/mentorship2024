@@ -1,7 +1,6 @@
 package org.java.mentorship.user.repository.mapper;
 
 import org.apache.ibatis.annotations.*;
-import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.user.domain.UserEntity;
 
 import java.util.List;

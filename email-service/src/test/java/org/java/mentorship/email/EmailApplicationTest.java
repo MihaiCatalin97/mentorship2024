@@ -3,7 +3,7 @@ package org.java.mentorship.email;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class EmailApplicationTest  {
+class EmailApplicationTest {
 
     @Test
     void mainShouldStartApplication() {

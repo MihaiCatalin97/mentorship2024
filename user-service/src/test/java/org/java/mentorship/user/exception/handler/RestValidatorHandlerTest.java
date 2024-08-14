@@ -3,13 +3,11 @@ package org.java.mentorship.user.exception.handler;
 import jakarta.servlet.http.HttpServletRequest;
 import org.java.mentorship.contracts.user.dto.UserServiceError;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
