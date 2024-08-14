@@ -10,16 +10,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UserControllerTest {
+class UserControllerTest {
 
     @Mock
     private UserFeignClient userFeignClient;
@@ -35,7 +34,7 @@ public class UserControllerTest {
         ResponseEntity<List<User>> response = userController.getUsers();
 
         assertEquals(200, response.getStatusCode().value());
-        assertTrue(Objects.nonNull(response.getBody()));
+        assertNotNull(response.getBody());
         assertEquals(1, response.getBody().size());
     }
 
@@ -47,7 +46,7 @@ public class UserControllerTest {
         ResponseEntity<User> response = userController.getUserById(1);
 
         assertEquals(200, response.getStatusCode().value());
-        assertTrue(Objects.nonNull(response.getBody()));
+        assertNotNull(response.getBody());
     }
 
 
@@ -59,7 +58,7 @@ public class UserControllerTest {
         ResponseEntity<User> response = userController.registerUser(RegistrationRequest.builder().build());
 
         assertEquals(200, response.getStatusCode().value());
-        assertTrue(Objects.nonNull(response.getBody()));
+        assertNotNull(response.getBody());
     }
 
     @Test
@@ -70,7 +69,7 @@ public class UserControllerTest {
         ResponseEntity<Boolean> response = userController.verifyUser(1, "AA-BB-CC");
 
         assertEquals(200, response.getStatusCode().value());
-        assertTrue(Objects.nonNull(response.getBody()));
+        assertNotNull(response.getBody());
         assertTrue(response.getBody());
     }
 

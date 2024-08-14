@@ -12,10 +12,10 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,7 +40,7 @@ class SessionControllerTest {
         ResponseEntity<Session> response = sessionController.createSession(loginRequest);
 
         assertEquals(200, response.getStatusCode().value());
-        assertTrue(Objects.nonNull(response.getBody()));
+        assertNotNull(response.getBody());
         assertEquals(123, response.getBody().getId());
     }
 
@@ -57,7 +57,7 @@ class SessionControllerTest {
         ResponseEntity<Session> response = sessionController.createSession(loginRequest);
 
         assertEquals(400, response.getStatusCode().value());
-        assertFalse(Objects.nonNull(response.getBody()));
+        assertNotNull(response.getBody());
     }
 
     @Test
@@ -67,7 +67,7 @@ class SessionControllerTest {
         ResponseEntity<Session> response = sessionController.getSession("1");
 
         assertEquals(200, response.getStatusCode().value());
-        assertTrue(Objects.nonNull(response.getBody()));
+        assertNotNull(response.getBody());
         assertEquals(1, response.getBody().getId());
     }
 
@@ -78,7 +78,7 @@ class SessionControllerTest {
         ResponseEntity<Session> response = sessionController.getSession("1");
 
         assertEquals(404, response.getStatusCode().value());
-        assertFalse(Objects.nonNull(response.getBody()));
+        assertNotNull(response.getBody());
     }
 
     @Test
@@ -94,7 +94,7 @@ class SessionControllerTest {
 
 
         assertEquals(200, response.getStatusCode().value());
-        assertTrue(Objects.nonNull(response.getBody()));
+        assertNotNull(response.getBody());
         assertEquals(2, response.getBody().size());
     }
 
@@ -110,7 +110,7 @@ class SessionControllerTest {
         ResponseEntity<List<Session>> response = sessionController.getActiveSessionsByUser(1);
 
         assertEquals(200, response.getStatusCode().value());
-        assertTrue(Objects.nonNull(response.getBody()));
+        assertNotNull(response.getBody());
         assertEquals(2, response.getBody().size());
     }
 

@@ -14,10 +14,10 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
@@ -47,7 +47,7 @@ class UserControllerTest {
         ResponseEntity<List<User>> response = userController.getUsers();
 
         assertEquals(200, response.getStatusCode().value());
-        assertTrue(Objects.nonNull(response.getBody()));
+        assertNotNull(response.getBody());
         assertEquals(2, response.getBody().size());
         assertEquals(users.getFirst().getId(), response.getBody().getFirst().getId());
     }
@@ -62,7 +62,7 @@ class UserControllerTest {
         ResponseEntity<User> response = userController.getUserById(3);
 
         assertEquals(200, response.getStatusCode().value());
-        assertFalse(Objects.isNull(response.getBody()));
+        assertNotNull(response.getBody());
         assertEquals(3, response.getBody().getId());
     }
 
@@ -73,7 +73,7 @@ class UserControllerTest {
         ResponseEntity<User> response = userController.getUserById(3);
 
         assertEquals(404, response.getStatusCode().value());
-        assertTrue(Objects.isNull(response.getBody()));
+        assertNotNull(response.getBody());
     }
 
     @Test
@@ -92,7 +92,7 @@ class UserControllerTest {
         ResponseEntity<User> response = userController.registerUser(registrationRequest);
 
         assertEquals(200, response.getStatusCode().value());
-        assertTrue(Objects.nonNull(response.getBody()));
+        assertNotNull(response.getBody());
         assertEquals(100, response.getBody().getId());
     }
 
@@ -104,7 +104,7 @@ class UserControllerTest {
         ResponseEntity<Boolean> response = userController.verifyUser(1, "1");
 
         assertEquals(200, response.getStatusCode().value());
-        assertTrue(Objects.nonNull(response.getBody()));
+        assertNotNull(response.getBody());
         assertEquals(true, response.getBody());
     }
 
