@@ -1,6 +1,5 @@
 package org.java.mentorship.user.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.user.domain.UserEntity;

@@ -1,6 +1,5 @@
 package org.java.mentorship.user.exception.handler;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.java.mentorship.contracts.user.dto.UserServiceError;
 import org.java.mentorship.user.exception.domain.common.UserServiceException;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,6 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 
 public class ServiceExceptionHandlerTest {
 

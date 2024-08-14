@@ -1,6 +1,5 @@
 package org.java.mentorship.user.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;

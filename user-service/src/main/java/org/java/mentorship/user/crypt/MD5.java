@@ -1,6 +1,5 @@
 package org.java.mentorship.user.crypt;
 
-import lombok.NoArgsConstructor;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.DigestUtils;
 
