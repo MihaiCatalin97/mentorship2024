@@ -1,5 +1,6 @@
 package org.java.mentorship.gateway.controller;
 
+import org.java.mentorship.contracts.user.client.SessionFeignClient;
 import org.java.mentorship.contracts.user.client.UserFeignClient;
 import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
@@ -22,14 +23,14 @@ import static org.mockito.Mockito.when;
 class SessionControllerTest {
 
     @Mock
-    private UserFeignClient userFeignClient;
+    private SessionFeignClient sessionFeignClient;
 
     @InjectMocks
     private SessionController sessionController;
 
     @Test
     void createSessionShouldReturnDataFromFeign() {
-        when(userFeignClient.createSession(any(LoginRequest.class)))
+        when(sessionFeignClient.createSession(any(LoginRequest.class)))
                 .thenReturn(Session.builder().build());
 
         ResponseEntity<Session> response = sessionController.createSession(new LoginRequest());
@@ -40,7 +41,7 @@ class SessionControllerTest {
 
     @Test
     void getSessionShouldReturnDataFromFeign() {
-        when(userFeignClient.getSession(anyString()))
+        when(sessionFeignClient.getSession(anyString()))
                 .thenReturn(Session.builder().build());
 
         ResponseEntity<Session> response = sessionController.getSession(anyString());
@@ -51,7 +52,7 @@ class SessionControllerTest {
 
     @Test
     void getSessionsByUserShouldReturnDataFromFeign() {
-        when(userFeignClient.getSessions(anyInt()))
+        when(sessionFeignClient.getSessions(anyInt()))
                 .thenReturn(Collections.singletonList(Session.builder().build()));
 
         ResponseEntity<List<Session>> response = sessionController.getSessionsByUser(anyInt());
@@ -63,7 +64,7 @@ class SessionControllerTest {
 
     @Test
     void getActiveSessionsByUserShouldReturnDataFromFeign() {
-        when(userFeignClient.getActiveSessions(anyInt()))
+        when(sessionFeignClient.getActiveSessions(anyInt()))
                 .thenReturn(Collections.singletonList(Session.builder().build()));
 
         ResponseEntity<List<Session>> response = sessionController.getActiveSessionsByUser(anyInt());

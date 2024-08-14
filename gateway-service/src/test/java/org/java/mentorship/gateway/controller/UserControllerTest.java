@@ -19,7 +19,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserControllerTest {
-
     @Mock
     private UserFeignClient userFeignClient;
 

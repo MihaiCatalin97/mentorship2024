@@ -1,6 +1,7 @@
 package org.java.mentorship.gateway.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.java.mentorship.contracts.user.client.SessionFeignClient;
 import org.java.mentorship.contracts.user.client.UserFeignClient;
 import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
@@ -13,27 +14,25 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/sessions")
 public class SessionController {
-
-    private final UserFeignClient userFeignClient;
+    private final SessionFeignClient sessionFeignClient;
 
     @PostMapping()
     public ResponseEntity<Session> createSession(@RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok(userFeignClient.createSession(loginRequest));
+        return ResponseEntity.ok(sessionFeignClient.createSession(loginRequest));
     }
 
     @GetMapping("/{key}")
     public ResponseEntity<Session> getSession(@PathVariable(name = "key") String key) {
-        return ResponseEntity.ok(userFeignClient.getSession(key));
+        return ResponseEntity.ok(sessionFeignClient.getSession(key));
     }
 
     @GetMapping("/user/{id}")
     public ResponseEntity<List<Session>> getSessionsByUser(@PathVariable(name = "id") Integer id) {
-        return ResponseEntity.ok(userFeignClient.getSessions(id));
+        return ResponseEntity.ok(sessionFeignClient.getSessions(id));
     }
 
     @GetMapping("/user/{id}/active")
     public ResponseEntity<List<Session>> getActiveSessionsByUser(@PathVariable(name = "id") Integer id) {
-        return ResponseEntity.ok(userFeignClient.getActiveSessions(id));
+        return ResponseEntity.ok(sessionFeignClient.getActiveSessions(id));
     }
-
 }
