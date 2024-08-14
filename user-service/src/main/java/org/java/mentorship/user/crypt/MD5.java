@@ -1,5 +1,6 @@
 package org.java.mentorship.user.crypt;
 
+import lombok.NoArgsConstructor;
 import org.springframework.util.DigestUtils;
 
 import java.math.BigInteger;
@@ -7,6 +8,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+@NoArgsConstructor
 public class MD5 {
 
     public static String getMd5(String plaintext) {
@@ -24,7 +26,7 @@ public class MD5 {
 //
 //        hashtext = "0".repeat(32 - hashtext.length()) + hashtext;
 //        return hashtext;
-        return Arrays.toString(DigestUtils.md5Digest(plaintext.getBytes()));
+        return DigestUtils.md5DigestAsHex(plaintext.getBytes()).toUpperCase();
     }
 
 }
