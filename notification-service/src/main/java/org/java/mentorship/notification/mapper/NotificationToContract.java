@@ -1,10 +1,8 @@
 package org.java.mentorship.notification.mapper;
 
-import jakarta.validation.constraints.NotNull;
 import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.contracts.notification.dto.NotificationType;
 import org.java.mentorship.notification.domain.NotificationEntity;
-import org.java.mentorship.notification.domain.enums.NotificationChannel;
 import org.springframework.stereotype.Component;
 
 
