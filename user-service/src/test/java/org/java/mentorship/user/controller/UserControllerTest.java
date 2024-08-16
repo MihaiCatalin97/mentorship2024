@@ -84,7 +84,6 @@ class UserControllerTest {
                 .firstName("First name")
                 .lastName("Last name")
                 .build();
-
         when(userService.registerUser(registrationRequest)).thenReturn(Optional.of(
                 UserEntity.builder().id(100).build()
         ));
@@ -98,7 +97,6 @@ class UserControllerTest {
 
     @Test
     void verifyUserShouldCallAndReturnFromUserService() {
-
         when(userService.verifyUserUsingToken(1, "1")).thenReturn(true);
 
         ResponseEntity<Boolean> response = userController.verifyUser(1, "1");
