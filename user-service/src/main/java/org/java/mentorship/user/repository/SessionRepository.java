@@ -23,8 +23,6 @@ public interface SessionRepository {
             """)
     List<Session> find(Integer userId);
 
-    @Insert("INSERT INTO sessions(session_key, expires_at, user_id) VALUES (#{sessionKey}, #{expiresAt}, #{userId})")
-    @Options(useGeneratedKeys = true, keyColumn = "id")
     void insert(Session session);
 
     @Select("SELECT * FROM sessions WHERE session_key=#{sessionKey}")
