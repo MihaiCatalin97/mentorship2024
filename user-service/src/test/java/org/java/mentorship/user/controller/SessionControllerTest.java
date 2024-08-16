@@ -3,6 +3,7 @@ package org.java.mentorship.user.controller;
 import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
 import org.java.mentorship.user.service.SessionService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

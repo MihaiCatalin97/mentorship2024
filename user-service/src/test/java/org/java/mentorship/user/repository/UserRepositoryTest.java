@@ -24,8 +24,6 @@ class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private SessionRepository sessionRepository;
 
     @Test
     void findShouldReturnAllUsers() {
