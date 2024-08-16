@@ -1,15 +1,12 @@
 package org.java.mentorship.user.repository;
 
-import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.user.crypt.MD5;
 import org.java.mentorship.user.domain.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 

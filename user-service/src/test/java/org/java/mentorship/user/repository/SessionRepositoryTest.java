@@ -4,7 +4,6 @@ import org.java.mentorship.contracts.user.dto.Session;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.time.OffsetDateTime;
@@ -42,9 +41,9 @@ class SessionRepositoryTest {
     @Test
     void insertShouldInsertSession() {
         sessionRepository.insert(Session.builder()
-                        .expiresAt(OffsetDateTime.now())
-                        .sessionKey("sess-key10")
-                        .userId(1)
+                .expiresAt(OffsetDateTime.now())
+                .sessionKey("sess-key10")
+                .userId(1)
                 .build());
 
         assertEquals(4, sessionRepository.find(null).size());
