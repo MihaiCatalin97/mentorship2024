@@ -18,20 +18,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Sql(
         "classpath:schema.sql"
 )
-public class SessionRepositoryTest {
+class SessionRepositoryTest {
 
     @Autowired
     private SessionRepository sessionRepository;
 
     @Test
-    public void findShouldReturnAllSessions() {
+    void findShouldReturnAllSessions() {
         List<Session> sessions = sessionRepository.find(null);
 
         assertEquals(3, sessions.size());
     }
 
     @Test
-    public void findByIdShouldReturnSessions() {
+    void findByIdShouldReturnSessions() {
         List<Session> sessionsUser1 = sessionRepository.find(1);
         List<Session> sessionsUser2 = sessionRepository.find(2);
 
@@ -40,7 +40,7 @@ public class SessionRepositoryTest {
     }
 
     @Test
-    public void insertShouldInsertSession() {
+    void insertShouldInsertSession() {
         sessionRepository.insert(Session.builder()
                         .expiresAt(OffsetDateTime.now())
                         .sessionKey("sess-key10")
@@ -51,7 +51,7 @@ public class SessionRepositoryTest {
     }
 
     @Test
-    public void getByKeyShouldReturnSession() {
+    void getByKeyShouldReturnSession() {
         Optional<Session> session = sessionRepository.getByKey("sess-key1");
 
         assertTrue(session.isPresent());
