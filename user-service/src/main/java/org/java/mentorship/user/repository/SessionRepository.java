@@ -11,14 +11,16 @@ import java.util.Optional;
 
 @Mapper
 public interface SessionRepository {
-    @Select("<script>" +
-            "SELECT * FROM sessions " +
-            "<where> " +
-            "<if test='userId != null'> " +
-            "AND user_id=#{userId} " +
-            "</if>" +
-            "</where> " +
-            "</script> ")
+    @Select("""
+            <script>
+            SELECT * FROM sessions
+                <where> 
+                <if test='userId != null'>
+                AND user_id=#{userId}
+                </if>
+                </where>
+            </script> 
+            """)
     List<Session> find(Integer userId);
 
     @Insert("INSERT INTO sessions(session_key, expires_at, user_id) VALUES (#{sessionKey}, #{expiresAt}, #{userId})")
