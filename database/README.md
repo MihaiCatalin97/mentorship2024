@@ -5,6 +5,7 @@
 ### Migrate a Local Database
 
 Run the Maven command `mvn flyway:migrate` from the `database` module:
+
 1. `cd database`
 2. `mvn flyway:migrate`
 

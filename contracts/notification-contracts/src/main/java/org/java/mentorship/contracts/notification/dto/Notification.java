@@ -1,7 +1,9 @@
 package org.java.mentorship.contracts.notification.dto;
 
+
 import lombok.Data;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -13,8 +15,10 @@ public class Notification {
     private Integer userId;
     private String email;
     private List<NotificationChannel> channels;
-    private List<NotificationType> type;
+    private NotificationType type;
     private Map<String, Object> payload;
     private Boolean markedAsRead;
-    private Long createdAt;
+    private OffsetDateTime createdAt;
+
+
 }
