@@ -55,6 +55,7 @@ public class SessionRepositoryTest {
         Optional<Session> session = sessionRepository.getByKey("sess-key1");
 
         assertTrue(session.isPresent());
+        assertEquals("sess-key1", session.get().getSessionKey());
     }
 
 }
