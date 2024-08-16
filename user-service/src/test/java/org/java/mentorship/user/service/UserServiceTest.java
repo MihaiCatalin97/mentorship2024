@@ -42,7 +42,7 @@ class UserServiceTest {
 
         userService.registerUser(registrationRequest);
 
-        verify(userRepository).insertUser(userArgumentCaptor.capture());
+        verify(userRepository).insert(userArgumentCaptor.capture());
         verify(userRepository, times(2)).findByEmail("admin@localhost");
 
         UserEntity savedEntity = userArgumentCaptor.getValue();
@@ -63,7 +63,7 @@ class UserServiceTest {
 
         userService.registerUser(registrationRequest);
 
-        verify(userRepository).insertUser(userArgumentCaptor.capture());
+        verify(userRepository).insert(userArgumentCaptor.capture());
         UserEntity savedEntity = userArgumentCaptor.getValue();
 
         assertEquals(MD5.getMd5(registrationRequest.getPassword()), savedEntity.getHashedPassword());
@@ -82,7 +82,7 @@ class UserServiceTest {
 
         assertThrows(AlreadyRegisteredException.class, () -> userService.registerUser(registrationRequest));
 
-        verify(userRepository, never()).insertUser(any());
+        verify(userRepository, never()).insert(any());
         verify(userRepository, times(1)).findByEmail("admin@localhost");
     }
 

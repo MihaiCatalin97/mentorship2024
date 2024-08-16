@@ -9,9 +9,11 @@
 
     <typeAliases>
         <typeAlias alias="SessionEntity" type="org.java.mentorship.user.domain.SessionEntity"/>
+        <typeAlias alias="UserEntity" type="org.java.mentorship.user.domain.UserEntity"/>
     </typeAliases>
 
     <mappers>
         <mapper resource="mybatis/mappers/session.xml"/>
+        <mapper resource="mybatis/mappers/user.xml"/>
     </mappers>
 </configuration>

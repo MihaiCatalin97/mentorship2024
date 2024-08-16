@@ -6,4 +6,16 @@
         INSERT INTO sessions(session_key, expires_at, user_id) VALUES (#{sessionKey}, #{expiresAt}, #{userId})
     </insert>
 
+    <select id="getByKey" parameterType="String">
+        SELECT * FROM sessions WHERE session_key=#{sessionKey}
+    </select>
+
+    <select id="find">
+        SELECT * FROM sessions
+        <where>
+            <if test='userId != null'>
+                AND user_id=#{userId}
+            </if>
+        </where>
+    </select>
 </mapper>
