@@ -14,9 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MybatisTest
-@Sql(
-        "classpath:schema.sql"
-)
+@Sql({"classpath:schema.sql", "classpath:data.sql"})
 class UserRepositoryTest {
 
     @Autowired
