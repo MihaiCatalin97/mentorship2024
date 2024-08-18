@@ -1,6 +1,5 @@
 package org.java.mentorship.user.exception.handler;
 
-import org.java.mentorship.contracts.user.dto.UserServiceError;
 import org.java.mentorship.user.exception.domain.common.UserServiceException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;

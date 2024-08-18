@@ -1,7 +1,6 @@
 package org.java.mentorship.user.exception.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.java.mentorship.contracts.user.dto.UserServiceError;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

@@ -2,6 +2,7 @@ package org.java.mentorship.gateway.exception.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.java.mentorship.contracts.common.dto.ErrorResponse;
+import org.java.mentorship.gateway.exception.domain.GatewayErrorResponse;
 import org.java.mentorship.gateway.exception.domain.GatewayException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -19,14 +20,14 @@ class GeneralExceptionHandlerTest {
     void handleShouldHandleGatewayException() {
         // Given
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        String message = "testMessage";
+        ErrorResponse errorResponse = new GatewayErrorResponse("message");
 
         // When
-        ResponseEntity<ErrorResponse> actual = handler.handle(new GatewayException(message, status), null);
+        ResponseEntity<ErrorResponse> actual = handler.handle(new GatewayException(errorResponse, status), null);
 
         // Then
         assertNotNull(actual.getBody());
-        assertEquals(message, actual.getBody().getError());
+        assertEquals(errorResponse.getError(), actual.getBody().getError());
         assertEquals(status, actual.getStatusCode());
     }
 
@@ -37,7 +38,7 @@ class GeneralExceptionHandlerTest {
 
         // Then
         assertNotNull(actual.getBody());
-        assertEquals("Unknown server error.", actual.getBody().getError());
+        assertEquals("Unknown service error.", actual.getBody().getError());
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, actual.getStatusCode());
     }
 }
