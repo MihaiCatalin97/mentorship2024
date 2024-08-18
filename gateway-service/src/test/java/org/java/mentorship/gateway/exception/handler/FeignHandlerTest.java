@@ -15,6 +15,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -70,5 +71,24 @@ class FeignHandlerTest {
         assertInstanceOf(GatewayException.class, exception);
         assertEquals("Error", ((GatewayException)exception).getErrorResponse().getError());
         assertEquals(statusCode, ((GatewayException)exception).getStatusCode().value());
+    }
+
+    @Test
+    void decodeShouldReturnInternalServerErrorOnInvalidJson() throws JsonProcessingException {
+        // Given
+        String errorResponse = "{not json";
+        Integer statusCode = 403;
+        Response response = Mockito.mock(Response.class);
+        Response.Body body = Mockito.mock(Response.Body.class);
+        when(body.toString()).thenReturn(errorResponse);
+        when(response.status()).thenReturn(statusCode);
+        when(response.body()).thenReturn(body);
+
+        // When
+        Exception exception = feignHandler.decode("GET", response);
+
+        // Then
+        assertInstanceOf(GatewayException.class, exception);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, ((GatewayException)exception).getStatusCode());
     }
 }

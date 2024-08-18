@@ -23,7 +23,7 @@ class GeneralExceptionHandlerTest {
         ErrorResponse errorResponse = new GatewayErrorResponse("message");
 
         // When
-        ResponseEntity<ErrorResponse> actual = handler.handle(new GatewayException(errorResponse, status), null);
+        ResponseEntity<ErrorResponse> actual = handler.handle(new GatewayException(errorResponse, status));
 
         // Then
         assertNotNull(actual.getBody());
