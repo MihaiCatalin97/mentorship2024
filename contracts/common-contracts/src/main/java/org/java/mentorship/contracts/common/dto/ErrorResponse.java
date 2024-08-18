@@ -5,11 +5,11 @@ import lombok.*;
 import java.time.OffsetDateTime;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class ErrorResponse {
-    private final String error;
-    private final String service;
-    private final OffsetDateTime timestamp;
+    private String error;
+    private String service;
+    private OffsetDateTime timestamp;
 
     public ErrorResponse(String error, String service) {
         this.error = error;

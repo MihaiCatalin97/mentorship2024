@@ -1,6 +1,7 @@
 package org.java.mentorship.user.exception.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.java.mentorship.contracts.common.dto.ErrorResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
