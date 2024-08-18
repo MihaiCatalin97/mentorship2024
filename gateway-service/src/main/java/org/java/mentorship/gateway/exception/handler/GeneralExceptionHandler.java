@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Objects;
+
 @RestControllerAdvice
 @Slf4j
 public class GeneralExceptionHandler {
@@ -22,12 +24,12 @@ public class GeneralExceptionHandler {
                 .body(exception.getErrorResponse());
     }
 
-    @ExceptionHandler(FeignException.NotFound.class)
-    public ResponseEntity<ErrorResponse> handle() {
-        // I don't know why this is thrown and why the FeignHandler doesn't handle it.
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new GatewayNotFoundException().getErrorResponse());
-    }
+// I don't know why this is thrown and why the FeignHandler doesn't handle it.
+//    @ExceptionHandler(FeignException.NotFound.class)
+//    public ResponseEntity<ErrorResponse> handle() {
+//        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+//                .body(new GatewayNotFoundException().getErrorResponse());
+//    }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handle(final RuntimeException exception, final HttpServletRequest request) {
