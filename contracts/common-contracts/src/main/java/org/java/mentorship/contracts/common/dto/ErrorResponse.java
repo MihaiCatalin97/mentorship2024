@@ -1,16 +1,15 @@
 package org.java.mentorship.contracts.common.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.OffsetDateTime;
 
 @Data
-@NoArgsConstructor
+@Builder
 public class ErrorResponse {
-    private String error;
-    private String service;
-    private OffsetDateTime timestamp;
+    private final String error;
+    private final String service;
+    private final OffsetDateTime timestamp;
 
     public ErrorResponse(String error, String service) {
         this.error = error;
