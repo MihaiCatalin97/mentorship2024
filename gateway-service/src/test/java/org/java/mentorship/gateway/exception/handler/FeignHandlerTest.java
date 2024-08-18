@@ -18,8 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -34,12 +33,30 @@ class FeignHandlerTest {
     void setUp() {
         feignHandler = new FeignHandler(objectMapper);
     }
+    @Test
+    void decodeShouldReturn404() throws JsonProcessingException {
+        // Given
+        Integer statusCode = 404;
+        Response response = Mockito.mock(Response.class);
+        Response.Body body = Mockito.mock(Response.Body.class);
+        when(body.toString()).thenReturn("");
+        when(response.status()).thenReturn(statusCode);
+        when(response.body()).thenReturn(body);
+
+        // When
+        Exception exception = feignHandler.decode("GET", response);
+
+        // Then
+        assertInstanceOf(GatewayException.class, exception);
+        assertEquals("Not found", ((GatewayException)exception).getErrorResponse().getError());
+        assertEquals(statusCode, ((GatewayException)exception).getStatusCode().value());
+    }
 
     @Test
     void decodeShouldReturnException() throws JsonProcessingException {
         // Given
         String errorResponse = objectMapper.writeValueAsString(new ErrorResponse("Error", "gateway"));
-        Integer statusCode = 404;
+        Integer statusCode = 403;
         Response response = Mockito.mock(Response.class);
         Response.Body body = Mockito.mock(Response.Body.class);
         when(body.toString()).thenReturn(errorResponse);
@@ -47,10 +64,11 @@ class FeignHandlerTest {
         when(response.body()).thenReturn(body);
 
         // When
-        GatewayException exception = feignHandler.decode("GET", response);
+        Exception exception = feignHandler.decode("GET", response);
 
         // Then
-        assertEquals("Error", exception.getErrorResponse().getError());
-        assertEquals(statusCode, exception.getStatusCode().value());
+        assertInstanceOf(GatewayException.class, exception);
+        assertEquals("Error", ((GatewayException)exception).getErrorResponse().getError());
+        assertEquals(statusCode, ((GatewayException)exception).getStatusCode().value());
     }
 }
