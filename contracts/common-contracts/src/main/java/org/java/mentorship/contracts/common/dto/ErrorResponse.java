@@ -5,7 +5,7 @@ import lombok.*;
 import java.time.OffsetDateTime;
 
 @Data
-@Builder
+@RequiredArgsConstructor
 public class ErrorResponse {
     private final String error;
     private final String service;
