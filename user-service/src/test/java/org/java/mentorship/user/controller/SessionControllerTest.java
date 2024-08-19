@@ -1,7 +1,9 @@
 package org.java.mentorship.user.controller;
 
 import org.java.mentorship.contracts.user.dto.Session;
+import org.java.mentorship.contracts.user.dto.SessionWithKey;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
+import org.java.mentorship.user.domain.SessionEntity;
 import org.java.mentorship.user.service.SessionService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,10 +36,10 @@ class SessionControllerTest {
                 .email("admin@localhost")
                 .password("Password").build();
         when(sessionService.createSession(loginRequest)).thenReturn(
-                Optional.of(Session.builder().id(123).build())
+                Optional.of(SessionEntity.builder().id(123).build())
         );
 
-        ResponseEntity<Session> response = sessionController.createSession(loginRequest);
+        ResponseEntity<SessionWithKey> response = sessionController.createSession(loginRequest);
 
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());
@@ -51,7 +53,7 @@ class SessionControllerTest {
                 .password("Password").build();
         when(sessionService.createSession(loginRequest)).thenReturn(Optional.empty());
 
-        ResponseEntity<Session> response = sessionController.createSession(loginRequest);
+        ResponseEntity<SessionWithKey> response = sessionController.createSession(loginRequest);
 
         assertEquals(400, response.getStatusCode().value());
         assertTrue(Objects.isNull(response.getBody()));
@@ -60,7 +62,7 @@ class SessionControllerTest {
     @Test
     void getSessionsShouldReturnAllSessions() {
         when(sessionService.find(1, true)).thenReturn(
-                Collections.singletonList(Session.builder().build())
+                Collections.singletonList(SessionEntity.builder().build())
         );
 
         ResponseEntity<List<Session>> response = sessionController.getSessions(1, true);
@@ -82,7 +84,7 @@ class SessionControllerTest {
 
     @Test
     void getSessionShouldReturn200WhenSessionFound() {
-        when(sessionService.getSession(anyString())).thenReturn(Optional.of(Session.builder().build()));
+        when(sessionService.getSession(anyString())).thenReturn(Optional.of(SessionEntity.builder().build()));
 
         ResponseEntity<Session> response = sessionController.getSession("AA");
 

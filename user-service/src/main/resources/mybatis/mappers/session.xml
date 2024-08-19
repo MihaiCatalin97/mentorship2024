@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "org.java.mentorship.user.repository.SessionRepository">
+
+    <insert id="insert" parameterType="SessionEntity" useGeneratedKeys="true">
+        INSERT INTO sessions(session_key, expires_at, user_id) VALUES (#{sessionKey}, #{expiresAt}, #{userId})
+    </insert>
+
+    <select id="getByKey" parameterType="String">
+        SELECT * FROM sessions WHERE session_key=#{sessionKey}
+    </select>
+
+    <select id="find">
+        SELECT * FROM sessions
+        <where>
+            <if test='userId != null'>
+                AND user_id=#{userId}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,4 +1,4 @@
-package org.java.mentorship.contracts.user.dto;
+package org.java.mentorship.contracts.user.dto.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

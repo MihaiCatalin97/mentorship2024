@@ -1,6 +1,7 @@
 package org.java.mentorship.user.repository;
 
 import org.java.mentorship.contracts.user.dto.Session;
+import org.java.mentorship.user.domain.SessionEntity;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +23,15 @@ class SessionRepositoryTest {
 
     @Test
     void findShouldReturnAllSessions() {
-        List<Session> sessions = sessionRepository.find(null);
+        List<SessionEntity> sessions = sessionRepository.find(null);
 
         assertEquals(3, sessions.size());
     }
 
     @Test
     void findByIdShouldReturnSessions() {
-        List<Session> sessionsUser1 = sessionRepository.find(1);
-        List<Session> sessionsUser2 = sessionRepository.find(2);
+        List<SessionEntity> sessionsUser1 = sessionRepository.find(1);
+        List<SessionEntity> sessionsUser2 = sessionRepository.find(2);
 
         assertEquals(2, sessionsUser1.size());
         assertEquals(1, sessionsUser2.size());
@@ -38,7 +39,7 @@ class SessionRepositoryTest {
 
     @Test
     void insertShouldInsertSession() {
-        sessionRepository.insert(Session.builder()
+        sessionRepository.insert(SessionEntity.builder()
                 .expiresAt(OffsetDateTime.now())
                 .sessionKey("sess-key10")
                 .userId(1)
@@ -49,7 +50,7 @@ class SessionRepositoryTest {
 
     @Test
     void getByKeyShouldReturnSession() {
-        Optional<Session> session = sessionRepository.getByKey("sess-key1");
+        Optional<SessionEntity> session = sessionRepository.getByKey("sess-key1");
 
         assertTrue(session.isPresent());
         assertEquals("sess-key1", session.get().getSessionKey());

@@ -3,6 +3,7 @@ package org.java.mentorship.user.service;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
+import org.java.mentorship.user.domain.SessionEntity;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.exception.domain.TooManySessionsException;
 import org.java.mentorship.user.exception.domain.UserNotFoundException;
@@ -24,19 +25,19 @@ public class SessionService {
     private final SessionRepository sessionRepository;
     private final UserService userService;
 
-    public static boolean isExpired(Session session) {
+    public static boolean isExpired(SessionEntity session) {
         return session.getExpiresAt().isBefore(OffsetDateTime.now());
     }
 
-    public List<Session> find(Integer userId, Boolean isActive) {
-        Stream<Session> stream = sessionRepository.find(userId).stream();
+    public List<SessionEntity> find(Integer userId, Boolean isActive) {
+        Stream<SessionEntity> stream = sessionRepository.find(userId).stream();
 
         if (Objects.isNull(isActive)) return stream.collect(Collectors.toList());
         if (isActive) return stream.filter(session -> !isExpired(session)).collect(Collectors.toList());
         return stream.filter(SessionService::isExpired).collect(Collectors.toList());
     }
 
-    public Optional<Session> createSession(LoginRequest loginRequest) {
+    public Optional<SessionEntity> createSession(LoginRequest loginRequest) {
         Optional<UserEntity> userEntity = userService.getUserByEmail(loginRequest.getEmail());
         if (userEntity.isEmpty()) {
             throw new UserNotFoundException();
@@ -55,7 +56,7 @@ public class SessionService {
         }
 
         UUID sessionKey = UUID.randomUUID();
-        Session session = new Session();
+        SessionEntity session = new SessionEntity();
         session.setSessionKey(String.valueOf(sessionKey));
         session.setUserId(user.getId());
         session.setExpiresAt(OffsetDateTime.now().plusDays(30));
@@ -65,8 +66,8 @@ public class SessionService {
         return sessionRepository.getByKey(session.getSessionKey());
     }
 
-    public Optional<Session> getSession(String sessionKey) {
-        Optional<Session> session = sessionRepository.getByKey(sessionKey);
+    public Optional<SessionEntity> getSession(String sessionKey) {
+        Optional<SessionEntity> session = sessionRepository.getByKey(sessionKey);
         if (session.isEmpty()) return Optional.empty();
         if (isExpired(session.get())) return Optional.empty();
         return session;
