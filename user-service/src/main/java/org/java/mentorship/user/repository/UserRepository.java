@@ -20,7 +20,7 @@ public interface UserRepository {
 
     @Insert("INSERT INTO users(email, first_name, last_name, hashed_password, verification_token) VALUES (#{email}, #{firstName}, #{lastName}, #{hashedPassword}, #{verificationToken})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
-    void insertUser(UserEntity user);
+    void insert(UserEntity user);
 
     @Update("UPDATE users SET verified = #{verified} WHERE id = #{id}")
     boolean setUserVerifiedStatus(@Param("id") Integer id, @Param("verified") Boolean verified);
