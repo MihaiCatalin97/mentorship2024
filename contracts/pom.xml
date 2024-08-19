@@ -15,16 +15,6 @@
         <module>user-contracts</module>
         <module>notification-contracts</module>
     </modules>
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-    </dependencies>
 
     <dependencies>
         <dependency>

@@ -57,7 +57,7 @@ public class NotificationController {
     }
 
     @PutMapping("/notifications/{id}")
-    public ResponseEntity<Notification> postNotification(@PathVariable("id") Integer id, @RequestBody @Valid NotificationEntity notification) {
+    public ResponseEntity<Notification> putNotification(@PathVariable("id") Integer id, @RequestBody @Valid NotificationEntity notification) {
         notification.setId(id);
         return ResponseEntity.ok(notificationService.updateNotification(id, notification));
     }

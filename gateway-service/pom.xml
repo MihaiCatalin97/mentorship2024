@@ -32,7 +32,6 @@
             <groupId>org.java.mentorship</groupId>
             <artifactId>notification-contracts</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>

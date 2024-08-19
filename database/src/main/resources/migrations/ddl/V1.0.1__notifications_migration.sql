@@ -1,5 +1,3 @@
--- To be deleted once a real migration is created
-
 CREATE TABLE notifications
 (
     id             INT GENERATED ALWAYS AS IDENTITY,
@@ -7,14 +5,14 @@ CREATE TABLE notifications
     email          VARCHAR(255),
     marked_as_read BOOLEAN DEFAULT FALSE,
     created_at     TIMESTAMP NOT NULL,
-    payload        VARCHAR(255),
+    payload        VARCHAR(255) NOT NULL,
     type           VARCHAR(255),
     PRIMARY KEY (id)
 );
 
 CREATE TABLE notifications_channels
 (
-    id              INT,
+    id              INT GENERATED ALWAYS AS IDENTITY ,
     notification_id INT          NOT NULL,
     channel         VARCHAR(100) NOT NULL,
     PRIMARY KEY (id),
