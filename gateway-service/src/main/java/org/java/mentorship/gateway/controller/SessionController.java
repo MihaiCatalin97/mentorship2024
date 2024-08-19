@@ -3,6 +3,7 @@ package org.java.mentorship.gateway.controller;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.client.SessionFeignClient;
 import org.java.mentorship.contracts.user.dto.Session;
+import org.java.mentorship.contracts.user.dto.SessionWithKey;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class SessionController {
     private final SessionFeignClient sessionFeignClient;
 
     @PostMapping()
-    public ResponseEntity<Session> createSession(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<SessionWithKey> createSession(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(sessionFeignClient.createSession(loginRequest));
     }
 
