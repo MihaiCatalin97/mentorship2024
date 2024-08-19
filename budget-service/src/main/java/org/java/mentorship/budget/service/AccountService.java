@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.java.mentorship.budget.domain.BankAccountEntity;
 import org.java.mentorship.budget.persistence.AccountRepository;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
-import org.java.mentorship.budget.validation.AccountValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +13,8 @@ import java.util.List;
 public class AccountService {
 
     private final AccountRepository repository;
-    private final AccountValidator validator;
 
     public BankAccountEntity save(final BankAccountEntity bankAccountEntity) {
-        validator.validate(bankAccountEntity);
         return repository.save(bankAccountEntity);
     }
 
@@ -34,7 +31,6 @@ public class AccountService {
     }
 
     public BankAccountEntity update(final BankAccountEntity bankAccountEntity) {
-        validator.validate(bankAccountEntity);
         BankAccountEntity existingAccount = repository.findById(bankAccountEntity.getId());
         if (existingAccount == null) {
             throw new NoEntityFoundException("Account with id " + bankAccountEntity.getId() + " not found");

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.java.mentorship.budget.domain.BudgetEntity;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
 import org.java.mentorship.budget.persistence.BudgetRepository;
-import org.java.mentorship.budget.validation.BudgetValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,11 +14,9 @@ import java.util.List;
 public class BudgetService {
 
     private final BudgetRepository repository;
-    private final BudgetValidator validator;
 
     @Transactional
     public BudgetEntity save(final BudgetEntity budgetEntity) {
-        validator.validate(budgetEntity);
         return repository.save(budgetEntity);
     }
 
@@ -37,7 +34,6 @@ public class BudgetService {
 
     @Transactional
     public BudgetEntity update(final BudgetEntity budgetEntity) {
-        validator.validate(budgetEntity);
         BudgetEntity existingBudget = repository.findById(budgetEntity.getId());
         if (existingBudget == null) {
             throw new NoEntityFoundException("Budget with id " + budgetEntity.getId() + " not found");

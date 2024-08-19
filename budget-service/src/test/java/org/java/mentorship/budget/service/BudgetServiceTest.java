@@ -3,7 +3,6 @@ package org.java.mentorship.budget.service;
 import org.java.mentorship.budget.domain.BudgetEntity;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
 import org.java.mentorship.budget.persistence.BudgetRepository;
-import org.java.mentorship.budget.validation.BudgetValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,9 +24,6 @@ class BudgetServiceTest {
     @Mock
     private BudgetRepository repository;
 
-    @Mock
-    private BudgetValidator validator;
-
     @Test
     void saveShouldValidateAndSaveBudget() {
         BudgetEntity budgetEntity = new BudgetEntity();
@@ -36,7 +32,6 @@ class BudgetServiceTest {
         BudgetEntity result = budgetService.save(budgetEntity);
 
         assertEquals(budgetEntity, result);
-        verify(validator).validate(budgetEntity);
         verify(repository).save(budgetEntity);
     }
 
@@ -80,7 +75,6 @@ class BudgetServiceTest {
         BudgetEntity result = budgetService.update(budgetEntity);
 
         assertEquals(budgetEntity, result);
-        verify(validator).validate(budgetEntity);
         verify(repository).findById(1);
         verify(repository).update(budgetEntity);
     }

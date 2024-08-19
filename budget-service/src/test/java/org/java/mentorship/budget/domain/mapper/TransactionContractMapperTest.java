@@ -13,6 +13,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TransactionContractMapperTest {
 
+    @Test
+    void transactionContractMapperClassInstantiation() {
+        TransactionContractMapper mapper = new TransactionContractMapper();
+        assertNotNull(mapper);
+    }
+
     private static OffsetDateTime instantToOffsetDateTime(Instant instant) {
         return OffsetDateTime.ofInstant(instant, ZoneId.systemDefault());
     }

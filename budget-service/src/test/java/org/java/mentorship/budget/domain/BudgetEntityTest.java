@@ -30,7 +30,6 @@ class BudgetEntityTest {
                 .name("Test Budget")
                 .maximumAllowed(1000)
                 .interval(BudgetInterval.MONTHLY)
-                .currentUsage(100)
                 .transactionId(1)
                 .accountId(1)
                 .build();
@@ -50,7 +49,6 @@ class BudgetEntityTest {
                 .name("Test Budget")
                 .maximumAllowed(1000)
                 .interval(BudgetInterval.MONTHLY)
-                .currentUsage(100)
                 .transactionId(1)
                 .accountId(1)
                 .build();
@@ -70,7 +68,6 @@ class BudgetEntityTest {
                 .name("")
                 .maximumAllowed(1000)
                 .interval(BudgetInterval.MONTHLY)
-                .currentUsage(100)
                 .transactionId(1)
                 .accountId(1)
                 .build();
@@ -90,7 +87,6 @@ class BudgetEntityTest {
                 .name("Test Budget")
                 .maximumAllowed(-100)
                 .interval(BudgetInterval.MONTHLY)
-                .currentUsage(100)
                 .transactionId(1)
                 .accountId(1)
                 .build();
@@ -110,7 +106,6 @@ class BudgetEntityTest {
                 .name("Test Budget")
                 .maximumAllowed(1000)
                 .interval(null)
-                .currentUsage(100)
                 .transactionId(1)
                 .accountId(1)
                 .build();
@@ -123,26 +118,6 @@ class BudgetEntityTest {
     }
 
     @Test
-    void validateShouldFailWhenCurrentUsageIsNegative() {
-        BudgetEntity budget = BudgetEntity.builder()
-                .id(1)
-                .userId(1)
-                .name("Test Budget")
-                .maximumAllowed(1000)
-                .interval(BudgetInterval.MONTHLY)
-                .currentUsage(-10)
-                .transactionId(1)
-                .accountId(1)
-                .build();
-
-        Set<ConstraintViolation<BudgetEntity>> violations = validator.validate(budget);
-
-        assertFalse(violations.isEmpty(), "Expected validation errors");
-        assertEquals(1, violations.size(), "Expected one validation error");
-        assertEquals("Field 'currentUsage' must be at least 0", violations.iterator().next().getMessage());
-    }
-
-    @Test
     void validateShouldFailWhenTransactionIdIsNull() {
         BudgetEntity budget = BudgetEntity.builder()
                 .id(1)
@@ -150,7 +125,6 @@ class BudgetEntityTest {
                 .name("Test Budget")
                 .maximumAllowed(1000)
                 .interval(BudgetInterval.MONTHLY)
-                .currentUsage(100)
                 .transactionId(null)
                 .accountId(1)
                 .build();
@@ -170,7 +144,6 @@ class BudgetEntityTest {
                 .name("Test Budget")
                 .maximumAllowed(1000)
                 .interval(BudgetInterval.MONTHLY)
-                .currentUsage(100)
                 .transactionId(1)
                 .accountId(null)
                 .build();
@@ -190,7 +163,6 @@ class BudgetEntityTest {
                 .name("Test Budget")
                 .maximumAllowed(1000)
                 .interval(BudgetInterval.MONTHLY)
-                .currentUsage(100)
                 .transactionId(1)
                 .accountId(1)
                 .build();

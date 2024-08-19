@@ -2,33 +2,35 @@ package org.java.mentorship.budget.exception.domain;
 
 import org.junit.jupiter.api.Test;
 
+import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.Arrays;
+import java.util.List;
 
 class ErrorResponseTest {
 
     @Test
-    void constructorShouldSetErrorMessageCorrectly() {
+    void constructorShouldSetErrorsCorrectlyFromList() {
         // Given
-        String expectedErrorMessage = "This is an error message.";
+        List<String> errorList = Arrays.asList("Error 1", "Error 2");
 
         // When
-        ErrorResponse errorResponse = new ErrorResponse(expectedErrorMessage);
+        ErrorResponse errorResponse = new ErrorResponse(errorList);
 
         // Then
-        assertEquals(expectedErrorMessage, errorResponse.getErrorMessage());
+        assertEquals(errorList, errorResponse.getErrors());
     }
 
     @Test
-    void setterShouldUpdateErrorMessage() {
+    void constructorShouldSetErrorCorrectlyFromSingleString() {
         // Given
-        ErrorResponse errorResponse = new ErrorResponse("Initial error message.");
-        String updatedErrorMessage = "Updated error message.";
+        String errorMessage = "Single error message";
 
         // When
-        errorResponse.setErrorMessage(updatedErrorMessage);
+        ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 
         // Then
-        assertEquals(updatedErrorMessage, errorResponse.getErrorMessage());
+        assertEquals(singletonList(errorMessage), errorResponse.getErrors());
     }
 
     @Test
@@ -41,7 +43,7 @@ class ErrorResponseTest {
 
         // Then
         assertTrue(result.contains("ErrorResponse"));
-        assertTrue(result.contains("errorMessage=Error message"));
+        assertTrue(result.contains("errors=[Error message]"));
     }
 
     @Test
@@ -51,15 +53,15 @@ class ErrorResponseTest {
         ErrorResponse errorResponse2 = new ErrorResponse("Error message");
 
         // Then
-        assertEquals(errorResponse1, errorResponse2);  // Should be equal based on the same error message
+        assertEquals(errorResponse1, errorResponse2);  // Should be equal based on the same error list
         assertEquals(errorResponse1.hashCode(), errorResponse2.hashCode());  // Hash codes should also be equal
     }
 
     @Test
-    void notEqualsWhenDifferentErrorMessages() {
+    void notEqualsWhenDifferentErrorLists() {
         // Given
-        ErrorResponse errorResponse1 = new ErrorResponse("Error message 1");
-        ErrorResponse errorResponse2 = new ErrorResponse("Error message 2");
+        ErrorResponse errorResponse1 = new ErrorResponse(Arrays.asList("Error message 1"));
+        ErrorResponse errorResponse2 = new ErrorResponse(Arrays.asList("Error message 2"));
 
         // Then
         assertNotEquals(errorResponse1, errorResponse2);  // Different error messages should make them unequal

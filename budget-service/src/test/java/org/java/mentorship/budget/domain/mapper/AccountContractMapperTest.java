@@ -8,6 +8,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AccountContractMapperTest {
+    @Test
+    void accountContractMapperClassInstantiation() {
+        AccountContractMapper mapper = new AccountContractMapper();
+        assertNotNull(mapper);
+    }
 
     @Test
     void entityToContractShouldMapFieldsCorrectly() {

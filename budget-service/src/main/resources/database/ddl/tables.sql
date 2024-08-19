@@ -32,7 +32,6 @@ CREATE TABLE budgets (
                          name VARCHAR(100) NOT NULL,
                          maximum_allowed INT NOT NULL,
                          budget_interval VARCHAR(50) NOT NULL,
-                         current_usage INT NOT NULL,
                          transaction_id INT NOT NULL,
                          account_id INT NOT NULL,
                          PRIMARY KEY(id),

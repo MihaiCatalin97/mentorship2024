@@ -8,6 +8,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BudgetContractMapperTest {
+    @Test
+    void budgetContractMapperClassInstantiation() {
+        BudgetContractMapper mapper = new BudgetContractMapper();
+        assertNotNull(mapper);
+    }
 
     @Test
     void entityToContractShouldMapFieldsCorrectly() {
@@ -18,7 +23,6 @@ class BudgetContractMapperTest {
         budgetEntity.setName("Annual Budget");
         budgetEntity.setMaximumAllowed(5000);
         budgetEntity.setInterval(BudgetInterval.MONTHLY);
-        budgetEntity.setCurrentUsage(1200);
         budgetEntity.setTransactionId(200);
         budgetEntity.setAccountId(300);
 
@@ -32,7 +36,6 @@ class BudgetContractMapperTest {
         assertEquals("Annual Budget", budgetContract.getName());
         assertEquals(5000, budgetContract.getMaximumAllowed());
         assertEquals(BudgetInterval.MONTHLY, budgetContract.getInterval());
-        assertEquals(1200, budgetContract.getCurrentUsage());
         assertEquals(200, budgetContract.getTransactionId());
         assertEquals(300, budgetContract.getAccountId());
     }
@@ -46,7 +49,6 @@ class BudgetContractMapperTest {
         budgetContract.setName("Annual Budget");
         budgetContract.setMaximumAllowed(5000);
         budgetContract.setInterval(BudgetInterval.MONTHLY);
-        budgetContract.setCurrentUsage(1200);
         budgetContract.setTransactionId(200);
         budgetContract.setAccountId(300);
 
@@ -60,7 +62,6 @@ class BudgetContractMapperTest {
         assertEquals("Annual Budget", budgetEntity.getName());
         assertEquals(5000, budgetEntity.getMaximumAllowed());
         assertEquals(BudgetInterval.MONTHLY, budgetEntity.getInterval());
-        assertEquals(1200, budgetEntity.getCurrentUsage());
         assertEquals(200, budgetEntity.getTransactionId());
         assertEquals(300, budgetEntity.getAccountId());
     }

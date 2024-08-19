@@ -36,10 +36,6 @@ public class BudgetEntity {
     @NotNull(message = "Field 'interval' must not be null")
     private BudgetInterval interval;
 
-    @NotNull(message = "Field 'currentUsage' must not be null")
-    @Min(value = 0, message = "Field 'currentUsage' must be at least 0")
-    private Integer currentUsage;
-
     @NotNull(message = "Field 'transactionId' must not be null")
     @Min(value = 1, message = "Field 'transactionId' must be greater than 0")
     private Integer transactionId;

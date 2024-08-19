@@ -54,7 +54,6 @@ class BudgetRepositoryTest {
         budget.setName("New Monthly Budget");
         budget.setMaximumAllowed(2000);
         budget.setInterval(BudgetInterval.MONTHLY); // Assuming you have a BudgetInterval enum
-        budget.setCurrentUsage(500);
         budget.setTransactionId(1);
         budget.setAccountId(1);
 

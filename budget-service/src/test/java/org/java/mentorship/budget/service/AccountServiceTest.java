@@ -3,7 +3,6 @@ package org.java.mentorship.budget.service;
 import org.java.mentorship.budget.domain.BankAccountEntity;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
 import org.java.mentorship.budget.persistence.AccountRepository;
-import org.java.mentorship.budget.validation.AccountValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,9 +24,6 @@ class AccountServiceTest {
     @Mock
     private AccountRepository repository;
 
-    @Mock
-    private AccountValidator validator;
-
     @Test
     void saveShouldValidateAndSaveAccount() {
         BankAccountEntity bankAccountEntity = new BankAccountEntity();
@@ -35,7 +31,6 @@ class AccountServiceTest {
 
         accountService.save(bankAccountEntity);
 
-        verify(validator).validate(bankAccountEntity);
         verify(repository).save(bankAccountEntity);
     }
 
@@ -78,7 +73,6 @@ class AccountServiceTest {
 
         accountService.update(bankAccountEntity);
 
-        verify(validator).validate(bankAccountEntity);
         verify(repository).findById(1);
         verify(repository).update(bankAccountEntity);
     }

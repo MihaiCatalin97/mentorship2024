@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.java.mentorship.budget.domain.TransactionEntity;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
 import org.java.mentorship.budget.persistence.TransactionRepository;
-import org.java.mentorship.budget.validation.TransactionValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +13,8 @@ import java.util.List;
 public class TransactionService {
 
     private final TransactionRepository repository;
-    private final TransactionValidator validator;
 
     public TransactionEntity save(final TransactionEntity transactionEntity) {
-        validator.validate(transactionEntity);
         return repository.save(transactionEntity);
     }
 
@@ -34,7 +31,6 @@ public class TransactionService {
     }
 
     public TransactionEntity update(final TransactionEntity transactionEntity) {
-        validator.validate(transactionEntity);
         TransactionEntity existingTransaction = repository.findById(transactionEntity.getId());
         if (existingTransaction == null) {
             throw new NoEntityFoundException("Transaction with id " + transactionEntity.getId() + " not found");

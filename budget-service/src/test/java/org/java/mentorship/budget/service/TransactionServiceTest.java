@@ -3,7 +3,6 @@ package org.java.mentorship.budget.service;
 import org.java.mentorship.budget.domain.TransactionEntity;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
 import org.java.mentorship.budget.persistence.TransactionRepository;
-import org.java.mentorship.budget.validation.TransactionValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,9 +24,6 @@ class TransactionServiceTest {
     @Mock
     private TransactionRepository repository;
 
-    @Mock
-    private TransactionValidator validator;
-
     @Test
     void saveShouldValidateAndSaveTransaction() {
         TransactionEntity transactionEntity = new TransactionEntity();
@@ -36,7 +32,6 @@ class TransactionServiceTest {
         TransactionEntity result = transactionService.save(transactionEntity);
 
         assertEquals(transactionEntity, result);
-        verify(validator).validate(transactionEntity);
         verify(repository).save(transactionEntity);
     }
 
@@ -80,7 +75,6 @@ class TransactionServiceTest {
         TransactionEntity result = transactionService.update(transactionEntity);
 
         assertEquals(transactionEntity, result);
-        verify(validator).validate(transactionEntity);
         verify(repository).findById(1);
         verify(repository).update(transactionEntity);
     }
