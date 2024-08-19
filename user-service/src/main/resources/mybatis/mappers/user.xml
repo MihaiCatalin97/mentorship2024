@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "org.java.mentorship.user.repository.UserRepository">
+    <select id="find">
+        SELECT * FROM users
+    </select>
+
+    <select id="findById">
+        SELECT * FROM users where id = #{id}
+    </select>
+
+    <select id="findByEmail">
+        SELECT * FROM users where email = #{email}
+    </select>
+
+    <insert id="insert" parameterType="UserEntity">
+        INSERT INTO users(email, first_name, last_name, hashed_password, verification_token)
+        VALUES (#{email}, #{firstName}, #{lastName}, #{hashedPassword}, #{verificationToken})
+    </insert>
+
+    <update id="setUserVerifiedStatus">
+        UPDATE users SET verified = #{verified} WHERE id = #{id}
+    </update>
+</mapper>

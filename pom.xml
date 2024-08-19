@@ -30,6 +30,7 @@
         <surefire.version>3.2.5</surefire.version>
         <junit.version>5.10.2</junit.version>
         <mockito.version>5.11.0</mockito.version>
+        <h2.version>2.3.232</h2.version>
 
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -64,6 +65,11 @@
                 <artifactId>spring-cloud-starter-openfeign</artifactId>
                 <version>${spring.openfeign.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-validation</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
 
             <!-- Test Dependencies -->
             <dependency>
@@ -95,6 +101,12 @@
                 <artifactId>spring-boot-starter-test</artifactId>
                 <scope>test</scope>
                 <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <scope>test</scope>
+                <version>${h2.version}</version>
             </dependency>
 
             <!-- Internal dependencies -->
@@ -129,6 +141,16 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
