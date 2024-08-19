@@ -63,7 +63,7 @@ public class NotificationController {
     }
 
     @PostMapping("/notifications/{id}/read")
-    public ResponseEntity<Notification> postNotificationMarkAsRead(@PathVariable(name = "id")Integer id) {
+    public ResponseEntity<Notification> postNotificationMarkAsRead(@PathVariable(name = "id") Integer id) {
         return ResponseEntity.ok(notificationService.markAsRead(id));
     }
 

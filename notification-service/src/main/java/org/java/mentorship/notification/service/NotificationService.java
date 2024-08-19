@@ -2,7 +2,6 @@ package org.java.mentorship.notification.service;
 
 import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.notification.domain.NotificationEntity;
-import org.java.mentorship.notification.mapper.NotificationRowMapper;
 import org.java.mentorship.notification.mapper.NotificationToContract;
 import org.java.mentorship.notification.repository.NotificationChannelRepository;
 import org.java.mentorship.notification.repository.NotificationRepository;
@@ -27,13 +26,12 @@ public class NotificationService {
 
     public List<Notification> getWebNotifications(Map<String, Object> params) {
         List<NotificationEntity> notificationEntities = notificationRepository.getNotifications(params);
-//        return notificationEntities.stream()
-//                .map(it -> {
-//                    it.setChannels(notificationChannelRepository.getNotificationsById(it.getId()));
-//                    return convert(it);
-//                })
-//                .collect(Collectors.toList());
-       return notificationEntities.stream().map(NotificationToContract::convert).collect(Collectors.toList());
+        return notificationEntities.stream()
+                .map(it -> {
+                    it.setChannels(notificationChannelRepository.getNotificationsById(it.getId()));
+                    return convert(it);
+                })
+                .collect(Collectors.toList());
     }
 
     public Notification createNotification(NotificationEntity notification) {
@@ -75,10 +73,10 @@ public class NotificationService {
     }
 
 
-    public List<Notification> getWebNotificationsByUser(Integer userId) {
-         return notificationRepository.getWebNotificationsByUser(userId)
-                 .stream()
-                 .map(it -> convert(it))
-                 .collect(Collectors.toList());
-    }
+//    public List<Notification> getWebNotificationsByUser(Integer userId) {
+//         return notificationRepository.getWebNotificationsByUser(userId)
+//                 .stream()
+//                 .map(it -> convert(it))
+//                 .collect(Collectors.toList());
+//    }
 }

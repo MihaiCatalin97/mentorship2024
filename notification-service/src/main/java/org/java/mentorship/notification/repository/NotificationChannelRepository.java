@@ -1,6 +1,5 @@
 package org.java.mentorship.notification.repository;
 
-import org.java.mentorship.notification.domain.NotificationEntity;
 import org.java.mentorship.notification.domain.enums.NotificationChannel;
 import org.java.mentorship.notification.mapper.NotificationChannelRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.OffsetDateTime;
-
 import java.util.Map;
 
 @Component
@@ -30,7 +29,8 @@ public class NotificationRowMapper implements RowMapper<NotificationEntity> {
 
         try {
             String payloadJson = rs.getString("payload");
-            Map<String, Object> payload = objectMapper.readValue(payloadJson, new TypeReference<Map<String, Object>>() {});
+            Map<String, Object> payload = objectMapper.readValue(payloadJson, new TypeReference<Map<String, Object>>() {
+            });
             notification.setPayload(payload);
         } catch (Exception e) {
             throw new SQLException("Failed to map to JSON fields", e);

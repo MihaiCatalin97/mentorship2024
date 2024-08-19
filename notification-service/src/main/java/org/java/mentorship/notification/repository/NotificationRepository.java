@@ -1,7 +1,8 @@
 package org.java.mentorship.notification.repository;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.java.mentorship.notification.domain.NotificationEntity;
-import org.java.mentorship.notification.mapper.NotificationRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -43,20 +44,20 @@ public class NotificationRepository {
                 "  n.id = ?;", notificationRowMapper, id);
     }
 
-//    public Notification updateNotification(Integer id, Notification notification) {
-//        // search and update
-//        notification.setMarkedAsRead(true);
-//        return notification;
-//    }
-
     public NotificationEntity create(NotificationEntity notification) {
+        String paylodJson;
+        try{
+            paylodJson = new ObjectMapper().writeValueAsString(notification.getPayload());
+        }catch (JsonProcessingException e){
+            throw new RuntimeException(e);
+        }
         jdbcTemplate.update("INSERT INTO notifications (user_id, email, marked_as_read, created_at, payload, type) " +
-                "VALUES (?,?,?,?,?,?)",
+                        "VALUES (?,?,?,?,?,?)",
                 notification.getUserId(),
                 notification.getEmail(),
                 notification.getMarkedAsRead(),
                 notification.getCreatedAt(),
-                String.valueOf(notification.getPayload()),
+                paylodJson,
                 String.valueOf(notification.getType()));
         return notification;
     }
@@ -72,8 +73,8 @@ public class NotificationRepository {
         return notification;
     }
 
-    public List<NotificationEntity> getWebNotificationsByUser(Integer userId) {
-        String sql = "SELECT * FROM notifications WHERE user_id = ? AND type @> '[\"WEB\"]'";
-        return jdbcTemplate.query(sql, new Object[]{userId}, new NotificationRowMapper());
-    }
+//    public List<NotificationEntity> getWebNotificationsByUser(Integer userId) {
+//        String sql = "SELECT * FROM notifications WHERE user_id = ? AND type @> '[\"WEB\"]'";
+//        return jdbcTemplate.query(sql, new Object[]{userId}, new NotificationRowMapper());
+//    }
 }
