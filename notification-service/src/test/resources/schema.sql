@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS notifications_channels;
+DROP TABLE IF EXISTS notifications;
+
 CREATE TABLE notifications
 (
     id             INT GENERATED ALWAYS AS IDENTITY,

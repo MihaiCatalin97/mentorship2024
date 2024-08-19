@@ -62,6 +62,7 @@ public class NotificationRepository {
         return notification;
     }
 
+
     public boolean deleteNotification(Integer id) {
         jdbcTemplate.update("DELETE FROM notifications WHERE id = ?", id);
         return true;

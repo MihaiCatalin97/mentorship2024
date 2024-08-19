@@ -28,19 +28,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         NotificationRowMapper.class
 })
 @Sql({
+        "classpath:schema.sql",
         "classpath:testData.sql"
 })
 public class NotificationRepositoryTest {
 
     @Autowired
     private NotificationRepository notificationRepository;
-
-    @BeforeAll
-    public static void initTest() throws SQLException {
-        Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8083")
-                .start();
-    }
-
 
     @Test
     void getNotificationsShouldReturnAllDatabaseEntities() {
@@ -62,18 +56,10 @@ public class NotificationRepositoryTest {
         assertEquals(2, result.size());
     }
 
-
-
     @Test
     void deleteShouldRemoveANewEntityFromDatabase() {
-        NotificationEntity notificationEntity = new NotificationEntity(6, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName","fname"), true, OffsetDateTime.now());
-
-        Boolean result = notificationRepository.deleteNotification(notificationEntity.getId());
-
+        boolean result = notificationRepository.deleteNotification(1);
         assertTrue(result);
     }
-
-
-
 
 }
