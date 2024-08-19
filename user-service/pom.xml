@@ -14,7 +14,6 @@
     <properties>
         <application.mainClass>org.java.mentorship.user.UserApplication</application.mainClass>
         <mybatis.version>3.0.3</mybatis.version>
-        <h2.version>2.3.232</h2.version>
     </properties>
 
     <dependencies>
@@ -51,12 +50,6 @@
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter-test</artifactId>
             <version>${mybatis.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
