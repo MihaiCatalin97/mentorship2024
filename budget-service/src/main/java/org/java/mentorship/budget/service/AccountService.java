@@ -1,7 +1,7 @@
 package org.java.mentorship.budget.service;
 
 import lombok.RequiredArgsConstructor;
-import org.java.mentorship.budget.domain.AccountEntity;
+import org.java.mentorship.budget.domain.BankAccountEntity;
 import org.java.mentorship.budget.persistence.AccountRepository;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
 import org.java.mentorship.budget.validation.AccountValidator;
@@ -16,38 +16,38 @@ public class AccountService {
     private final AccountRepository repository;
     private final AccountValidator validator;
 
-    public AccountEntity save(final AccountEntity accountEntity) {
-        validator.validate(accountEntity);
-        return repository.save(accountEntity);
+    public BankAccountEntity save(final BankAccountEntity bankAccountEntity) {
+        validator.validate(bankAccountEntity);
+        return repository.save(bankAccountEntity);
     }
 
-    public List<AccountEntity> findAll() {
+    public List<BankAccountEntity> findAll() {
         return repository.findAll();
     }
 
-    public AccountEntity findById(final Integer id) {
-        AccountEntity accountEntity = repository.findById(id);
-        if (accountEntity == null) {
+    public BankAccountEntity findById(final Integer id) {
+        BankAccountEntity bankAccountEntity = repository.findById(id);
+        if (bankAccountEntity == null) {
             throw new NoEntityFoundException("Account with id " + id + " not found");
         }
-        return accountEntity;
+        return bankAccountEntity;
     }
 
-    public AccountEntity update(final AccountEntity accountEntity) {
-        validator.validate(accountEntity);
-        AccountEntity existingAccount = repository.findById(accountEntity.getId());
+    public BankAccountEntity update(final BankAccountEntity bankAccountEntity) {
+        validator.validate(bankAccountEntity);
+        BankAccountEntity existingAccount = repository.findById(bankAccountEntity.getId());
         if (existingAccount == null) {
-            throw new NoEntityFoundException("Account with id " + accountEntity.getId() + " not found");
+            throw new NoEntityFoundException("Account with id " + bankAccountEntity.getId() + " not found");
         }
-        return repository.update(accountEntity);
+        return repository.update(bankAccountEntity);
     }
 
-    public AccountEntity delete(final Integer id) {
-        AccountEntity accountEntity = repository.findById(id);
-        if (accountEntity == null) {
+    public BankAccountEntity delete(final Integer id) {
+        BankAccountEntity bankAccountEntity = repository.findById(id);
+        if (bankAccountEntity == null) {
             throw new NoEntityFoundException("Account with id " + id + " not found");
         }
         repository.delete(id);
-        return accountEntity;
+        return bankAccountEntity;
     }
 }

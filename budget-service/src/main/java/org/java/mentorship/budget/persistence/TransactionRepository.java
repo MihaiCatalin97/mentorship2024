@@ -17,7 +17,7 @@ public class TransactionRepository {
 
     public TransactionEntity save(final TransactionEntity transactionEntity) {
         jdbcTemplate.update(
-                "INSERT INTO transactions (user_id, type, value, description, account_id, timestamp) VALUES(?,?,?,?,?,?)",
+                "INSERT INTO transactions (user_id, type, transaction_value, description, account_id, timestamp) VALUES(?,?,?,?,?,?)",
                 transactionEntity.getUserId(),
                 transactionEntity.getType().name(),
                 transactionEntity.getValue(),
@@ -42,8 +42,7 @@ public class TransactionRepository {
 
     public TransactionEntity update(final TransactionEntity transactionEntity) {
         jdbcTemplate.update(
-                "UPDATE transactions SET user_id = ?, type = ?, value = ?, description = ?, account_id = ?, timestamp = ? WHERE id = ?",
-                transactionEntity.getUserId(),
+                "UPDATE transactions SET type = ?, transaction_value = ?, description = ?, account_id = ?, timestamp = ? WHERE id = ?",
                 transactionEntity.getType().name(),
                 transactionEntity.getValue(),
                 transactionEntity.getDescription(),
@@ -54,11 +53,10 @@ public class TransactionRepository {
         return transactionEntity;
     }
 
+
     public TransactionEntity delete(final Integer id) {
         TransactionEntity transactionEntity = findById(id);
-        if (transactionEntity != null) {
-            jdbcTemplate.update("DELETE FROM transactions WHERE id = ?", id);
-        }
+        jdbcTemplate.update("DELETE FROM transactions WHERE id = ?", id);
         return transactionEntity;
     }
 }

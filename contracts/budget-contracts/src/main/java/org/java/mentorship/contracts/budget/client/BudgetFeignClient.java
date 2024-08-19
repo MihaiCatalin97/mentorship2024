@@ -27,13 +27,6 @@ public interface BudgetFeignClient {
     Budget getBudgetById(@PathVariable("id") Integer id);
 
     @RequestMapping(
-            method = RequestMethod.GET,
-            value = "/budgets",
-            params = "userId"
-    )
-    List<Budget> getBudgetsByUserId(@RequestParam("userId") Integer userId);
-
-    @RequestMapping(
             method = RequestMethod.POST,
             value = "/budgets"
     )

@@ -4,7 +4,7 @@ import org.java.mentorship.budget.domain.TransactionEntity;
 import org.java.mentorship.budget.exception.FieldIsNullException;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import static java.util.Objects.isNull;
 
@@ -48,7 +48,7 @@ public class TransactionValidator {
         if (isNull(transaction.getTimestamp())) {
             throw new FieldIsNullException("timestamp");
         }
-        if (transaction.getTimestamp().isAfter(LocalDateTime.now())) {
+        if (transaction.getTimestamp().isAfter(OffsetDateTime.now())) {
             throw new IllegalArgumentException("Field 'timestamp' cannot be in the future");
         }
     }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Component
 public class TransactionRowMapper implements RowMapper<TransactionEntity> {
@@ -19,12 +19,12 @@ public class TransactionRowMapper implements RowMapper<TransactionEntity> {
         transactionEntity.setId(rs.getInt("id"));
         transactionEntity.setUserId(rs.getInt("user_id"));
         transactionEntity.setType(TransactionType.valueOf(rs.getString("type")));
-        transactionEntity.setValue(rs.getInt("value"));
+        transactionEntity.setValue(rs.getInt("transaction_value"));
         transactionEntity.setDescription(rs.getString("description"));
         transactionEntity.setAccountId(rs.getInt("account_id"));
 
-        // Convert SQL timestamp to LocalDateTime
-        transactionEntity.setTimestamp(rs.getObject("timestamp", LocalDateTime.class));
+        // Convert SQL timestamp to OffsetDateTime
+        transactionEntity.setTimestamp(rs.getObject("timestamp", OffsetDateTime.class));
 
         return transactionEntity;
     }

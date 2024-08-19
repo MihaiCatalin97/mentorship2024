@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.HttpStatus.ACCEPTED;
+import static org.springframework.http.HttpStatus.CREATED;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/transactions")
@@ -21,12 +24,12 @@ public class TransactionController {
 
     @GetMapping
     public ResponseEntity<List<Transaction>> getAllTransactions() {
-        List<TransactionEntity> transactionEntities = transactionService.findAll();
-        List<Transaction> transactions = transactionEntities.stream()
+        List<Transaction> transactions = transactionService.findAll().stream()
                 .map(TransactionContractMapper::entityToContract)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(transactions);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Transaction> getTransactionById(@PathVariable("id") Integer id) {
@@ -40,7 +43,7 @@ public class TransactionController {
         TransactionEntity transactionEntity = TransactionContractMapper.contractToEntity(transaction);
         TransactionEntity savedTransaction = transactionService.save(transactionEntity);
         Transaction createdTransaction = TransactionContractMapper.entityToContract(savedTransaction);
-        return ResponseEntity.status(201).body(createdTransaction);
+        return ResponseEntity.status(ACCEPTED).body(createdTransaction);
     }
 
     @PutMapping("/{id}")
@@ -54,12 +57,9 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<TransactionEntity> deleteTransaction(@PathVariable("id") Integer id) {
+    public ResponseEntity<Transaction> deleteTransaction(@PathVariable("id") Integer id) {
         TransactionEntity deletedTransaction = transactionService.delete(id);
-        if (deletedTransaction == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(deletedTransaction);
+        Transaction transaction = TransactionContractMapper.entityToContract(deletedTransaction);
+        return ResponseEntity.ok(transaction);
     }
-
 }

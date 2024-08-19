@@ -4,11 +4,17 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.java.mentorship.contracts.budget.dto.BudgetInterval;
 
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class BudgetEntity {
 
     @NotNull(message = "Field 'id' must not be null")

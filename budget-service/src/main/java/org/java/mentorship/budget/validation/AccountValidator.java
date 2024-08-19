@@ -1,6 +1,6 @@
 package org.java.mentorship.budget.validation;
 
-import org.java.mentorship.budget.domain.AccountEntity;
+import org.java.mentorship.budget.domain.BankAccountEntity;
 import org.java.mentorship.budget.exception.FieldIsNullException;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +9,7 @@ import static java.util.Objects.isNull;
 @Component
 public class AccountValidator {
 
-    public void validate(final AccountEntity account) {
+    public void validate(final BankAccountEntity account) {
         if (isNull(account.getId())) {
             throw new FieldIsNullException("id");
         }

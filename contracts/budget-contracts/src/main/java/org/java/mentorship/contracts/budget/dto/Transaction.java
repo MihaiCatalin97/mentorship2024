@@ -4,11 +4,17 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Transaction {
 
     @NotNull(message = "Field 'id' must not be null")
@@ -35,5 +41,5 @@ public class Transaction {
     private Integer accountId;
 
     @NotNull(message = "Field 'timestamp' must not be null")
-    private LocalDateTime timestamp;
+    private OffsetDateTime timestamp;
 }

@@ -17,7 +17,7 @@ public class BudgetRepository {
 
     public BudgetEntity save(final BudgetEntity budgetEntity) {
         jdbcTemplate.update(
-                "INSERT INTO budgets (user_id, name, maximum_allowed, interval, current_usage, transaction_id, account_id) VALUES(?,?,?,?,?,?,?)",
+                "INSERT INTO budgets (user_id, name, maximum_allowed, budget_interval, current_usage, transaction_id, account_id) VALUES(?,?,?,?,?,?,?)",
                 budgetEntity.getUserId(),
                 budgetEntity.getName(),
                 budgetEntity.getMaximumAllowed(),
@@ -43,8 +43,7 @@ public class BudgetRepository {
 
     public BudgetEntity update(final BudgetEntity budgetEntity) {
         jdbcTemplate.update(
-                "UPDATE budgets SET user_id = ?, name = ?, maximum_allowed = ?, interval = ?, current_usage = ?, transaction_id = ?, account_id = ? WHERE id = ?",
-                budgetEntity.getUserId(),
+                "UPDATE budgets SET name = ?, maximum_allowed = ?, budget_interval = ?, current_usage = ?, transaction_id = ?, account_id = ? WHERE id = ?",
                 budgetEntity.getName(),
                 budgetEntity.getMaximumAllowed(),
                 budgetEntity.getInterval().name(),
@@ -58,9 +57,7 @@ public class BudgetRepository {
 
     public BudgetEntity delete(final Integer id) {
         BudgetEntity budgetEntity = findById(id);
-        if (budgetEntity != null) {
-            jdbcTemplate.update("DELETE FROM budgets WHERE id = ?", id);
-        }
+        jdbcTemplate.update("DELETE FROM budgets WHERE id = ?", id);
         return budgetEntity;
     }
 }

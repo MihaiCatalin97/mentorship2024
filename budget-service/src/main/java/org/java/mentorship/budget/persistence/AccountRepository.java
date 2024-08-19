@@ -1,7 +1,7 @@
 package org.java.mentorship.budget.persistence;
 
 import lombok.RequiredArgsConstructor;
-import org.java.mentorship.budget.domain.AccountEntity;
+import org.java.mentorship.budget.domain.BankAccountEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -13,25 +13,25 @@ import java.util.List;
 public class AccountRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<AccountEntity> rowMapper;
+    private final RowMapper<BankAccountEntity> rowMapper;
 
-    public AccountEntity save(final AccountEntity accountEntity) {
+    public BankAccountEntity save(final BankAccountEntity bankAccountEntity) {
         jdbcTemplate.update(
                 "INSERT INTO accounts (user_id, name, type, balance, currency) VALUES(?,?,?,?,?)",
-                accountEntity.getUserId(),
-                accountEntity.getName(),
-                accountEntity.getType().name(),
-                accountEntity.getBalance(),
-                accountEntity.getCurrency()
+                bankAccountEntity.getUserId(),
+                bankAccountEntity.getName(),
+                bankAccountEntity.getType().name(),
+                bankAccountEntity.getBalance(),
+                bankAccountEntity.getCurrency()
         );
-        return accountEntity;
+        return bankAccountEntity;
     }
 
-    public List<AccountEntity> findAll() {
+    public List<BankAccountEntity> findAll() {
         return jdbcTemplate.query("SELECT * FROM accounts", rowMapper);
     }
 
-    public AccountEntity findById(final Integer id) {
+    public BankAccountEntity findById(final Integer id) {
         return jdbcTemplate.queryForObject(
                 "SELECT * FROM accounts WHERE id = ?",
                 new Object[]{id},
@@ -39,10 +39,9 @@ public class AccountRepository {
         );
     }
 
-    public AccountEntity update(final AccountEntity accountEntity) {
+    public BankAccountEntity update(final BankAccountEntity accountEntity) {
         jdbcTemplate.update(
-                "UPDATE accounts SET user_id = ?, name = ?, type = ?, balance = ?, currency = ? WHERE id = ?",
-                accountEntity.getUserId(),
+                "UPDATE accounts SET name = ?, type = ?, balance = ?, currency = ? WHERE id = ?",
                 accountEntity.getName(),
                 accountEntity.getType().name(),
                 accountEntity.getBalance(),
@@ -52,11 +51,10 @@ public class AccountRepository {
         return accountEntity;
     }
 
-    public AccountEntity delete(final Integer id) {
-        AccountEntity accountEntity = findById(id);
-        if (accountEntity != null) {
-            jdbcTemplate.update("DELETE FROM accounts WHERE id = ?", id);
-        }
-        return accountEntity;
+
+    public BankAccountEntity delete(final Integer id) {
+        BankAccountEntity bankAccountEntity = findById(id);
+        jdbcTemplate.update("DELETE FROM accounts WHERE id = ?", id);
+        return bankAccountEntity;
     }
 }

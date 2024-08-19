@@ -1,33 +1,33 @@
 package org.java.mentorship.budget.domain.mapper;
 
-import org.java.mentorship.budget.domain.AccountEntity;
+import org.java.mentorship.budget.domain.BankAccountEntity;
 import org.java.mentorship.contracts.budget.dto.Account;
 
 public class AccountContractMapper {
 
-    public static Account entityToContract(AccountEntity accountEntity) {
+    public static Account entityToContract(BankAccountEntity bankAccountEntity) {
         Account accountContract = new Account();
 
-        accountContract.setId(accountEntity.getId());
-        accountContract.setUserId(accountEntity.getUserId());
-        accountContract.setName(accountEntity.getName());
-        accountContract.setType(accountEntity.getType());
-        accountContract.setBalance(accountEntity.getBalance());
-        accountContract.setCurrency(accountEntity.getCurrency());
+        accountContract.setId(bankAccountEntity.getId());
+        accountContract.setUserId(bankAccountEntity.getUserId());
+        accountContract.setName(bankAccountEntity.getName());
+        accountContract.setType(bankAccountEntity.getType());
+        accountContract.setBalance(bankAccountEntity.getBalance());
+        accountContract.setCurrency(bankAccountEntity.getCurrency());
 
         return accountContract;
     }
 
-    public static AccountEntity contractToEntity(Account accountContract) {
-        AccountEntity accountEntity = new AccountEntity();
+    public static BankAccountEntity contractToEntity(Account accountContract) {
+        BankAccountEntity bankAccountEntity = new BankAccountEntity();
 
-        accountEntity.setId(accountContract.getId());
-        accountEntity.setUserId(accountContract.getUserId());
-        accountEntity.setName(accountContract.getName());
-        accountEntity.setType(accountContract.getType());
-        accountEntity.setBalance(accountContract.getBalance());
-        accountEntity.setCurrency(accountContract.getCurrency());
+        bankAccountEntity.setId(accountContract.getId());
+        bankAccountEntity.setUserId(accountContract.getUserId());
+        bankAccountEntity.setName(accountContract.getName());
+        bankAccountEntity.setType(accountContract.getType());
+        bankAccountEntity.setBalance(accountContract.getBalance());
+        bankAccountEntity.setCurrency(accountContract.getCurrency());
 
-        return accountEntity;
+        return bankAccountEntity;
     }
 }
