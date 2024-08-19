@@ -35,7 +35,6 @@ class SessionControllerTest {
         LoginRequest loginRequest = LoginRequest.builder()
                 .email("admin@localhost")
                 .password("Password").build();
-
         when(sessionService.createSession(loginRequest)).thenReturn(
                 Optional.of(SessionEntity.builder().id(123).build())
         );
@@ -52,10 +51,7 @@ class SessionControllerTest {
         LoginRequest loginRequest = LoginRequest.builder()
                 .email("admin@localhost")
                 .password("Password").build();
-
-        when(sessionService.createSession(loginRequest)).thenReturn(
-                Optional.empty()
-        );
+        when(sessionService.createSession(loginRequest)).thenReturn(Optional.empty());
 
         ResponseEntity<SessionWithKey> response = sessionController.createSession(loginRequest);
 
@@ -68,6 +64,7 @@ class SessionControllerTest {
         when(sessionService.find(1, true)).thenReturn(
                 Collections.singletonList(SessionEntity.builder().build())
         );
+
         ResponseEntity<List<Session>> response = sessionController.getSessions(1, true);
 
         assertEquals(200, response.getStatusCode().value());

@@ -25,8 +25,9 @@ class RestValidatorHandlerTest {
         MethodArgumentNotValidException exception = mock(MethodArgumentNotValidException.class);
         HttpServletRequest request = mock(HttpServletRequest.class);
         BindingResult bindingResult = mock(BindingResult.class);
-
-        when(bindingResult.getFieldErrors()).thenReturn(Collections.singletonList(new FieldError("object", "name", "Name should not be empty")));
+        when(bindingResult.getFieldErrors()).thenReturn(
+                Collections.singletonList(new FieldError("object", "name", "Name should not be empty"))
+        );
         when(exception.getBindingResult()).thenReturn(bindingResult);
 
         ResponseEntity<UserServiceError> responseEntity = handler.handleException(exception, request);
