@@ -8,7 +8,7 @@ CREATE TABLE notifications
     email          VARCHAR(255),
     marked_as_read BOOLEAN DEFAULT FALSE,
     created_at     TIMESTAMP NOT NULL,
-    payload        VARCHAR(255),
+    payload        VARCHAR(255) NOT NULL,
     type           VARCHAR(255),
     PRIMARY KEY (id)
 );

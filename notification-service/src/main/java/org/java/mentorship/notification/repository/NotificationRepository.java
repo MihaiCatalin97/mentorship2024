@@ -2,6 +2,7 @@ package org.java.mentorship.notification.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.java.mentorship.notification.config.JacksonConfig;
 import org.java.mentorship.notification.domain.NotificationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,6 +23,8 @@ public class NotificationRepository {
     @Autowired
     private RowMapper<NotificationEntity> notificationRowMapper;
 
+    @Autowired
+    private ObjectMapper objectMapper;
 
     public List<NotificationEntity> getNotifications(Map<String, Object> params) {
         String sql = "SELECT * FROM notifications " + getSQL(params);
@@ -29,28 +32,18 @@ public class NotificationRepository {
     }
 
     public NotificationEntity getNotificationById(Integer id) {
-        return jdbcTemplate.queryForObject("SELECT \n" +
-                "    n.*, \n" +
-                "    (SELECT \n" +
-                "         json_agg(nc.channel) \n" +
-                "     FROM \n" +
-                "         notifications_channels nc \n" +
-                "     WHERE \n" +
-                "         nc.notification_id = n.id\n" +
-                "    ) AS channels\n" +
-                "FROM \n" +
-                "    notifications n\n" +
-                "WHERE\n" +
-                "  n.id = ?;", notificationRowMapper, id);
+        return jdbcTemplate.queryForObject("SELECT * FROM notifications WHERE id = ?", notificationRowMapper, id);
     }
 
     public NotificationEntity create(NotificationEntity notification) {
         String paylodJson;
         try{
-            paylodJson = new ObjectMapper().writeValueAsString(notification.getPayload());
+            paylodJson = objectMapper.writeValueAsString(notification.getPayload());
+            System.out.println(notification.getPayload());
         }catch (JsonProcessingException e){
             throw new RuntimeException(e);
         }
+        System.out.println(paylodJson);
         jdbcTemplate.update("INSERT INTO notifications (user_id, email, marked_as_read, created_at, payload, type) " +
                         "VALUES (?,?,?,?,?,?)",
                 notification.getUserId(),
@@ -74,8 +67,4 @@ public class NotificationRepository {
         return notification;
     }
 
-//    public List<NotificationEntity> getWebNotificationsByUser(Integer userId) {
-//        String sql = "SELECT * FROM notifications WHERE user_id = ? AND type @> '[\"WEB\"]'";
-//        return jdbcTemplate.query(sql, new Object[]{userId}, new NotificationRowMapper());
-//    }
 }

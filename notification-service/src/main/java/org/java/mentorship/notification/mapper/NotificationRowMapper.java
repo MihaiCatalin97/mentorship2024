@@ -1,5 +1,6 @@
 package org.java.mentorship.notification.mapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.java.mentorship.notification.domain.NotificationEntity;
@@ -26,14 +27,13 @@ public class NotificationRowMapper implements RowMapper<NotificationEntity> {
         notification.setMarkedAsRead(rs.getBoolean("marked_as_read"));
         notification.setType(NotificationType.valueOf(rs.getString("type")));
         notification.setCreatedAt(rs.getObject("created_at", OffsetDateTime.class));
+        String payloadJson = rs.getString("payload");
 
         try {
-            String payloadJson = rs.getString("payload");
-            Map<String, Object> payload = objectMapper.readValue(payloadJson, new TypeReference<Map<String, Object>>() {
-            });
+            Map<String, Object> payload = objectMapper.readValue(payloadJson, new TypeReference<>() {});
             notification.setPayload(payload);
-        } catch (Exception e) {
-            throw new SQLException("Failed to map to JSON fields", e);
+        } catch (JsonProcessingException e) {
+            throw new SQLException("Failed to map to JSON fields " + payloadJson, e);
         }
 
         return notification;

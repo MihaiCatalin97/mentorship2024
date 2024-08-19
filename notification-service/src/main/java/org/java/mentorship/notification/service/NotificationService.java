@@ -73,10 +73,4 @@ public class NotificationService {
     }
 
 
-//    public List<Notification> getWebNotificationsByUser(Integer userId) {
-//         return notificationRepository.getWebNotificationsByUser(userId)
-//                 .stream()
-//                 .map(it -> convert(it))
-//                 .collect(Collectors.toList());
-//    }
 }

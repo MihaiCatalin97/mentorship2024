@@ -30,16 +30,6 @@ public class NotificationChannelRepository {
         return jdbcTemplate.query(sql, new NotificationChannelRowMapper(), notificationId);
     }
 
-    public int updateNotificationChannel(int id, NotificationChannel newChannel) {
-        String sql = "UPDATE notifications_channels SET channel = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, newChannel.name(), id);
-    }
-
-    public int deleteNotificationChannel(int id) {
-        String sql = "DELETE FROM notifications_channels WHERE id = ?";
-        return jdbcTemplate.update(sql, id);
-    }
-
     public int createNotificationChannel(int notificationId, NotificationChannel channel) {
         String sql = "INSERT INTO notifications_channels (notification_id, channel) VALUES (?, ?)";
         return jdbcTemplate.update(sql, notificationId, channel.name());
