@@ -74,9 +74,9 @@ class FeignHandlerTest {
     }
 
     @Test
-    void decodeShouldReturnInternalServerErrorOnInvalidJson() throws JsonProcessingException {
+    void decodeShouldReturnInternalServerErrorOnInvalidJson() {
         // Given
-        String errorResponse = "{not json";
+        String errorResponse = "{not json}";
         Integer statusCode = 403;
         Response response = Mockito.mock(Response.class);
         Response.Body body = Mockito.mock(Response.Body.class);
