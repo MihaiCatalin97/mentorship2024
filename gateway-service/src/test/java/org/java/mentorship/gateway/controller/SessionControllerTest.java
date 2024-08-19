@@ -2,12 +2,13 @@ package org.java.mentorship.gateway.controller;
 
 import org.java.mentorship.contracts.user.client.SessionFeignClient;
 import org.java.mentorship.contracts.user.dto.Session;
+import org.java.mentorship.contracts.user.dto.SessionWithKey;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+importimport org.java.mentorship.contracts.user.dto.Session; org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
@@ -31,9 +32,9 @@ class SessionControllerTest {
     @Test
     void createSessionShouldReturnDataFromFeign() {
         when(sessionFeignClient.createSession(any(LoginRequest.class)))
-                .thenReturn(Session.builder().build());
+                .thenReturn(SessionWithKey.builder().build());
 
-        ResponseEntity<Session> response = sessionController.createSession(new LoginRequest());
+        ResponseEntity<SessionWithKey> response = sessionController.createSession(new LoginRequest());
 
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());
