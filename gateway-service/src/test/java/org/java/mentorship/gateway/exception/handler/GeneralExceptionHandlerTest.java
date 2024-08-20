@@ -1,5 +1,6 @@
 package org.java.mentorship.gateway.exception.handler;
 
+import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.java.mentorship.contracts.common.dto.ErrorResponse;
 import org.java.mentorship.gateway.exception.domain.GatewayErrorResponse;
@@ -30,6 +31,17 @@ class GeneralExceptionHandlerTest {
         assertEquals(errorResponse.getError(), actual.getBody().getError());
         assertEquals(status, actual.getStatusCode());
     }
+
+    @Test
+    void handleShouldHandleFeignNotFoundException() {
+        // When
+        ResponseEntity<ErrorResponse> response = handler.handle();
+
+        // Then
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
 
     @Test
     void handleShouldHandleRuntimeException() {
