@@ -24,12 +24,13 @@ public class GeneralExceptionHandler {
                 .body(exception.getErrorResponse());
     }
 
-// I don't know why this is thrown and why the FeignHandler doesn't handle it.
-//    @ExceptionHandler(FeignException.NotFound.class)
-//    public ResponseEntity<ErrorResponse> handle() {
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                .body(new GatewayNotFoundException().getErrorResponse());
-//    }
+    // I don't know why this is thrown and why the FeignHandler doesn't handle it.
+    // TODO: Handle this in FeignHandler.java
+    @ExceptionHandler(FeignException.NotFound.class)
+    public ResponseEntity<ErrorResponse> handle() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new GatewayNotFoundException().getErrorResponse());
+    }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handle(final RuntimeException exception, final HttpServletRequest request) {
