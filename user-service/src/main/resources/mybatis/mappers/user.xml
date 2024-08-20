@@ -13,7 +13,7 @@
         SELECT * FROM users where email = #{email}
     </select>
 
-    <insert id="insert" parameterType="UserEntity">
+    <insert id="insert" parameterType="UserEntity" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         INSERT INTO users(email, first_name, last_name, hashed_password, verification_token)
         VALUES (#{email}, #{firstName}, #{lastName}, #{hashedPassword}, #{verificationToken})
     </insert>

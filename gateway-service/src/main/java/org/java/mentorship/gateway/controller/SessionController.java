@@ -1,5 +1,6 @@
 package org.java.mentorship.gateway.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.client.SessionFeignClient;
 import org.java.mentorship.contracts.user.dto.Session;

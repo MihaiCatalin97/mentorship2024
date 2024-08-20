@@ -1,7 +1,6 @@
 package org.java.mentorship.user.repository;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 import org.java.mentorship.user.domain.SessionEntity;
 
 import java.util.List;

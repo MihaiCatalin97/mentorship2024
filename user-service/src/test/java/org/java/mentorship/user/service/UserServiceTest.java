@@ -43,7 +43,6 @@ class UserServiceTest {
         userService.registerUser(registrationRequest);
 
         verify(userRepository).insert(userArgumentCaptor.capture());
-        verify(userRepository, times(2)).findByEmail("admin@localhost");
 
         UserEntity savedEntity = userArgumentCaptor.getValue();
         assertEquals(registrationRequest.getFirstName(), savedEntity.getFirstName());

@@ -47,7 +47,7 @@ public class UserService {
         // TODO: Call notification service with VERIFICATION message type
         mapper.insert(user);
 
-        return mapper.findByEmail(user.getEmail());
+        return Optional.of(user);
     }
 
     public boolean verifyUserHash(Integer id, String password) {
