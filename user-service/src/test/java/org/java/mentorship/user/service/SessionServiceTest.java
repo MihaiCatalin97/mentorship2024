@@ -156,6 +156,16 @@ class SessionServiceTest {
     }
 
     @Test
+    void getSessionShouldReturnEmptyWhenSessionDoesNotExist() {
+        String sessionKey = UUID.randomUUID().toString();
+        when(sessionRepository.getByKey(sessionKey)).thenReturn(Optional.empty());
+
+        Optional<SessionEntity> session = sessionService.getSession(sessionKey);
+
+        assertTrue(session.isEmpty());
+    }
+
+    @Test
     void isExpiredShouldReturnTrueWhenSessionExpired() {
         SessionEntity session = SessionEntity.builder()
                 .expiresAt(OffsetDateTime.now().minusSeconds(10))
