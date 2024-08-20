@@ -16,6 +16,7 @@
         <module>notification-service</module>
         <module>email-service</module>
         <module>contracts</module>
+        <module>aggregate-coverage-report</module>
     </modules>
 
     <properties>
@@ -30,6 +31,7 @@
         <surefire.version>3.2.5</surefire.version>
         <junit.version>5.10.2</junit.version>
         <mockito.version>5.11.0</mockito.version>
+        <h2.version>2.3.232</h2.version>
 
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -101,6 +103,12 @@
                 <scope>test</scope>
                 <version>${spring.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <scope>test</scope>
+                <version>${h2.version}</version>
+            </dependency>
 
             <!-- Internal dependencies -->
             <dependency>
@@ -141,6 +149,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -170,32 +183,8 @@
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>jacoco-check</id>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
                         <configuration>
-                            <rules>
-                                <rule>
-                                    <element>PACKAGE</element>
-                                    <limits>
-                                        <limit>
-                                            <counter>LINE</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.95</minimum>
-                                        </limit>
-                                    </limits>
-                                </rule>
-                            </rules>
+                            <destFile>${project.build.directory}/${project.artifactId}.exec</destFile>
                         </configuration>
                     </execution>
                 </executions>

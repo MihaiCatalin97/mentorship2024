@@ -1,19 +1,19 @@
-package org.java.mentorship.contracts.user.dto;
+package org.java.mentorship.user.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 import java.time.OffsetDateTime;
 
 @Data
-@SuperBuilder
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Session {
+public class SessionEntity {
     private Integer id;
+    private String sessionKey;
     private OffsetDateTime expiresAt;
     private Integer userId;
 }

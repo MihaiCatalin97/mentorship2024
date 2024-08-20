@@ -45,9 +45,9 @@ public class UserService {
         user.setVerificationToken(UUID.randomUUID().toString());
 
         // TODO: Call notification service with VERIFICATION message type
-        mapper.insertUser(user);
+        mapper.insert(user);
 
-        return mapper.findByEmail(user.getEmail());
+        return Optional.of(user);
     }
 
     public boolean verifyUserHash(Integer id, String password) {

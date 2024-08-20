@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS sessions;
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE users (
                        id INTEGER GENERATED ALWAYS AS IDENTITY,
                        email VARCHAR(128) UNIQUE NOT NULL,
@@ -19,4 +22,3 @@ CREATE TABLE sessions (
                               REFERENCES users(id)
                               ON DELETE CASCADE
 );
-

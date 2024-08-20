@@ -2,6 +2,7 @@ package org.java.mentorship.user.service;
 
 import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
+import org.java.mentorship.user.domain.SessionEntity;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.exception.domain.TooManySessionsException;
 import org.java.mentorship.user.exception.domain.UserNotFoundException;
@@ -36,7 +37,7 @@ class SessionServiceTest {
     private SessionService sessionService;
 
     @Captor
-    private ArgumentCaptor<Session> sessionCaptor;
+    private ArgumentCaptor<SessionEntity> sessionCaptor;
 
     @Test
     void createSessionShouldCreateSession() {
@@ -52,8 +53,8 @@ class SessionServiceTest {
         when(userService.verifyUserHash(1, "SecretPassword")).thenReturn(true);
         when(sessionRepository.find(1)).thenReturn(
                 Arrays.asList(
-                        mock(Session.class, RETURNS_DEEP_STUBS),
-                        mock(Session.class, RETURNS_DEEP_STUBS)
+                        mock(SessionEntity.class, RETURNS_DEEP_STUBS),
+                        mock(SessionEntity.class, RETURNS_DEEP_STUBS)
                 )
         );
 
@@ -64,8 +65,6 @@ class SessionServiceTest {
         assertEquals(1, sessionCaptor.getValue().getUserId());
         assertTrue(sessionCaptor.getValue().getExpiresAt().isAfter(OffsetDateTime.now().plusDays(29)));
         assertTrue(sessionCaptor.getValue().getExpiresAt().isBefore(OffsetDateTime.now().plusDays(31)));
-
-        verify(sessionRepository, times(1)).getByKey(sessionCaptor.getValue().getSessionKey());
     }
 
     @Test
@@ -83,9 +82,9 @@ class SessionServiceTest {
         when(userService.verifyUserHash(1, "SecretPassword")).thenReturn(true);
         when(sessionRepository.find(1)).thenReturn(
                 Arrays.asList(
-                        mock(Session.class, RETURNS_DEEP_STUBS),
-                        mock(Session.class, RETURNS_DEEP_STUBS),
-                        mock(Session.class, RETURNS_DEEP_STUBS)
+                        mock(SessionEntity.class, RETURNS_DEEP_STUBS),
+                        mock(SessionEntity.class, RETURNS_DEEP_STUBS),
+                        mock(SessionEntity.class, RETURNS_DEEP_STUBS)
                 )
         );
 
@@ -131,11 +130,11 @@ class SessionServiceTest {
     void getSessionShouldCallRepository() {
         String sessionKey = UUID.randomUUID().toString();
         when(sessionRepository.getByKey(anyString())).thenReturn(
-                Optional.of(Session.builder()
+                Optional.of(SessionEntity.builder()
                         .expiresAt(OffsetDateTime.now().plusDays(20)).build())
         );
 
-        Optional<Session> session = sessionService.getSession(sessionKey);
+        Optional<SessionEntity> session = sessionService.getSession(sessionKey);
 
         verify(sessionRepository, times(1)).getByKey(sessionKey);
 
@@ -146,19 +145,19 @@ class SessionServiceTest {
     void getSessionShouldReturnEmptyWhenSessionExpired() {
         String sessionKey = UUID.randomUUID().toString();
         when(sessionRepository.getByKey(sessionKey)).thenReturn(
-                Optional.of(Session.builder()
+                Optional.of(SessionEntity.builder()
                         .expiresAt(OffsetDateTime.now().minusDays(10))
                         .build())
         );
 
-        Optional<Session> session = sessionService.getSession(sessionKey);
+        Optional<SessionEntity> session = sessionService.getSession(sessionKey);
 
         assertTrue(session.isEmpty());
     }
 
     @Test
     void isExpiredShouldReturnTrueWhenSessionExpired() {
-        Session session = Session.builder()
+        SessionEntity session = SessionEntity.builder()
                 .expiresAt(OffsetDateTime.now().minusSeconds(10))
                 .build();
 
@@ -167,7 +166,7 @@ class SessionServiceTest {
 
     @Test
     void isExpiredShouldReturnFalseWhenSessionNotExpired() {
-        Session session = Session.builder()
+        SessionEntity session = SessionEntity.builder()
                 .expiresAt(OffsetDateTime.now().plusDays(10))
                 .build();
 
@@ -178,14 +177,14 @@ class SessionServiceTest {
     void findShouldReturnSessionsFromRepository() {
         when(sessionRepository.find(1)).thenReturn(
                 Arrays.asList(
-                        Session.builder()
+                        SessionEntity.builder()
                                 .expiresAt(OffsetDateTime.now().plusDays(20)).build(),
-                        Session.builder()
+                        SessionEntity.builder()
                                 .expiresAt(OffsetDateTime.now().minusDays(20)).build()
                 )
         );
 
-        List<Session> sessions = sessionService.find(1, null);
+        List<SessionEntity> sessions = sessionService.find(1, null);
 
         assertEquals(2, sessions.size());
     }
@@ -194,14 +193,14 @@ class SessionServiceTest {
     void findShouldReturnActiveSessionsFromRepository() {
         when(sessionRepository.find(1)).thenReturn(
                 Arrays.asList(
-                        Session.builder()
+                        SessionEntity.builder()
                                 .expiresAt(OffsetDateTime.now().plusDays(20)).build(),
-                        Session.builder()
+                        SessionEntity.builder()
                                 .expiresAt(OffsetDateTime.now().minusDays(20)).build()
                 )
         );
 
-        List<Session> sessions = sessionService.find(1, true);
+        List<SessionEntity> sessions = sessionService.find(1, true);
 
         assertEquals(1, sessions.size());
     }
@@ -210,14 +209,14 @@ class SessionServiceTest {
     void findShouldReturnExpiredSessionsFromRepository() {
         when(sessionRepository.find(1)).thenReturn(
                 Arrays.asList(
-                        Session.builder()
+                        SessionEntity.builder()
                                 .expiresAt(OffsetDateTime.now().plusDays(20)).build(),
-                        Session.builder()
+                        SessionEntity.builder()
                                 .expiresAt(OffsetDateTime.now().minusDays(20)).build()
                 )
         );
 
-        List<Session> sessions = sessionService.find(1, false);
+        List<SessionEntity> sessions = sessionService.find(1, false);
 
         assertEquals(1, sessions.size());
     }

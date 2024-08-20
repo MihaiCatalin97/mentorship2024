@@ -35,12 +35,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>${mybatis.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.java.mentorship</groupId>
             <artifactId>user-contracts</artifactId>
         </dependency>
@@ -48,7 +42,14 @@
             <groupId>org.java.mentorship</groupId>
             <artifactId>common-contracts</artifactId>
         </dependency>
-    </dependencies>
+      
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter-test</artifactId>
+            <version>${mybatis.version}</version>
+            <scope>test</scope>
+        </dependency>
+  </dependencies>
 
     <build>
         <plugins>

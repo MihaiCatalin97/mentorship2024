@@ -2,6 +2,7 @@ package org.java.mentorship.user.exception.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.java.mentorship.contracts.common.dto.ErrorResponse;
+import org.java.mentorship.contracts.user.dto.error.UserServiceError;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -25,8 +26,9 @@ class RestValidatorHandlerTest {
         MethodArgumentNotValidException exception = mock(MethodArgumentNotValidException.class);
         HttpServletRequest request = mock(HttpServletRequest.class);
         BindingResult bindingResult = mock(BindingResult.class);
-
-        when(bindingResult.getFieldErrors()).thenReturn(Collections.singletonList(new FieldError("object", "name", "Name should not be empty")));
+        when(bindingResult.getFieldErrors()).thenReturn(
+                Collections.singletonList(new FieldError("object", "name", "Name should not be empty"))
+        );
         when(exception.getBindingResult()).thenReturn(bindingResult);
 
         ResponseEntity<ErrorResponse> responseEntity = handler.handleException(exception, request);

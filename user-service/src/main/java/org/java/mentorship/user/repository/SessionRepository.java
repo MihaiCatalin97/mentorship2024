@@ -1,32 +1,16 @@
 package org.java.mentorship.user.repository;
 
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
-import org.java.mentorship.contracts.user.dto.Session;
+import org.java.mentorship.user.domain.SessionEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 @Mapper
 public interface SessionRepository {
-    @Select("""
-            <script>
-            SELECT * FROM sessions
-                <where> 
-                <if test='userId != null'>
-                AND user_id=#{userId}
-                </if>
-                </where>
-            </script> 
-            """)
-    List<Session> find(Integer userId);
+    List<SessionEntity> find(Integer userId);
 
-    @Insert("INSERT INTO sessions(session_key, expires_at, user_id) VALUES (#{sessionKey}, #{expiresAt}, #{userId})")
-    @Options(useGeneratedKeys = true, keyColumn = "id")
-    void insert(Session session);
+    void insert(SessionEntity session);
 
-    @Select("SELECT * FROM sessions WHERE session_key=#{sessionKey}")
-    Optional<Session> getByKey(String key);
+    Optional<SessionEntity> getByKey(String key);
 }
