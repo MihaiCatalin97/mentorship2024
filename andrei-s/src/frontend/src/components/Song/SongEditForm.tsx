@@ -23,9 +23,10 @@ export default function SongEditForm({song}: { song: Song }) {
     const [modifiedStyle, setModifiedStyle] = useState(song.style);
 
     async function submitForm() {
-        song.name = modifiedName;
-        song.style = modifiedStyle;
-        updateSong(song).then(() => {
+        const modifiedSong = Object.assign({}, song);
+        modifiedSong.name = modifiedName;
+        modifiedSong.style = modifiedStyle;
+        updateSong(modifiedSong).then(() => {
             setFormResult("Successfully edited song");
         }).catch((e) => setFormResult(e.message));
     }

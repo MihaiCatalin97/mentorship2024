@@ -31,6 +31,11 @@ export default function AppNavbar() {
                     <Link href={'/artists/new'} className={navigationMenuTriggerStyle()}>New Artist</Link>
                 </NavigationMenuLink>
             </NavigationMenuItem>
+            <NavigationMenuItem>
+                <NavigationMenuLink asChild active={pathname == '/login'}>
+                    <Link href={'/login'} className={navigationMenuTriggerStyle()}>Account</Link>
+                </NavigationMenuLink>
+            </NavigationMenuItem>
         </NavigationMenuList>
     </NavigationMenu>
 

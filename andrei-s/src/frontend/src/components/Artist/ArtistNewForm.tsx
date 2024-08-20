@@ -5,6 +5,7 @@ import React, {useState} from "react";
 import {parseArtist} from "@/entities/Artist";
 import {newArtist} from "@/lib/artistActions";
 import {AppButton} from "@/components/ui/appButton";
+import {getUser} from "@/lib/loginActions";
 
 export default function ArtistNewForm() {
     const [artistName, setArtistName] = useState("");

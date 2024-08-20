@@ -3,6 +3,7 @@ import {getSong} from "@/lib/songActions";
 import SongEditForm from "@/components/Song/SongEditForm";
 import AppLink from "@/components/AppLink";
 import {getAlbum} from "@/lib/albumActions";
+import {getUser} from "@/lib/loginActions";
 
 export default async function SongPage({params}: { params: { id: number } }) {
 
@@ -10,13 +11,15 @@ export default async function SongPage({params}: { params: { id: number } }) {
     let artist = await getArtist(song.artistId);
     let album = await getAlbum(song.albumId);
 
+    let user = await getUser();
+
     return (
         <div>
             {
                 song.id &&
                 <div>
                     <div className="mb-1 text-2xl">Song: {song.name}</div>
-                    <SongEditForm song={song}/>
+                    { user && <SongEditForm song={song}/> }
                     <div className="text-sm mt-3">Style: {song.style}</div>
                     <div className="text-sm">Artist: <AppLink href={`/artists/${artist.id}`}>{artist.name}</AppLink>
                     </div>

@@ -2,6 +2,7 @@
 
 import {Artist, parseArtist, parseArtists} from "@/entities/Artist";
 import {revalidateTag} from "next/cache";
+import {cookies} from "next/headers";
 
 
 export async function getArtist(id: number): Promise<Artist> {
@@ -28,6 +29,7 @@ export async function deleteArtist(id: number): Promise<String> {
         next: {tags: ['artists']}
     });
     revalidateTag("artists");
+    if (data.status == 401) return Promise.reject(new Error("Unauthorized"));
     if (data.status != 200) return Promise.reject(new Error(await data.text()));
     return await data.text();
 }
@@ -37,12 +39,13 @@ export async function updateArtist(artist: Artist) {
         method: "PUT",
         body: JSON.stringify(artist),
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Cookie": "JSESSIONID=" + cookies().get("JSESSIONID")?.value
         }
     });
-    if (data.status != 200) {
-        return Promise.reject(new Error(await data.text()));
-    }
+    if (data.status == 401) return Promise.reject(new Error("Unauthorized"));
+    if (data.status != 200) return Promise.reject(new Error(await data.text()));
+
     revalidateTag("artists");
 
     return await data.text();
@@ -53,12 +56,13 @@ export async function newArtist(artist: Artist) {
         method: "POST",
         body: JSON.stringify(artist),
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Cookie": "JSESSIONID=" + cookies().get("JSESSIONID")?.value
         }
     });
-    if (data.status != 200) {
-        return Promise.reject(new Error(await data.text()));
-    }
+    if (data.status == 401) return Promise.reject(new Error("Unauthorized"));
+    if (data.status != 200) return Promise.reject(new Error(await data.text()));
+
     revalidateTag("artists");
 
     return await data.text();
@@ -66,11 +70,11 @@ export async function newArtist(artist: Artist) {
 
 export async function searchArtists(query: string): Promise<Artist[]> {
     let data = await fetch('http://localhost:8080/artists/search?query=' + query, {
-        next: {tags: ['artists']}
+        next: {tags: ['artists']},
+        headers: { "Cookie": "JSESSIONID=" + cookies().get("JSESSIONID")?.value }
     });
+    if (data.status == 401) return Promise.reject(new Error("Unauthorized"));
+    if (data.status != 200) return Promise.reject(new Error(await data.text()));
 
-    if (data.status != 200) {
-        return Promise.reject(new Error(await data.text()));
-    }
     return parseArtists(await data.json());
 }

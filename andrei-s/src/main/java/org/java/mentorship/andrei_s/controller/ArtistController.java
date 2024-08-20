@@ -1,8 +1,10 @@
 package org.java.mentorship.andrei_s.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.andrei_s.domain.Artist;
 import org.java.mentorship.andrei_s.service.ArtistService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,19 +28,22 @@ public class ArtistController {
     }
 
     @PostMapping()
-    public ResponseEntity<Artist> createNewSong(@RequestBody Artist artist) {
+    public ResponseEntity<Artist> createNewArtist(HttpServletRequest request, @RequestBody Artist artist) {
+        if (!request.isUserInRole("ADMIN")) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         Artist newArtist = artistService.createNew(artist);
         return ResponseEntity.ok(newArtist);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<String> deleteSong(@PathVariable(name = "id") int id) {
+    ResponseEntity<String> deleteSong(HttpServletRequest request, @PathVariable(name = "id") int id) {
+        if (!request.isUserInRole("ADMIN")) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         artistService.deleteById(id);
         return ResponseEntity.ok("Deleted artist");
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Artist> modifySong(@PathVariable(name = "id") int id, @RequestBody Artist artist) {
+    ResponseEntity<Artist> modifySong(HttpServletRequest request, @PathVariable(name = "id") int id, @RequestBody Artist artist) {
+        if (!request.isUserInRole("ADMIN")) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         return ResponseEntity.ok(artistService.updateById(id, artist));
     }
 

@@ -2,6 +2,7 @@
 
 import {Album, parseAlbum, parseAlbums} from "@/entities/Album";
 import {revalidateTag} from "next/cache";
+import {cookies} from "next/headers";
 
 export async function getAlbum(id: number): Promise<Album> {
     let data = await fetch('http://localhost:8080/albums/' + id, {
@@ -33,9 +34,12 @@ export async function getAlbumsByArtist(artistId: number): Promise<Album[]> {
 export async function deleteAlbum(id: number): Promise<String> {
     let data = await fetch('http://localhost:8080/albums/' + id, {
         method: "DELETE",
+        headers: { "Cookie": "JSESSIONID=" + cookies().get("JSESSIONID")?.value },
         next: {tags: ['albums']}
     });
     revalidateTag("albums");
+    console.log(data.status);
+    if (data.status == 401) return Promise.reject(new Error("Unauthorized"));
     if (data.status != 200) return Promise.reject(new Error(await data.text()));
     return await data.text();
 }
@@ -45,12 +49,12 @@ export async function updateAlbum(album: Album) {
         method: "PUT",
         body: JSON.stringify(album),
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Cookie": "JSESSIONID=" + cookies().get("JSESSIONID")?.value
         }
     });
-    if (data.status != 200) {
-        return Promise.reject(new Error(await data.text()));
-    }
+    if (data.status == 401) return Promise.reject(new Error("Unauthorized"));
+    if (data.status != 200) return Promise.reject(new Error(await data.text()));
     revalidateTag("albums");
 
     return await data.text();
@@ -61,13 +65,14 @@ export async function createAlbum(album: Album) {
         method: "POST",
         body: JSON.stringify(album),
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Cookie": "JSESSIONID=" + cookies().get("JSESSIONID")?.value
         }
     });
 
-    if (data.status != 200) {
-        return Promise.reject(new Error(await data.text()));
-    }
+    if (data.status == 401) return Promise.reject(new Error("Unauthorized"));
+    if (data.status != 200) return Promise.reject(new Error(await data.text()));
+
     revalidateTag("albums");
 
     return await data.text();

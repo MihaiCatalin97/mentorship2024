@@ -15,6 +15,7 @@ import {
     DialogTrigger
 } from "@/components/ui/dialog";
 import {EditIcon, TrashIcon} from "lucide-react";
+import {updateAlbum} from "@/lib/albumActions";
 
 export default function ArtistEditForm({artist}: { artist: Artist }) {
     const [formResult, setFormResult] = useState("");
@@ -22,8 +23,9 @@ export default function ArtistEditForm({artist}: { artist: Artist }) {
     const [modifiedName, setModifiedName] = useState(artist.name);
 
     async function submitForm() {
-        artist.name = modifiedName;
-        updateArtist(artist).then(() => {
+        const modifiedArtist = Object.assign({}, artist);
+        modifiedArtist.name = modifiedName;
+        updateArtist(modifiedArtist).then(() => {
             setFormResult("Successfully edited artist");
         }).catch((e) => setFormResult(e.message));
     }

@@ -22,8 +22,9 @@ export default function AlbumEditForm({album}: { album: Album }) {
     const [modifiedName, setModifiedName] = useState(album.name);
 
     function submitForm() {
-        album.name = modifiedName;
-        updateAlbum(album)
+        const modifiedAlbum = Object.assign({}, album);
+        modifiedAlbum.name = modifiedName;
+        updateAlbum(modifiedAlbum)
             .then(() => setFormResult("Successfully edited album"))
             .catch((e) => setFormResult(e.message));
     }
