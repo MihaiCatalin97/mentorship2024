@@ -1,5 +1,6 @@
 package org.java.mentorship.user.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
@@ -61,9 +62,10 @@ public class SessionService {
         session.setUserId(user.getId());
         session.setExpiresAt(OffsetDateTime.now().plusDays(30));
 
+        // TODO: Call notification service with NEW_LOGIN message type
         sessionRepository.insert(session);
 
-        return sessionRepository.getByKey(session.getSessionKey());
+        return Optional.of(session);
     }
 
     public Optional<SessionEntity> getSession(String sessionKey) {

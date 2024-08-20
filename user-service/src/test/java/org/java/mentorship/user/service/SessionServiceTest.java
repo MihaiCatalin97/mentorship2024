@@ -65,8 +65,6 @@ class SessionServiceTest {
         assertEquals(1, sessionCaptor.getValue().getUserId());
         assertTrue(sessionCaptor.getValue().getExpiresAt().isAfter(OffsetDateTime.now().plusDays(29)));
         assertTrue(sessionCaptor.getValue().getExpiresAt().isBefore(OffsetDateTime.now().plusDays(31)));
-
-        verify(sessionRepository, times(1)).getByKey(sessionCaptor.getValue().getSessionKey());
     }
 
     @Test
