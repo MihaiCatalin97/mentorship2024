@@ -31,11 +31,11 @@ class NotificationControllerTest {
 
     @Test
     void getNotificationsShouldReturnDataFromFeign() {
-        when(notificationFeignClient.getNotifications(any(),any(),any(),any(),any(),any(),any(),any())).thenReturn(Collections.singletonList(new Notification()));
+        when(notificationFeignClient.getNotifications(any(),any(),any(),any(),any())).thenReturn(Collections.singletonList(new Notification()));
 
-        ResponseEntity<List<Notification>> response = notificationController.getNotifications(null, null, null, null, null, null, null,null);
+        ResponseEntity<List<Notification>> response = notificationController.getNotifications(null, null, null, null,null);
 
-        verify(notificationFeignClient).getNotifications(null, null, null, null, null, null, null, null);
+        verify(notificationFeignClient).getNotifications( null, null, null, null, null);
 
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());

@@ -48,7 +48,7 @@ class NotificationServiceTest {
             return notifications;
         });
 
-        List<Notification> result = notificationService.getNotifications(params);
+        List<NotificationEntity> result = notificationService.getNotifications(params);
         verify(notificationRepository, times(1)).getNotifications(params);
         assertEquals(result.size(), 1);
     }
@@ -63,7 +63,7 @@ class NotificationServiceTest {
             return notificationEntity;
         });
 
-        Notification result = notificationService.updateNotification(notificationId, notificationEntity);
+        NotificationEntity result = notificationService.updateNotification(notificationId, notificationEntity);
         verify(notificationRepository, times(1)).update(notificationId, notificationEntity);
 
         assertEquals(result.getId(), notificationId);
@@ -78,7 +78,7 @@ class NotificationServiceTest {
             return expected;
         });
 
-        Notification result = notificationService.createNotification(notification);
+        NotificationEntity result = notificationService.createNotification(notification);
 
         verify(notificationRepository, times(1)).create(notification);
         assertEquals(result.getId(), notification.getId());
@@ -102,7 +102,7 @@ class NotificationServiceTest {
 
         when(notificationRepository.getNotificationById(id)).thenReturn(new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now()));
 
-        Notification result = notificationService.getById(id);
+        NotificationEntity result = notificationService.getById(id);
 
         assertEquals(result.getId(), id);
 

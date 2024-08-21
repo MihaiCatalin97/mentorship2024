@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class JacksonConfigTest {
+class JacksonConfigTest {
     private JacksonConfig jacksonConfig = new JacksonConfig();
 
     @Test

@@ -42,7 +42,7 @@ import static org.postgresql.hostchooser.HostRequirement.any;
         "classpath:testData.sql"
 })
 @ExtendWith(MockitoExtension.class)
-public class NotificationRepositoryTest {
+class NotificationRepositoryTest {
 
     @MockBean
     private ObjectMapper objectMapper;

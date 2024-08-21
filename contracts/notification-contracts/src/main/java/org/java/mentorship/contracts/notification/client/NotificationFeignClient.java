@@ -18,14 +18,11 @@ public interface NotificationFeignClient {
             method = RequestMethod.GET,
             value = "/notifications"
     )
-    List<Notification> getNotifications(@RequestParam(required = false, name = "id") Integer id,
-                                        @RequestParam(required = false, name = "userId") Integer user_id,
+    List<Notification> getNotifications(@RequestParam(required = false, name = "userId") Integer userId,
                                         @RequestParam(required = false, name = "email") String email,
-                                        @RequestParam(required = false, name = "payload") Map<String, String> payload,
-                                        @RequestParam(required = false, name = "channels") List<NotificationChannel> channels,
-                                        @RequestParam(required = false, name = "type") List<NotificationType> types,
-                                        @RequestParam(required = false, name = "marked") Boolean marked,
-                                        @RequestParam(required = false, name = "createAt") OffsetDateTime createAt);
+                                        @RequestParam(required = false, name = "channel") NotificationChannel channel,
+                                        @RequestParam(required = false, name = "type") NotificationType type,
+                                        @RequestParam(required = false, name = "marked") Boolean marked);
 
     @RequestMapping(
             method = RequestMethod.GET,
@@ -51,9 +48,4 @@ public interface NotificationFeignClient {
     )
     Notification markNotificationMarkAsRead(@PathVariable("id") Integer id);
 
-    @RequestMapping(
-            method = RequestMethod.DELETE,
-            value = "/notifications{id}"
-    )
-    Notification deleteNotification(@PathVariable("id") Integer id);
 }

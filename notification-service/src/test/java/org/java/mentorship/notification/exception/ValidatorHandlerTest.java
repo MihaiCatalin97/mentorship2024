@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ValidatorHandlerTest {
+class ValidatorHandlerTest {
     ValidatorHandler validatorHandler = new ValidatorHandler();
     @Test
     void handlerShouldHandleValidationException() {

@@ -2,7 +2,7 @@ package org.java.mentorship.notification.service;
 
 import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.notification.domain.NotificationEntity;
-import org.java.mentorship.notification.mapper.NotificationToContract;
+import org.java.mentorship.notification.mapper.NotificationContractMapper;
 import org.java.mentorship.notification.repository.NotificationChannelRepository;
 import org.java.mentorship.notification.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.java.mentorship.notification.mapper.NotificationToContract.convert;
 
 @Service
 public class NotificationService {
@@ -24,17 +23,12 @@ public class NotificationService {
     @Autowired
     private NotificationChannelRepository notificationChannelRepository;
 
-    public List<Notification> getNotifications(Map<String, Object> params) {
+    public List<NotificationEntity> getNotifications(Map<String, Object> params) {
         List<NotificationEntity> notificationEntities = notificationRepository.getNotifications(params);
-        return notificationEntities.stream()
-                .map(it -> {
-                    it.setChannels(notificationChannelRepository.getNotificationsById(it.getId()));
-                    return convert(it);
-                })
-                .collect(Collectors.toList());
+        return notificationEntities;
     }
 
-    public Notification createNotification(NotificationEntity notification) {
+    public NotificationEntity createNotification(NotificationEntity notification) {
         NotificationEntity entity = notificationRepository.create(notification);
 
         // TODO: Get entity ID for creating channels;
@@ -42,30 +36,30 @@ public class NotificationService {
 //            notificationChannelRepository.createNotificationChannel(entity.getId(), channel);
 //        });
 
-        return convert(entity);
+        return entity;
     }
 
-    public Notification updateNotification(Integer id, NotificationEntity notification) {
+    public NotificationEntity updateNotification(Integer id, NotificationEntity notification) {
         notification.setChannels(notificationChannelRepository.getNotificationsById(id));
-        return convert(notificationRepository.update(id, notification));
+        return notificationRepository.update(id, notification);
 
     }
 
-    public Notification markAsRead(Integer id) {
+    public NotificationEntity markAsRead(Integer id) {
         NotificationEntity notification = notificationRepository.getNotificationById(id);
         notification.setMarkedAsRead(true);
         notificationRepository.update(notification.getId(), notification);
-        return NotificationToContract.convert(notification);
+        return notification;
     }
 
-    public Notification getById(Integer id) {
+    public NotificationEntity getById(Integer id) {
         NotificationEntity notification = notificationRepository.getNotificationById(id);
         Map<String, Object> filter = new HashMap<>();
         filter.put("id", notification.getId());
         notification.setChannels(
                 notificationChannelRepository.getNotificationsChannels(filter)
         );
-        return convert(notification);
+        return notification;
     }
 
     public boolean deleteNotification(Integer id) {

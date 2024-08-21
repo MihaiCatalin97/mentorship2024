@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         "classpath:schema.sql",
         "classpath:testData.sql"
 })
-public class NotificationChannelRepositoryTest {
+class NotificationChannelRepositoryTest {
 
     @Autowired
     private NotificationChannelRepository notificationChannelRepository;

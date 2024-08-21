@@ -9,8 +9,9 @@ import org.springframework.stereotype.Component;
 import java.util.stream.Collectors;
 
 @Component
-public class NotificationToContract {
-    public static Notification convert(NotificationEntity notificationEntity) {
+public class NotificationContractMapper {
+
+    public Notification map(NotificationEntity notificationEntity) {
         Notification notification = new Notification();
 
         notification.setId(notificationEntity.getId());

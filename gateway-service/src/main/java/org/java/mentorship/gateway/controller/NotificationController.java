@@ -22,15 +22,12 @@ public class NotificationController {
     private final NotificationFeignClient notificationFeignClient;
 
     @GetMapping()
-    public ResponseEntity<List<Notification>> getNotifications(@RequestParam(required = false, name = "id") Integer id,
-                                                               @RequestParam(required = false, name = "userId") Integer user_id,
+    public ResponseEntity<List<Notification>> getNotifications(@RequestParam(required = false, name = "userId") Integer userId,
                                                                @RequestParam(required = false, name = "email") String email,
-                                                               @RequestParam(required = false, name = "payload") Map<String, String> payload,
-                                                               @RequestParam(required = false, name = "channels") List<NotificationChannel> channels,
-                                                               @RequestParam(required = false, name = "type") List<NotificationType> types,
-                                                               @RequestParam(required = false, name = "marked") Boolean marked,
-                                                               @RequestParam(required = false, name = "createAt") OffsetDateTime createAt) {
-        return ResponseEntity.ok(notificationFeignClient.getNotifications(id, user_id, email, payload, channels, types, marked, createAt));
+                                                               @RequestParam(required = false, name = "channel") NotificationChannel channel,
+                                                               @RequestParam(required = false, name = "type") NotificationType type,
+                                                               @RequestParam(required = false, name = "marked") Boolean marked) {
+        return ResponseEntity.ok(notificationFeignClient.getNotifications( userId, email, channel, type, marked ));
     }
 
     @PostMapping("/{id}/read")

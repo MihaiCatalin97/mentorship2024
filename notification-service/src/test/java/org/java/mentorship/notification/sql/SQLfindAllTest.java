@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SQLfindAllTest {
 
-
     @Test
     void getSql() {
         Map<String, Object> params = new HashMap<>();
