@@ -1,7 +1,11 @@
 package org.java.mentorship.gateway.exception.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.Feign;
 import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.java.mentorship.contracts.common.dto.ErrorResponse;
 import org.java.mentorship.gateway.exception.domain.GatewayErrorResponse;
@@ -10,13 +14,19 @@ import org.java.mentorship.gateway.exception.domain.GatewayNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.View;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 @RestControllerAdvice
 @Slf4j
+@RequiredArgsConstructor
 public class GeneralExceptionHandler {
+
+    private final ObjectMapper objectMapper;
 
     @ExceptionHandler(GatewayException.class)
     public ResponseEntity<ErrorResponse> handle(final GatewayException exception) {
@@ -24,12 +34,21 @@ public class GeneralExceptionHandler {
                 .body(exception.getErrorResponse());
     }
 
-    // I don't know why this is thrown and why the FeignHandler doesn't handle it.
-    // TODO: Handle this in FeignHandler.java
-    @ExceptionHandler(FeignException.NotFound.class)
-    public ResponseEntity<ErrorResponse> handle() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new GatewayNotFoundException().getErrorResponse());
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<ErrorResponse> handle(final FeignException exception) {
+        ErrorResponse errorResponse = new GatewayErrorResponse("No message");
+
+        if (exception.responseBody().isPresent()) {
+            String responseString = StandardCharsets.UTF_8.decode(exception.responseBody().get()).toString();
+            try {
+                errorResponse = objectMapper.readValue(responseString, ErrorResponse.class);
+            } catch (JsonProcessingException e) {
+                errorResponse = new GatewayErrorResponse(responseString);
+            }
+        }
+
+        return ResponseEntity.status(exception.status())
+                .body(errorResponse);
     }
 
     @ExceptionHandler(RuntimeException.class)
