@@ -86,16 +86,6 @@ public class NotificationRepositoryTest {
         assertTrue(result);
     }
 
-//    @Test
-//    void mapRowShouldThrowWhenJSONInvalid() throws JsonProcessingException {
-//        Map<String, Object> params = new HashMap<>();
-//
-//        when(objectMapper.readValue(anyString(),any(TypeReference.class))).thenThrow(JsonProcessingException.class);
-//
-//
-//        assertThrows(RuntimeException.class, () -> notificationRepository.getNotifications(params));
-//    }
-
     @Test
     void updateShouldModifyAEntityInDatabase() {
         NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName","fname"), true, OffsetDateTime.now());
