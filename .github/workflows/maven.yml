@@ -10,25 +10,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'zulu'
-          cache: maven
-      - name: Build
-        run: mvn compile
-      - name: Test
-        run: mvn test
-      - name: Add coverage to PR
-        id: jacoco
-        uses: madrapps/jacoco-report@v1.6.1
-        with:
-          paths: |
-            ${{ github.workspace }}/aggregate-coverage-report/target/site/jacoco/jacoco.xml
-          token: ${{ secrets.TOKEN }}
-          min-coverage-overall: 40
-          min-coverage-changed-files: 60
-      - name: Coverage check
-        run: mvn install -DskipTests
+    - uses: actions/checkout@v4
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'zulu'
+        cache: maven
+    - name: Build
+      run: mvn compile
+    - name: Test
+      run: mvn test
+    - name: Add coverage to PR
+      id: jacoco
+      uses: madrapps/jacoco-report@v1.6.1
+      with:
+        paths: |
+          ${{ github.workspace }}/aggregate-coverage-report/target/site/jacoco/jacoco.xml
+        token: ${{ secrets.TOKEN }}
+        min-coverage-overall: 40
+        min-coverage-changed-files: 60
+    - name: Coverage check
+      run: mvn install -DskipTests
