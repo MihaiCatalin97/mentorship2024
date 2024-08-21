@@ -2,7 +2,6 @@ package org.java.mentorship.gateway.controller;
 
 import org.java.mentorship.contracts.notification.client.NotificationFeignClient;
 import org.java.mentorship.contracts.notification.dto.Notification;
-import org.java.mentorship.contracts.notification.dto.NotificationChannel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,7 +15,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,11 +31,11 @@ class NotificationControllerTest {
 
     @Test
     void getNotificationsShouldReturnDataFromFeign() {
-        when(notificationFeignClient.getNotifications(any(),any(),any(),any(),any())).thenReturn(Collections.singletonList(new Notification()));
+        when(notificationFeignClient.getNotifications(any(), any(), any(), any(), any())).thenReturn(Collections.singletonList(new Notification()));
 
-        ResponseEntity<List<Notification>> response = notificationController.getNotifications(null, null, null, null,null);
+        ResponseEntity<List<Notification>> response = notificationController.getNotifications(null, null, null, null, null);
 
-        verify(notificationFeignClient).getNotifications( null, null, null, null, null);
+        verify(notificationFeignClient).getNotifications(null, null, null, null, null);
 
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());

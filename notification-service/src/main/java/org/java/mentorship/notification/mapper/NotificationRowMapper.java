@@ -30,7 +30,8 @@ public class NotificationRowMapper implements RowMapper<NotificationEntity> {
         String payloadJson = rs.getString("payload");
 
         try {
-            Map<String, Object> payload = objectMapper.readValue(payloadJson, new TypeReference<>() {});
+            Map<String, Object> payload = objectMapper.readValue(payloadJson, new TypeReference<>() {
+            });
             notification.setPayload(payload);
         } catch (JsonProcessingException e) {
             throw new SQLException("Failed to map to JSON fields " + payloadJson, e);

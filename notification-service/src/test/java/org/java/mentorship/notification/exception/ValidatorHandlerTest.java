@@ -18,6 +18,7 @@ import static org.mockito.Mockito.when;
 
 class ValidatorHandlerTest {
     ValidatorHandler validatorHandler = new ValidatorHandler();
+
     @Test
     void handlerShouldHandleValidationException() {
 

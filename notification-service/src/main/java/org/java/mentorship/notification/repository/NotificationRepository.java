@@ -2,7 +2,6 @@ package org.java.mentorship.notification.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.java.mentorship.notification.config.JacksonConfig;
 import org.java.mentorship.notification.domain.NotificationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -37,10 +36,10 @@ public class NotificationRepository {
 
     public NotificationEntity create(NotificationEntity notification) {
         String paylodJson;
-        try{
+        try {
             paylodJson = objectMapper.writeValueAsString(notification.getPayload());
             System.out.println(notification.getPayload());
-        }catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
         System.out.println(paylodJson);

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.SessionWithKey;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
-import org.java.mentorship.user.domain.SessionEntity;
 import org.java.mentorship.user.domain.mapper.SessionContractMapper;
 import org.java.mentorship.user.service.SessionService;
 import org.springframework.http.ResponseEntity;

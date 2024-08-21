@@ -8,12 +8,10 @@ import org.java.mentorship.notification.domain.enums.NotificationChannel;
 import org.java.mentorship.notification.domain.enums.NotificationType;
 import org.java.mentorship.notification.mapper.NotificationContractMapper;
 import org.java.mentorship.notification.service.NotificationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -25,16 +23,15 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
-    @Autowired
     private final NotificationContractMapper notificationContractMapper;
 
     @GetMapping("/notifications")
     public ResponseEntity<List<Notification>> getNotifications(@RequestParam(required = false, name = "userId") Integer userId,
-                                                                  @RequestParam(required = false, name = "email") String email,
-                                                                  @RequestParam(required = false, name = "channel") NotificationChannel channel,
-                                                                  @RequestParam(required = false, name = "type") NotificationType type,
-                                                                  @RequestParam(required = false, name = "marked") Boolean marked
-                                                                  ) {
+                                                               @RequestParam(required = false, name = "email") String email,
+                                                               @RequestParam(required = false, name = "channel") NotificationChannel channel,
+                                                               @RequestParam(required = false, name = "type") NotificationType type,
+                                                               @RequestParam(required = false, name = "marked") Boolean marked
+    ) {
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         map.put("email", email);

@@ -1,8 +1,6 @@
 package org.java.mentorship.notification.service;
 
-import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.notification.domain.NotificationEntity;
-import org.java.mentorship.notification.mapper.NotificationContractMapper;
 import org.java.mentorship.notification.repository.NotificationChannelRepository;
 import org.java.mentorship.notification.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @Service

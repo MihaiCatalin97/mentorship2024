@@ -6,13 +6,10 @@ import org.java.mentorship.contracts.notification.client.NotificationFeignClient
 import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.contracts.notification.dto.NotificationChannel;
 import org.java.mentorship.contracts.notification.dto.NotificationType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +24,7 @@ public class NotificationController {
                                                                @RequestParam(required = false, name = "channel") NotificationChannel channel,
                                                                @RequestParam(required = false, name = "type") NotificationType type,
                                                                @RequestParam(required = false, name = "marked") Boolean marked) {
-        return ResponseEntity.ok(notificationFeignClient.getNotifications( userId, email, channel, type, marked ));
+        return ResponseEntity.ok(notificationFeignClient.getNotifications(userId, email, channel, type, marked));
     }
 
     @PostMapping("/{id}/read")

@@ -1,7 +1,6 @@
 package org.java.mentorship.notification.service;
 
 
-import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.notification.domain.NotificationEntity;
 import org.java.mentorship.notification.domain.enums.NotificationType;
 import org.java.mentorship.notification.repository.NotificationChannelRepository;

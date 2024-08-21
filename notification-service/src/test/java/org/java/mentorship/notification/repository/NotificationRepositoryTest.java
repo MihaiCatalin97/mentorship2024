@@ -2,17 +2,13 @@ package org.java.mentorship.notification.repository;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.h2.tools.Server;
 import org.java.mentorship.notification.domain.NotificationEntity;
 import org.java.mentorship.notification.domain.enums.NotificationType;
 import org.java.mentorship.notification.mapper.NotificationRowMapper;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
@@ -20,7 +16,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -28,9 +23,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.postgresql.hostchooser.HostRequirement.any;
 
 @JdbcTest
 @ContextConfiguration(classes = {
@@ -62,7 +55,7 @@ class NotificationRepositoryTest {
 
     @Test
     void createShouldAddANewEntityInDatabase() throws JsonProcessingException {
-        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName","fname"), true, OffsetDateTime.now());
+        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "fname"), true, OffsetDateTime.now());
         Map<String, Object> params = new HashMap<>();
         when(objectMapper.writeValueAsString(any())).thenReturn("{\"firstName\":\"ffname\"}");
         notificationRepository.create(notificationEntity);
@@ -73,7 +66,7 @@ class NotificationRepositoryTest {
 
     @Test
     void createShouldThrowExceptionIfPayloadCannotBeParsedToJSON() throws JsonProcessingException {
-        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName","fname"), true, OffsetDateTime.now());
+        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "fname"), true, OffsetDateTime.now());
 
         when(objectMapper.writeValueAsString(any())).thenThrow(JsonProcessingException.class);
 
@@ -88,7 +81,7 @@ class NotificationRepositoryTest {
 
     @Test
     void updateShouldModifyAEntityInDatabase() {
-        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName","fname"), true, OffsetDateTime.now());
+        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "fname"), true, OffsetDateTime.now());
 
         notificationEntity.setEmail("b@gmail.com");
 

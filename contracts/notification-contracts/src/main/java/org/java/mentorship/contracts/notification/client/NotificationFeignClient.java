@@ -6,9 +6,7 @@ import org.java.mentorship.contracts.notification.dto.NotificationType;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Map;
 
 @FeignClient(value = "notificationClient",
         url = "${service.notification.url}")
