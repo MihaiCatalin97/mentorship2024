@@ -24,7 +24,7 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @GetMapping("/notifications")
-    public ResponseEntity<List<Notification>> getWebNotifications(@RequestParam(required = false, name = "id") Integer id,
+    public ResponseEntity<List<Notification>> getNotifications(@RequestParam(required = false, name = "id") Integer id,
                                                                   @RequestParam(required = false, name = "userId") Integer user_id,
                                                                   @RequestParam(required = false, name = "email") String email,
                                                                   @RequestParam(required = false, name = "payload") Map<String, String> payload,
@@ -43,7 +43,7 @@ public class NotificationController {
         map.put("create_at", createAt);
         map.values().removeAll(Collections.singleton(null));
 
-        return ResponseEntity.ok(notificationService.getWebNotifications(map));
+        return ResponseEntity.ok(notificationService.getNotifications(map));
     }
 
     @GetMapping("/notifications/{id}")

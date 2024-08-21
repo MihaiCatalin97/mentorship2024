@@ -6,6 +6,7 @@ import org.java.mentorship.contracts.notification.client.NotificationFeignClient
 import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.contracts.notification.dto.NotificationChannel;
 import org.java.mentorship.contracts.notification.dto.NotificationType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +16,10 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/notification")
+@RequestMapping("/notifications")
 public class NotificationController {
 
-    private NotificationFeignClient notificationFeignClient;
+    private final NotificationFeignClient notificationFeignClient;
 
     @GetMapping()
     public ResponseEntity<List<Notification>> getNotifications(@RequestParam(required = false, name = "id") Integer id,

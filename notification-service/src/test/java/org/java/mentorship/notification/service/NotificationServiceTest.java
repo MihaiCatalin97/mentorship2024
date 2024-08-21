@@ -48,7 +48,7 @@ class NotificationServiceTest {
             return notifications;
         });
 
-        List<Notification> result = notificationService.getWebNotifications(params);
+        List<Notification> result = notificationService.getNotifications(params);
         verify(notificationRepository, times(1)).getNotifications(params);
         assertEquals(result.size(), 1);
     }

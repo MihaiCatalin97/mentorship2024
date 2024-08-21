@@ -24,7 +24,7 @@ public class NotificationService {
     @Autowired
     private NotificationChannelRepository notificationChannelRepository;
 
-    public List<Notification> getWebNotifications(Map<String, Object> params) {
+    public List<Notification> getNotifications(Map<String, Object> params) {
         List<NotificationEntity> notificationEntities = notificationRepository.getNotifications(params);
         return notificationEntities.stream()
                 .map(it -> {
