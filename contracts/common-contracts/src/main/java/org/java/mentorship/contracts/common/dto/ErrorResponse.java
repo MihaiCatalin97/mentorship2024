@@ -1,6 +1,7 @@
 package org.java.mentorship.contracts.common.dto;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
 

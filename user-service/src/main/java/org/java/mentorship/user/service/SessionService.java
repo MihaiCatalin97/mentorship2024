@@ -1,8 +1,6 @@
 package org.java.mentorship.user.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
 import org.java.mentorship.user.domain.SessionEntity;
 import org.java.mentorship.user.domain.UserEntity;
