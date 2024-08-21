@@ -24,13 +24,18 @@ public class GeneralExceptionHandler {
     private final ObjectMapper objectMapper;
 
     @ExceptionHandler(GatewayException.class)
-    public ResponseEntity<ErrorResponse> handle(final GatewayException exception) {
+    public ResponseEntity<ErrorResponse> handleGatewayException(final GatewayException exception) {
+        if (exception.getSourceException().isPresent()) {
+            log.error(String.format("Caught exception: %s (%s)",
+                    exception.getSourceException().get().getMessage(),
+                    exception.getSourceException().get().getClass()));
+        }
         return ResponseEntity.status(exception.getStatusCode())
                 .body(exception.getErrorResponse());
     }
 
     @ExceptionHandler(FeignException.class)
-    public ResponseEntity<ErrorResponse> handle(final FeignException exception, final HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handleFeignException(final FeignException exception, final HttpServletRequest request) {
         ErrorResponse errorResponse = new GatewayErrorResponse("No message");
 
         if (exception.responseBody().isPresent()) {
@@ -51,7 +56,7 @@ public class GeneralExceptionHandler {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> handle(final RuntimeException exception, final HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handleRuntimeException(final RuntimeException exception, final HttpServletRequest request) {
         log.error(String.format("[%s] Caught exception: %s (%s)",
                 request.getRequestURI(),
                 exception.getMessage(),

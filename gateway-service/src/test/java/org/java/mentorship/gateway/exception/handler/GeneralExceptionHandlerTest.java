@@ -44,7 +44,7 @@ class GeneralExceptionHandlerTest {
         ErrorResponse errorResponse = new GatewayErrorResponse("message");
 
         // When
-        ResponseEntity<ErrorResponse> actual = handler.handle(new GatewayException(errorResponse, status));
+        ResponseEntity<ErrorResponse> actual = handler.handleGatewayException(new GatewayException(errorResponse, status));
 
         // Then
         assertNotNull(actual.getBody());
@@ -56,15 +56,17 @@ class GeneralExceptionHandlerTest {
     void feignExceptionHandleShouldReturnOriginalErrorResponse() throws JsonProcessingException {
         // Given
         FeignException feignException = mock(FeignException.class);
+        HttpServletRequest request = mock(HttpServletRequest.class);
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         ErrorResponse errorResponse = new ErrorResponse("message", "service");
         when(feignException.responseBody()).thenReturn(
                 Optional.of(ByteBuffer.wrap(objectMapper.writeValueAsBytes(errorResponse)))
         );
+        when(request.getRequestURI()).thenReturn("/");
         when(feignException.status()).thenReturn(status.value());
 
         // When
-        ResponseEntity<ErrorResponse> actual = handler.handle(feignException);
+        ResponseEntity<ErrorResponse> actual = handler.handleFeignException(feignException, request);
 
         // Then
         assertNotNull(actual.getBody());
@@ -78,6 +80,7 @@ class GeneralExceptionHandlerTest {
     void feignExceptionHandleShouldReturnInvalidResponse() throws JsonProcessingException {
         // Given
         FeignException feignException = mock(FeignException.class);
+        HttpServletRequest request = mock(HttpServletRequest.class);
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         String message = "invalid json";
         when(feignException.responseBody()).thenReturn(
@@ -86,7 +89,7 @@ class GeneralExceptionHandlerTest {
         when(feignException.status()).thenReturn(status.value());
 
         // When
-        ResponseEntity<ErrorResponse> actual = handler.handle(feignException);
+        ResponseEntity<ErrorResponse> actual = handler.handleFeignException(feignException, request);
 
         // Then
         assertNotNull(actual.getBody());
@@ -95,9 +98,9 @@ class GeneralExceptionHandlerTest {
     }
 
     @Test
-    void handleShouldHandleRuntimeException() {
+    void handleShouldHandleRuntimeExceptionException() {
         // When
-        ResponseEntity<ErrorResponse> actual = handler.handle(new RuntimeException(), mock(HttpServletRequest.class));
+        ResponseEntity<ErrorResponse> actual = handler.handleRuntimeException(new RuntimeException(), mock(HttpServletRequest.class));
 
         // Then
         assertNotNull(actual.getBody());
