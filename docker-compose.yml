@@ -33,36 +33,56 @@ services:
     hostname: gateway
     networks:
       - budget-tracker-internal
+    environment:
+      - SPRING_PROFILES_ACTIVE= docker
+      - JAVA_TOOL_OPTIONS= -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:6000
     ports:
       - "8080:8080"
+      - "6000:6000"
   user-service:
     image: user-service:latest
     hostname: user
     networks:
       - budget-tracker-internal
+    environment:
+      - SPRING_PROFILES_ACTIVE= docker
+      - JAVA_TOOL_OPTIONS= -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:6000
     ports:
       - "8081:8080"
+      - "6001:6000"
   notification-service:
     image: notification-service:latest
     hostname: notification
     networks:
       - budget-tracker-internal
+    environment:
+      - SPRING_PROFILES_ACTIVE= docker
+      - JAVA_TOOL_OPTIONS= -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:6000
     ports:
       - "8083:8080"
+      - "6003:6000"
   email-service:
     image: email-service:latest
     hostname: email
     networks:
       - budget-tracker-internal
+    environment:
+      - SPRING_PROFILES_ACTIVE= docker
+      - JAVA_TOOL_OPTIONS= -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:6000
     ports:
       - "8082:8080"
+      - "6002:6000"
   budget-service:
     image: budget-service:latest
     hostname: budget
     networks:
       - budget-tracker-internal
+    environment:
+      - SPRING_PROFILES_ACTIVE= docker
+      - JAVA_TOOL_OPTIONS= -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:6000
     ports:
       - "8084:8080"
+      - "6004:6000"
 networks:
   budget-tracker-internal:
     name: budget-tracker-internal
