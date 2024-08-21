@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>user-contracts</module>
+        <module>calculation-contracts</module>
     </modules>
 
     <dependencies>
