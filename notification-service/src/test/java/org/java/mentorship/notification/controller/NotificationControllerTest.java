@@ -50,7 +50,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    void createNotificationShouldReturnContractFromNotificationService() {
+    void createNotificationShouldReturnContractAndPostFromNotificationService() {
         when(notificationService.createNotification(any())).thenReturn(notifications.get(0));
 
         ResponseEntity<Notification> response = notificationController.postNotification(new NotificationEntity(1, 2, "a@gmail.com", null,NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now()));
@@ -61,7 +61,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    void updateNotificationShouldReturnContractFromNotificationService() {
+    void updateNotificationShouldReturnContractAndUpdateFromNotificationService() {
         when(notificationService.updateNotification(any(),any())).thenReturn(notifications.get(0));
 
         ResponseEntity<Notification> response = notificationController.putNotification(1,new NotificationEntity(1, 2, "a@gmail.com", null,NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now()));
@@ -72,7 +72,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    void getNotificationsShouldReturnContractFromNotificationService() {
+    void getNotificationByIdShouldReturnContractFromNotificationServiceById() {
         when(notificationService.getById(any())).thenReturn(notifications.get(0));
 
         ResponseEntity<Notification> response = notificationController.getNotificationById(1);
@@ -95,7 +95,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    void deleteNotificationsShouldReturnContractsFromNotificationService() {
+    void deleteNotificationsShouldReturnABooleanIfNotifiactionIsDeleted() {
         when(notificationService.deleteNotification(any())).thenReturn(true);
 
         ResponseEntity<Boolean> response = notificationController.deleteNotification(any());
