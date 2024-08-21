@@ -53,6 +53,21 @@ class GeneralExceptionHandlerTest {
     }
 
     @Test
+    void handleShouldHandleGatewayExceptionWithSourceException() {
+        // Given
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorResponse errorResponse = new GatewayErrorResponse("message");
+
+        // When
+        ResponseEntity<ErrorResponse> actual = handler.handleGatewayException(new GatewayException(errorResponse, new RuntimeException(), status));
+
+        // Then
+        assertNotNull(actual.getBody());
+        assertEquals(errorResponse.getError(), actual.getBody().getError());
+        assertEquals(status, actual.getStatusCode());
+    }
+
+    @Test
     void feignExceptionHandleShouldReturnOriginalErrorResponse() throws JsonProcessingException {
         // Given
         FeignException feignException = mock(FeignException.class);
