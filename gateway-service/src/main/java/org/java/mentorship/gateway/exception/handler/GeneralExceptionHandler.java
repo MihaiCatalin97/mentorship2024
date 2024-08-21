@@ -30,7 +30,7 @@ public class GeneralExceptionHandler {
     }
 
     @ExceptionHandler(FeignException.class)
-    public ResponseEntity<ErrorResponse> handle(final FeignException exception) {
+    public ResponseEntity<ErrorResponse> handle(final FeignException exception, final HttpServletRequest request) {
         ErrorResponse errorResponse = new GatewayErrorResponse("No message");
 
         if (exception.responseBody().isPresent()) {
@@ -38,6 +38,10 @@ public class GeneralExceptionHandler {
             try {
                 errorResponse = objectMapper.readValue(responseString, ErrorResponse.class);
             } catch (JsonProcessingException e) {
+                log.error(String.format("[%s] Caught exception when parsing JSON: %s (%s)",
+                        request.getRequestURI(),
+                        exception.getMessage(),
+                        exception.getClass()));
                 errorResponse = new GatewayErrorResponse(responseString);
             }
         }
