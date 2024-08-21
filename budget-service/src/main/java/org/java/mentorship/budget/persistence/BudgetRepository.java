@@ -17,12 +17,12 @@ public class BudgetRepository {
 
     public BudgetEntity save(final BudgetEntity budgetEntity) {
         jdbcTemplate.update(
-                "INSERT INTO budgets (user_id, name, maximum_allowed, budget_interval, transaction_id, account_id) VALUES(?,?,?,?,?,?)",
+                "INSERT INTO budgets (user_id, name, maximum_allowed, budget_interval, category_id, account_id) VALUES(?,?,?,?,?,?)",
                 budgetEntity.getUserId(),
                 budgetEntity.getName(),
                 budgetEntity.getMaximumAllowed(),
                 budgetEntity.getInterval().name(),
-                budgetEntity.getTransactionId(),
+                budgetEntity.getCategoryId(),
                 budgetEntity.getAccountId()
         );
         return budgetEntity;
@@ -42,11 +42,11 @@ public class BudgetRepository {
 
     public BudgetEntity update(final BudgetEntity budgetEntity) {
         jdbcTemplate.update(
-                "UPDATE budgets SET name = ?, maximum_allowed = ?, budget_interval = ?, transaction_id = ?, account_id = ? WHERE id = ?",
+                "UPDATE budgets SET name = ?, maximum_allowed = ?, budget_interval = ?, category_id = ?, account_id = ? WHERE id = ?",
                 budgetEntity.getName(),
                 budgetEntity.getMaximumAllowed(),
                 budgetEntity.getInterval().name(),
-                budgetEntity.getTransactionId(),
+                budgetEntity.getCategoryId(),
                 budgetEntity.getAccountId(),
                 budgetEntity.getId()
         );

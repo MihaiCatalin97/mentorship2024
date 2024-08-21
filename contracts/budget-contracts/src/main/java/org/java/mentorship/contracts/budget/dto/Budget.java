@@ -34,9 +34,9 @@ public class Budget {
     @NotNull(message = "Field 'interval' must not be null")
     private BudgetInterval interval;
 
-    @NotNull(message = "Field 'transactionId' must not be null")
-    @Min(value = 1, message = "Field 'transactionId' must be greater than 0")
-    private Integer transactionId;
+    @NotNull(message = "Field 'categoryId' must not be null")
+    @Min(value = 1, message = "Field 'categoryId' must be greater than 0")
+    private Integer categoryId;
 
     @NotNull(message = "Field 'accountId' must not be null")
     @Min(value = 1, message = "Field 'accountId' must be greater than 0")

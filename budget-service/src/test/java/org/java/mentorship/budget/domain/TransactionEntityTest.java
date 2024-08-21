@@ -31,6 +31,7 @@ class TransactionEntityTest {
                 .type(TransactionType.INCOME)
                 .value(100)
                 .description("Test Transaction")
+                .categoryId(1)
                 .accountId(1)
                 .timestamp(OffsetDateTime.now())
                 .build();
@@ -50,6 +51,7 @@ class TransactionEntityTest {
                 .type(TransactionType.INCOME)
                 .value(100)
                 .description("Test Transaction")
+                .categoryId(1)
                 .accountId(1)
                 .timestamp(OffsetDateTime.now())
                 .build();
@@ -69,6 +71,7 @@ class TransactionEntityTest {
                 .type(null)
                 .value(100)
                 .description("Test Transaction")
+                .categoryId(1)
                 .accountId(1)
                 .timestamp(OffsetDateTime.now())
                 .build();
@@ -88,6 +91,7 @@ class TransactionEntityTest {
                 .type(TransactionType.INCOME)
                 .value(-10)
                 .description("Test Transaction")
+                .categoryId(1)
                 .accountId(1)
                 .timestamp(OffsetDateTime.now())
                 .build();
@@ -107,6 +111,7 @@ class TransactionEntityTest {
                 .type(TransactionType.INCOME)
                 .value(100)
                 .description("")
+                .categoryId(1)
                 .accountId(1)
                 .timestamp(OffsetDateTime.now())
                 .build();
@@ -119,6 +124,68 @@ class TransactionEntityTest {
     }
 
     @Test
+    void validateShouldFailWhenDescriptionIsTooLong() {
+        String longDescription = "a".repeat(256); // 256 characters
+
+        TransactionEntity transaction = TransactionEntity.builder()
+                .id(1)
+                .userId(1)
+                .type(TransactionType.INCOME)
+                .value(100)
+                .description(longDescription)
+                .categoryId(1)
+                .accountId(1)
+                .timestamp(OffsetDateTime.now())
+                .build();
+
+        Set<ConstraintViolation<TransactionEntity>> violations = validator.validate(transaction);
+
+        assertFalse(violations.isEmpty(), "Expected validation errors");
+        assertEquals(1, violations.size(), "Expected one validation error");
+        assertEquals("Field 'description' must not exceed 255 characters", violations.iterator().next().getMessage());
+    }
+
+    @Test
+    void validateShouldFailWhenCategoryIdIsNull() {
+        TransactionEntity transaction = TransactionEntity.builder()
+                .id(1)
+                .userId(1)
+                .type(TransactionType.INCOME)
+                .value(100)
+                .description("Test Transaction")
+                .categoryId(null)
+                .accountId(1)
+                .timestamp(OffsetDateTime.now())
+                .build();
+
+        Set<ConstraintViolation<TransactionEntity>> violations = validator.validate(transaction);
+
+        assertFalse(violations.isEmpty(), "Expected validation errors");
+        assertEquals(1, violations.size(), "Expected one validation error");
+        assertEquals("Field 'categoryId' must not be null", violations.iterator().next().getMessage());
+    }
+
+    @Test
+    void validateShouldFailWhenCategoryIdIsNegative() {
+        TransactionEntity transaction = TransactionEntity.builder()
+                .id(1)
+                .userId(1)
+                .type(TransactionType.INCOME)
+                .value(100)
+                .description("Test Transaction")
+                .categoryId(-1)
+                .accountId(1)
+                .timestamp(OffsetDateTime.now())
+                .build();
+
+        Set<ConstraintViolation<TransactionEntity>> violations = validator.validate(transaction);
+
+        assertFalse(violations.isEmpty(), "Expected validation errors");
+        assertEquals(1, violations.size(), "Expected one validation error");
+        assertEquals("Field 'categoryId' must be greater than 0", violations.iterator().next().getMessage());
+    }
+
+    @Test
     void validateShouldFailWhenAccountIdIsNull() {
         TransactionEntity transaction = TransactionEntity.builder()
                 .id(1)
@@ -126,6 +193,7 @@ class TransactionEntityTest {
                 .type(TransactionType.INCOME)
                 .value(100)
                 .description("Test Transaction")
+                .categoryId(1)
                 .accountId(null)
                 .timestamp(OffsetDateTime.now())
                 .build();
@@ -138,6 +206,26 @@ class TransactionEntityTest {
     }
 
     @Test
+    void validateShouldFailWhenAccountIdIsNegative() {
+        TransactionEntity transaction = TransactionEntity.builder()
+                .id(1)
+                .userId(1)
+                .type(TransactionType.INCOME)
+                .value(100)
+                .description("Test Transaction")
+                .categoryId(1)
+                .accountId(-1)
+                .timestamp(OffsetDateTime.now())
+                .build();
+
+        Set<ConstraintViolation<TransactionEntity>> violations = validator.validate(transaction);
+
+        assertFalse(violations.isEmpty(), "Expected validation errors");
+        assertEquals(1, violations.size(), "Expected one validation error");
+        assertEquals("Field 'accountId' must be greater than 0", violations.iterator().next().getMessage());
+    }
+
+    @Test
     void validateShouldFailWhenTimestampIsNull() {
         TransactionEntity transaction = TransactionEntity.builder()
                 .id(1)
@@ -145,6 +233,7 @@ class TransactionEntityTest {
                 .type(TransactionType.INCOME)
                 .value(100)
                 .description("Test Transaction")
+                .categoryId(1)
                 .accountId(1)
                 .timestamp(null)
                 .build();
@@ -164,6 +253,7 @@ class TransactionEntityTest {
                 .type(TransactionType.INCOME)
                 .value(100)
                 .description("Test Transaction")
+                .categoryId(1)
                 .accountId(1)
                 .timestamp(OffsetDateTime.now())
                 .build();

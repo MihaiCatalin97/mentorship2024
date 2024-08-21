@@ -31,7 +31,7 @@ class BudgetRepositoryTest {
     private BudgetRepository budgetRepository;
 
     @BeforeAll
-    public static void initTest() throws SQLException {
+    static void initTest() throws SQLException {
         // Start the H2 web server to make the database accessible via browser for debugging
         Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8086")
                 .start();
@@ -54,7 +54,7 @@ class BudgetRepositoryTest {
         budget.setName("New Monthly Budget");
         budget.setMaximumAllowed(2000);
         budget.setInterval(BudgetInterval.MONTHLY); // Assuming you have a BudgetInterval enum
-        budget.setTransactionId(1);
+        budget.setCategoryId(1);
         budget.setAccountId(1);
 
         // When
@@ -103,11 +103,11 @@ class BudgetRepositoryTest {
         BudgetEntity budget = budgetRepository.findAll().get(1);
 
         // When
-        budgetRepository.delete(budget.getId());
+        BudgetEntity deletedBudget = budgetRepository.delete(budget.getId());
 
         // Then
         List<BudgetEntity> results = budgetRepository.findAll();
         assertEquals(1, results.size());  // Adjust the expected size based on test data
-        assertFalse(results.stream().anyMatch(b -> b.getId().equals(budget.getId())));
+        assertFalse(results.stream().anyMatch(b -> b.getId().equals(deletedBudget.getId())));
     }
 }

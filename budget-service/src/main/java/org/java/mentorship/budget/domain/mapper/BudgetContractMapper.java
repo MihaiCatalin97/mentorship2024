@@ -13,7 +13,7 @@ public class BudgetContractMapper {
         budgetContract.setName(budgetEntity.getName());
         budgetContract.setMaximumAllowed(budgetEntity.getMaximumAllowed());
         budgetContract.setInterval(budgetEntity.getInterval());
-        budgetContract.setTransactionId(budgetEntity.getTransactionId());
+        budgetContract.setCategoryId(budgetEntity.getCategoryId());
         budgetContract.setAccountId(budgetEntity.getAccountId());
 
         return budgetContract;
@@ -27,7 +27,7 @@ public class BudgetContractMapper {
         budgetEntity.setName(budgetContract.getName());
         budgetEntity.setMaximumAllowed(budgetContract.getMaximumAllowed());
         budgetEntity.setInterval(budgetContract.getInterval());
-        budgetEntity.setTransactionId(budgetContract.getTransactionId());
+        budgetEntity.setCategoryId(budgetContract.getCategoryId());
         budgetEntity.setAccountId(budgetContract.getAccountId());
 
         return budgetEntity;

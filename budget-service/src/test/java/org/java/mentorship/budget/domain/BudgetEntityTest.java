@@ -30,7 +30,7 @@ class BudgetEntityTest {
                 .name("Test Budget")
                 .maximumAllowed(1000)
                 .interval(BudgetInterval.MONTHLY)
-                .transactionId(1)
+                .categoryId(1)
                 .accountId(1)
                 .build();
 
@@ -49,7 +49,7 @@ class BudgetEntityTest {
                 .name("Test Budget")
                 .maximumAllowed(1000)
                 .interval(BudgetInterval.MONTHLY)
-                .transactionId(1)
+                .categoryId(1)
                 .accountId(1)
                 .build();
 
@@ -68,7 +68,7 @@ class BudgetEntityTest {
                 .name("")
                 .maximumAllowed(1000)
                 .interval(BudgetInterval.MONTHLY)
-                .transactionId(1)
+                .categoryId(1)
                 .accountId(1)
                 .build();
 
@@ -87,7 +87,7 @@ class BudgetEntityTest {
                 .name("Test Budget")
                 .maximumAllowed(-100)
                 .interval(BudgetInterval.MONTHLY)
-                .transactionId(1)
+                .categoryId(1)
                 .accountId(1)
                 .build();
 
@@ -106,7 +106,7 @@ class BudgetEntityTest {
                 .name("Test Budget")
                 .maximumAllowed(1000)
                 .interval(null)
-                .transactionId(1)
+                .categoryId(1)
                 .accountId(1)
                 .build();
 
@@ -118,14 +118,14 @@ class BudgetEntityTest {
     }
 
     @Test
-    void validateShouldFailWhenTransactionIdIsNull() {
+    void validateShouldFailWhenCategoryIdIsNull() {
         BudgetEntity budget = BudgetEntity.builder()
                 .id(1)
                 .userId(1)
                 .name("Test Budget")
                 .maximumAllowed(1000)
                 .interval(BudgetInterval.MONTHLY)
-                .transactionId(null)
+                .categoryId(null)
                 .accountId(1)
                 .build();
 
@@ -133,7 +133,26 @@ class BudgetEntityTest {
 
         assertFalse(violations.isEmpty(), "Expected validation errors");
         assertEquals(1, violations.size(), "Expected one validation error");
-        assertEquals("Field 'transactionId' must not be null", violations.iterator().next().getMessage());
+        assertEquals("Field 'categoryId' must not be null", violations.iterator().next().getMessage());
+    }
+
+    @Test
+    void validateShouldFailWhenCategoryIdIsNegative() {
+        BudgetEntity budget = BudgetEntity.builder()
+                .id(1)
+                .userId(1)
+                .name("Test Budget")
+                .maximumAllowed(1000)
+                .interval(BudgetInterval.MONTHLY)
+                .categoryId(-1)
+                .accountId(1)
+                .build();
+
+        Set<ConstraintViolation<BudgetEntity>> violations = validator.validate(budget);
+
+        assertFalse(violations.isEmpty(), "Expected validation errors");
+        assertEquals(1, violations.size(), "Expected one validation error");
+        assertEquals("Field 'categoryId' must be greater than 0", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -144,7 +163,7 @@ class BudgetEntityTest {
                 .name("Test Budget")
                 .maximumAllowed(1000)
                 .interval(BudgetInterval.MONTHLY)
-                .transactionId(1)
+                .categoryId(1)
                 .accountId(null)
                 .build();
 
@@ -156,6 +175,25 @@ class BudgetEntityTest {
     }
 
     @Test
+    void validateShouldFailWhenAccountIdIsNegative() {
+        BudgetEntity budget = BudgetEntity.builder()
+                .id(1)
+                .userId(1)
+                .name("Test Budget")
+                .maximumAllowed(1000)
+                .interval(BudgetInterval.MONTHLY)
+                .categoryId(1)
+                .accountId(-1)
+                .build();
+
+        Set<ConstraintViolation<BudgetEntity>> violations = validator.validate(budget);
+
+        assertFalse(violations.isEmpty(), "Expected validation errors");
+        assertEquals(1, violations.size(), "Expected one validation error");
+        assertEquals("Field 'accountId' must be greater than 0", violations.iterator().next().getMessage());
+    }
+
+    @Test
     void validateShouldPassWhenAllFieldsAreValid() {
         BudgetEntity budget = BudgetEntity.builder()
                 .id(1)
@@ -163,7 +201,7 @@ class BudgetEntityTest {
                 .name("Test Budget")
                 .maximumAllowed(1000)
                 .interval(BudgetInterval.MONTHLY)
-                .transactionId(1)
+                .categoryId(1)
                 .accountId(1)
                 .build();
 

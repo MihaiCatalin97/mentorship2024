@@ -20,7 +20,7 @@ public class BudgetRowMapper implements RowMapper<BudgetEntity> {
         budgetEntity.setName(rs.getString("name"));
         budgetEntity.setMaximumAllowed(rs.getInt("maximum_allowed"));
         budgetEntity.setInterval(BudgetInterval.valueOf(rs.getString("budget_interval")));
-        budgetEntity.setTransactionId(rs.getInt("transaction_id"));
+        budgetEntity.setCategoryId(rs.getInt("category_id"));
         budgetEntity.setAccountId(rs.getInt("account_id"));
 
         return budgetEntity;

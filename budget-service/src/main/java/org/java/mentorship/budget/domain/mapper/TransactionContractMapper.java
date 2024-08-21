@@ -13,6 +13,7 @@ public class TransactionContractMapper {
         transactionContract.setType(transactionEntity.getType());
         transactionContract.setValue(transactionEntity.getValue());
         transactionContract.setDescription(transactionEntity.getDescription());
+        transactionContract.setCategoryId(transactionEntity.getCategoryId());
         transactionContract.setAccountId(transactionEntity.getAccountId());
         transactionContract.setTimestamp(transactionEntity.getTimestamp());
 
@@ -27,6 +28,7 @@ public class TransactionContractMapper {
         transactionEntity.setType(transactionContract.getType());
         transactionEntity.setValue(transactionContract.getValue());
         transactionEntity.setDescription(transactionContract.getDescription());
+        transactionEntity.setCategoryId(transactionContract.getCategoryId());
         transactionEntity.setAccountId(transactionContract.getAccountId());
         transactionEntity.setTimestamp(transactionContract.getTimestamp());
 

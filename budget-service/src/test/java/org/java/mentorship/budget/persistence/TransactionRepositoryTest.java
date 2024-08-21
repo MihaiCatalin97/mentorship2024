@@ -32,7 +32,8 @@ class TransactionRepositoryTest {
     private TransactionRepository transactionRepository;
 
     @BeforeAll
-    public static void initTest() throws SQLException {
+    static void initTest() throws SQLException {
+        // Start the H2 web server to make the database accessible via browser for debugging
         Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8083")
                 .start();
     }
@@ -43,7 +44,8 @@ class TransactionRepositoryTest {
         List<TransactionEntity> results = transactionRepository.findAll();
 
         // Then
-        assertEquals(2, results.size());  // Adjust the expected size based on test data
+        assertNotNull(results, "Results should not be null");
+        assertEquals(2, results.size(), "Should return 2 transactions from the database");
     }
 
     @Test
@@ -54,16 +56,19 @@ class TransactionRepositoryTest {
         transaction.setType(TransactionType.INCOME); // Using the TransactionType enum
         transaction.setValue(1000);
         transaction.setDescription("New income transaction");
-        transaction.setAccountId(1);
-        transaction.setTimestamp(OffsetDateTime.now()); // Use OffsetDateTime instead of Timestamp
+        transaction.setCategoryId(1); // Ensure this ID exists in the categories table
+        transaction.setAccountId(1); // Ensure this ID exists in the accounts table
+        transaction.setTimestamp(OffsetDateTime.now()); // Use OffsetDateTime
 
         // When
         transactionRepository.save(transaction);
 
         // Then
         List<TransactionEntity> result = transactionRepository.findAll();
-        assertEquals(3, result.size());  // Adjust the expected size based on test data
-        assertTrue(result.stream().anyMatch(t -> "New income transaction".equals(t.getDescription())));
+        assertNotNull(result, "Result should not be null");
+        assertEquals(3, result.size(), "Should return 3 transactions after insert");
+        assertTrue(result.stream().anyMatch(t -> "New income transaction".equals(t.getDescription())),
+                "Transaction with description 'New income transaction' should be present");
     }
 
     @Test
@@ -75,10 +80,10 @@ class TransactionRepositoryTest {
         TransactionEntity result = transactionRepository.findById(transaction.getId());
 
         // Then
-        assertNotNull(result);
-        assertEquals(transaction.getId(), result.getId());
-        assertEquals(transaction.getDescription(), result.getDescription());
-        assertEquals(transaction.getUserId(), result.getUserId());
+        assertNotNull(result, "Result should not be null");
+        assertEquals(transaction.getId(), result.getId(), "Transaction ID should match");
+        assertEquals(transaction.getDescription(), result.getDescription(), "Descriptions should match");
+        assertEquals(transaction.getUserId(), result.getUserId(), "User IDs should match");
     }
 
     @Test
@@ -93,21 +98,24 @@ class TransactionRepositoryTest {
 
         // Then
         TransactionEntity updatedTransaction = transactionRepository.findById(transaction.getId());
-        assertEquals("Updated income transaction", updatedTransaction.getDescription());
-        assertEquals(2000, updatedTransaction.getValue());
+        assertNotNull(updatedTransaction, "Updated transaction should not be null");
+        assertEquals("Updated income transaction", updatedTransaction.getDescription(), "Description should be updated");
+        assertEquals(2000, updatedTransaction.getValue(), "Value should be updated");
     }
 
     @Test
     void deleteShouldRemoveRecordFromDatabase() {
         // Given
-        TransactionEntity transaction = transactionRepository.findAll().get(0);
+        TransactionEntity transaction = transactionRepository.findAll().get(1);
 
         // When
-        transactionRepository.delete(transaction.getId());
+        TransactionEntity deletedTransaction = transactionRepository.delete(transaction.getId());
 
         // Then
         List<TransactionEntity> results = transactionRepository.findAll();
-        assertEquals(1, results.size());  // Adjust the expected size based on test data
-        assertFalse(results.stream().anyMatch(t -> t.getId().equals(transaction.getId())));
+        assertNotNull(results, "Results should not be null");
+        assertEquals(1, results.size(), "Should return 1 transaction after deletion");
+        assertFalse(results.stream().anyMatch(t -> t.getId().equals(deletedTransaction.getId())),
+                "Deleted transaction should not be present in the results");
     }
 }

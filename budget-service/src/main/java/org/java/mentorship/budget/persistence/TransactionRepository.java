@@ -17,11 +17,12 @@ public class TransactionRepository {
 
     public TransactionEntity save(final TransactionEntity transactionEntity) {
         jdbcTemplate.update(
-                "INSERT INTO transactions (user_id, type, transaction_value, description, account_id, timestamp) VALUES(?,?,?,?,?,?)",
+                "INSERT INTO transactions (user_id, type, transaction_value, description, category_id, account_id, timestamp) VALUES(?,?,?,?,?,?,?)",
                 transactionEntity.getUserId(),
                 transactionEntity.getType().name(),
                 transactionEntity.getValue(),
                 transactionEntity.getDescription(),
+                transactionEntity.getCategoryId(),
                 transactionEntity.getAccountId(),
                 transactionEntity.getTimestamp()
         );
@@ -42,10 +43,11 @@ public class TransactionRepository {
 
     public TransactionEntity update(final TransactionEntity transactionEntity) {
         jdbcTemplate.update(
-                "UPDATE transactions SET type = ?, transaction_value = ?, description = ?, account_id = ?, timestamp = ? WHERE id = ?",
+                "UPDATE transactions SET type = ?, transaction_value = ?, description = ?, category_id = ?, account_id = ?, timestamp = ? WHERE id = ?",
                 transactionEntity.getType().name(),
                 transactionEntity.getValue(),
                 transactionEntity.getDescription(),
+                transactionEntity.getCategoryId(),
                 transactionEntity.getAccountId(),
                 transactionEntity.getTimestamp(),
                 transactionEntity.getId()

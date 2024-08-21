@@ -36,6 +36,10 @@ public class Transaction {
     @Size(max = 255, message = "Field 'description' must not exceed 255 characters")
     private String description;
 
+    @NotNull(message = "Field 'categoryId' must not be null")
+    @Min(value = 1, message = "Field 'categoryId' must be greater than 0")
+    private Integer categoryId;
+
     @NotNull(message = "Field 'accountId' must not be null")
     @Min(value = 1, message = "Field 'accountId' must be greater than 0")
     private Integer accountId;
