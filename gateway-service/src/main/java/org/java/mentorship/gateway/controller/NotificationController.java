@@ -33,8 +33,8 @@ public class NotificationController {
         return ResponseEntity.ok(notificationFeignClient.getNotifications(id, user_id, email, payload, channels, types, marked, createAt));
     }
 
-    @GetMapping("/{id}/read")
-    public ResponseEntity<Notification> getNotificationMarkAsRead(@PathVariable Integer id) {
-        return ResponseEntity.ok(notificationFeignClient.postNotificationMarkAsRead(id));
+    @PostMapping("/{id}/read")
+    public ResponseEntity<Notification> markNotificationMarkAsRead(@PathVariable Integer id) {
+        return ResponseEntity.ok(notificationFeignClient.markNotificationMarkAsRead(id));
     }
 }

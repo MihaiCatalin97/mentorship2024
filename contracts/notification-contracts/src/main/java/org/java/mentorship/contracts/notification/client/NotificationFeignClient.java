@@ -1,6 +1,5 @@
 package org.java.mentorship.contracts.notification.client;
 
-import jakarta.validation.Valid;
 import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.contracts.notification.dto.NotificationChannel;
 import org.java.mentorship.contracts.notification.dto.NotificationType;
@@ -50,7 +49,7 @@ public interface NotificationFeignClient {
             method = RequestMethod.POST,
             value = "/notifications{id}/read"
     )
-    Notification postNotificationMarkAsRead(@PathVariable("id") Integer id);
+    Notification markNotificationMarkAsRead(@PathVariable("id") Integer id);
 
     @RequestMapping(
             method = RequestMethod.DELETE,
