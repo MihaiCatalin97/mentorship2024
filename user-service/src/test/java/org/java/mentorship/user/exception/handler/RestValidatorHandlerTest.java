@@ -1,7 +1,7 @@
 package org.java.mentorship.user.exception.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.java.mentorship.contracts.user.dto.error.UserServiceError;
+import org.java.mentorship.contracts.common.dto.ErrorResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -30,11 +30,11 @@ class RestValidatorHandlerTest {
         );
         when(exception.getBindingResult()).thenReturn(bindingResult);
 
-        ResponseEntity<UserServiceError> responseEntity = handler.handleException(exception, request);
+        ResponseEntity<ErrorResponse> responseEntity = handler.handleException(exception, request);
 
         assertEquals(400, responseEntity.getStatusCode().value());
         assertTrue(Objects.nonNull(responseEntity.getBody()));
-        assertEquals("Name should not be empty", responseEntity.getBody().getMessage());
+        assertEquals("Name should not be empty", responseEntity.getBody().getError());
     }
 
 }

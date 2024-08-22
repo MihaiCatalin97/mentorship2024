@@ -1,6 +1,5 @@
 package org.java.mentorship.user.service;
 
-import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
 import org.java.mentorship.user.domain.SessionEntity;
 import org.java.mentorship.user.domain.UserEntity;
@@ -149,6 +148,16 @@ class SessionServiceTest {
                         .expiresAt(OffsetDateTime.now().minusDays(10))
                         .build())
         );
+
+        Optional<SessionEntity> session = sessionService.getSession(sessionKey);
+
+        assertTrue(session.isEmpty());
+    }
+
+    @Test
+    void getSessionShouldReturnEmptyWhenSessionDoesNotExist() {
+        String sessionKey = UUID.randomUUID().toString();
+        when(sessionRepository.getByKey(sessionKey)).thenReturn(Optional.empty());
 
         Optional<SessionEntity> session = sessionService.getSession(sessionKey);
 
