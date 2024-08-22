@@ -7,7 +7,6 @@ import org.java.mentorship.contracts.notification.client.NotificationFeignClient
 import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.contracts.notification.dto.NotificationChannel;
 import org.java.mentorship.contracts.notification.dto.NotificationType;
-import org.java.mentorship.notification.domain.NotificationEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

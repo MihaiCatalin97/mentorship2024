@@ -2,7 +2,6 @@ package org.java.mentorship.gateway.controller;
 
 import org.java.mentorship.contracts.notification.client.NotificationFeignClient;
 import org.java.mentorship.contracts.notification.dto.Notification;
-import org.java.mentorship.notification.domain.NotificationEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

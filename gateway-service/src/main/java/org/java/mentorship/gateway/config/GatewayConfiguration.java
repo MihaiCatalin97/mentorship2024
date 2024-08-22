@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableFeignClients(clients = {
         UserFeignClient.class,
         SessionFeignClient.class,
-        CalculationFeignClient.class
+        CalculationFeignClient.class,
         NotificationFeignClient.class
 })
 @Generated
