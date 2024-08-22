@@ -1,7 +1,7 @@
 package org.java.mentorship.user.exception.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.java.mentorship.contracts.user.dto.error.UserServiceError;
+import org.java.mentorship.contracts.common.dto.ErrorResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class RestValidatorHandler {
 
     @ExceptionHandler
-    public ResponseEntity<UserServiceError> handleException(final MethodArgumentNotValidException ex, final HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handleException(final MethodArgumentNotValidException ex, final HttpServletRequest request) {
         return ResponseEntity.badRequest().body(
-                new UserServiceError(ex.getBindingResult().getFieldErrors().getFirst().getDefaultMessage())
+                new ErrorResponse(ex.getBindingResult().getFieldErrors().getFirst().getDefaultMessage(), "user")
         );
     }
 

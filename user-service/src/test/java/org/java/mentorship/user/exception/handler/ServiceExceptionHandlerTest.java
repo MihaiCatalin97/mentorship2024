@@ -1,6 +1,6 @@
 package org.java.mentorship.user.exception.handler;
 
-import org.java.mentorship.contracts.user.dto.error.UserServiceError;
+import org.java.mentorship.contracts.common.dto.ErrorResponse;
 import org.java.mentorship.user.exception.domain.common.UserServiceException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -18,11 +18,11 @@ class ServiceExceptionHandlerTest {
     @Test
     void handlerShouldHandleValidationException() {
         UserServiceException exception = new UserServiceException(HttpStatus.INTERNAL_SERVER_ERROR, "Message");
-        ResponseEntity<UserServiceError> responseEntity = handler.handleException(exception);
+        ResponseEntity<ErrorResponse> responseEntity = handler.handleException(exception);
 
         assertEquals(500, responseEntity.getStatusCode().value());
         assertTrue(Objects.nonNull(responseEntity.getBody()));
-        assertEquals("Message", responseEntity.getBody().getMessage());
+        assertEquals("Message", responseEntity.getBody().getError());
     }
 
 }

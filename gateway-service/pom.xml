@@ -25,12 +25,17 @@
             <artifactId>spring-boot</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.java.mentorship</groupId>
             <artifactId>user-contracts</artifactId>
         </dependency>
         <dependency>
             <groupId>org.java.mentorship</groupId>
-            <artifactId>notification-contracts</artifactId>
+            <artifactId>common-contracts</artifactId>
         </dependency>
     </dependencies>
 
