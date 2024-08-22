@@ -33,11 +33,11 @@ public class EmailService {
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED);
 
-            Template template = config.getTemplate("templates/email-template.ftl");
+            Template template = config.getTemplate("email-template.ftl");
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
 
             helper.setTo(request.getTo());
-            helper.setFrom(request.getFrom());
+            helper.setFrom("budget.tracker@dfourmusic.com");
             helper.setText(html, true);
             helper.setSubject(request.getSubject());
             sender.send(message);
