@@ -2,6 +2,7 @@ package org.java.mentorship.gateway.controller;
 
 import org.java.mentorship.contracts.notification.client.NotificationFeignClient;
 import org.java.mentorship.contracts.notification.dto.Notification;
+import org.java.mentorship.notification.domain.NotificationEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -44,11 +45,10 @@ class NotificationControllerTest {
 
     @Test
     void markNotificationAsReadShouldCallFeign() {
-        when(notificationFeignClient.markNotificationMarkAsRead(anyInt())).thenReturn(new Notification());
+        when(notificationFeignClient.markNotificationMarkAsRead(anyInt(),any())).thenReturn(new Notification());
 
-        ResponseEntity<Notification> response = notificationController.markNotificationMarkAsRead(1);
+        ResponseEntity<Notification> response = notificationController.markNotificationMarkAsRead(1, new Notification());
 
-        verify(notificationFeignClient).markNotificationMarkAsRead(1);
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }

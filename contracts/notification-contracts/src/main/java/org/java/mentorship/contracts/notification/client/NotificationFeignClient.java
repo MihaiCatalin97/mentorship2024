@@ -1,5 +1,6 @@
 package org.java.mentorship.contracts.notification.client;
 
+import jakarta.validation.Valid;
 import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.contracts.notification.dto.NotificationChannel;
 import org.java.mentorship.contracts.notification.dto.NotificationType;
@@ -24,7 +25,7 @@ public interface NotificationFeignClient {
 
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/notifications{id}"
+            value = "/notifications/{id}"
     )
     Notification getNOtificationById(@PathVariable("id") Integer id);
 
@@ -36,14 +37,14 @@ public interface NotificationFeignClient {
 
     @RequestMapping(
             method = RequestMethod.PUT,
-            value = "/notifications{id}"
+            value = "/notifications/{id}"
     )
     Notification putNotification(@PathVariable("id") Integer id, @RequestBody Notification notification);
 
     @RequestMapping(
-            method = RequestMethod.POST,
-            value = "/notifications{id}/read"
+            method = RequestMethod.PUT,
+            value = "/notifications/read/{id}"
     )
-    Notification markNotificationMarkAsRead(@PathVariable("id") Integer id);
+    Notification markNotificationMarkAsRead(@PathVariable("id") Integer id, @RequestBody @Valid Notification notification);
 
 }

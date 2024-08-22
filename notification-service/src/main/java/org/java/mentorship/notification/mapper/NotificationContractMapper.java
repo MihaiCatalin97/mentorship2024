@@ -29,4 +29,23 @@ public class NotificationContractMapper {
 
         return notification;
     }
+
+    public NotificationEntity map(Notification notification) {
+        NotificationEntity notificationEntity = new NotificationEntity();
+
+        notificationEntity.setId(notification.getId());
+        notificationEntity.setUserId(notification.getUserId());
+        notificationEntity.setEmail(notification.getEmail());
+        notificationEntity.setMarkedAsRead(notification.getMarkedAsRead());
+        notificationEntity.setType(org.java.mentorship.notification.domain.enums.NotificationType.valueOf(notification.getType().toString()));
+        if (notification.getChannels() != null) {
+            notificationEntity.setChannels(notification.getChannels().stream().map(
+                    channel -> org.java.mentorship.notification.domain.enums.NotificationChannel.valueOf(channel.toString())
+            ).collect(Collectors.toList()));
+        }
+        notificationEntity.setPayload(notification.getPayload());
+        notificationEntity.setCreatedAt(notification.getCreatedAt());
+
+        return notificationEntity;
+    }
 }

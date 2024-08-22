@@ -24,7 +24,7 @@
         <jib.version>3.4.1</jib.version>
         <postgres.version>42.7.3</postgres.version>
         <jacoco.version>0.8.12</jacoco.version>
-
+        <jackson-datatype-jsr310.version>2.17.2</jackson-datatype-jsr310.version>
         <spring.version>3.3.2</spring.version>
         <spring.openfeign.version>4.1.3</spring.openfeign.version>
 
@@ -137,7 +137,6 @@
                 <groupId>org.java.mentorship</groupId>
                 <artifactId>notification-contracts</artifactId>
                 <artifactId>common-contracts</artifactId>
-                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

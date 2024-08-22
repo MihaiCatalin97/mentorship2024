@@ -1,11 +1,13 @@
 package org.java.mentorship.gateway.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.notification.client.NotificationFeignClient;
 import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.contracts.notification.dto.NotificationChannel;
 import org.java.mentorship.contracts.notification.dto.NotificationType;
+import org.java.mentorship.notification.domain.NotificationEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +29,8 @@ public class NotificationController {
         return ResponseEntity.ok(notificationFeignClient.getNotifications(userId, email, channel, type, marked));
     }
 
-    @PostMapping("/{id}/read")
-    public ResponseEntity<Notification> markNotificationMarkAsRead(@PathVariable Integer id) {
-        return ResponseEntity.ok(notificationFeignClient.markNotificationMarkAsRead(id));
+    @PutMapping("/read/{id}")
+    public ResponseEntity<Notification> markNotificationMarkAsRead(@PathVariable Integer id, @RequestBody @Valid Notification notification) {
+        return ResponseEntity.ok(notificationFeignClient.markNotificationMarkAsRead(id,notification));
     }
 }

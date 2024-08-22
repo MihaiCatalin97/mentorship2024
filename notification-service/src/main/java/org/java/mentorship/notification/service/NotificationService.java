@@ -28,10 +28,9 @@ public class NotificationService {
     public NotificationEntity createNotification(NotificationEntity notification) {
         NotificationEntity entity = notificationRepository.create(notification);
 
-        // TODO: Get entity ID for creating channels;
-//        notification.getChannels().forEach(channel -> {
-//            notificationChannelRepository.createNotificationChannel(entity.getId(), channel);
-//        });
+        notification.getChannels().forEach(channel -> {
+            notificationChannelRepository.createNotificationChannel(entity.getId(), channel);
+        });
 
         return entity;
     }

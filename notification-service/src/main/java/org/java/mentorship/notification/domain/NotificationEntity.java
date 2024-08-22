@@ -19,29 +19,19 @@ import java.util.Map;
 @NoArgsConstructor
 public class NotificationEntity {
 
-    @NotNull(message = "ID cannot be null")
     private Integer id;
 
-    @NotNull(message = "User ID cannot be null")
     private Integer userId;
 
-    @Email(message = "Email should be valid")
-    @NotNull(message = "Email cannot be null")
     private String email;
 
-    @NotNull(message = "Notification channels cannot be null")
     private List<NotificationChannel> channels;
 
-    @NotNull(message = "Notification types cannot be null")
     private NotificationType type;
 
-    @NotNull(message = "Payload cannot be null")
-    @Size(min = 1, message = "Payload cannot be empty")
     private Map<String, Object> payload;
 
-    @NotNull(message = "Marked as read status cannot be null")
     private Boolean markedAsRead;
 
-    @NotNull(message = "Creation date cannot be null")
     private OffsetDateTime createdAt;
 }

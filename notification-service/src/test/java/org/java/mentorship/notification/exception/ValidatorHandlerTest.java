@@ -9,6 +9,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,7 +34,7 @@ class ValidatorHandlerTest {
 
         assertEquals(400, responseEntity.getStatusCode().value());
         assertTrue(Objects.nonNull(responseEntity.getBody()));
-        assertEquals("Id should not be empty", responseEntity.getBody().getMessage());
+        assertEquals(List.of("Id should not be empty"), responseEntity.getBody().getMessage());
     }
 
 }

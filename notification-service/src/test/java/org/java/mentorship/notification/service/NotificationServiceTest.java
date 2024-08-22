@@ -2,6 +2,7 @@ package org.java.mentorship.notification.service;
 
 
 import org.java.mentorship.notification.domain.NotificationEntity;
+import org.java.mentorship.notification.domain.enums.NotificationChannel;
 import org.java.mentorship.notification.domain.enums.NotificationType;
 import org.java.mentorship.notification.repository.NotificationChannelRepository;
 import org.java.mentorship.notification.repository.NotificationRepository;
@@ -14,9 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,7 +34,10 @@ class NotificationServiceTest {
     private NotificationService notificationService;
 
     @Captor
-    private ArgumentCaptor<NotificationEntity> notificationEntityArgumentCaptor;
+    private ArgumentCaptor<Integer> notificationIdCaptor;
+
+    @Captor
+    private ArgumentCaptor<NotificationChannel> channelCaptor;
 
     @Test
     void getNotificationsShouldReturnAllNotifications() {
@@ -68,21 +70,56 @@ class NotificationServiceTest {
         assertEquals(result.getId(), notificationId);
     }
 
-    @Test
-    void createShoudAddANewNotification() {
-        NotificationEntity notification = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now());
+//    @Test
+//    void createShoudAddANewNotification() {
+//        NotificationEntity notification = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now());
+//
+//        when(notificationRepository.create(notification)).thenAnswer(invocationOnMock -> {
+//            NotificationEntity expected = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now());
+//            List<NotificationChannel> channels = new ArrayList<>();
+//            when(notificationChannelRepository.getNotificationsById(1)).thenReturn(channels);
+//            expected.setChannels(channels);
+//            return expected;
+//        });
+//
+//        NotificationEntity result = notificationService.createNotification(notification);
+//
+//        verify(notificationRepository, times(1)).create(notification);
+//        assertEquals(result.getId(), notification.getId());
+//
+//    }
 
-        when(notificationRepository.create(notification)).thenAnswer(invocationOnMock -> {
-            NotificationEntity expected = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now());
-            return expected;
-        });
+    @Test
+    public void createShoudAddANewNotification() {
+        List<NotificationChannel> channels = Arrays.asList(NotificationChannel.WEB, NotificationChannel.EMAIL);
+        NotificationEntity notification = new NotificationEntity();
+        notification.setChannels(channels);
+
+        NotificationEntity savedNotification = new NotificationEntity();
+        savedNotification.setId(1);
+        savedNotification.setChannels(channels);
+
+        when(notificationRepository.create(notification)).thenReturn(savedNotification);
 
         NotificationEntity result = notificationService.createNotification(notification);
 
+        // Then
+        assertEquals(savedNotification, result);
         verify(notificationRepository, times(1)).create(notification);
-        assertEquals(result.getId(), notification.getId());
 
+        verify(notificationChannelRepository, times(2))
+                .createNotificationChannel(notificationIdCaptor.capture(), channelCaptor.capture());
+
+        List<Integer> capturedIds = notificationIdCaptor.getAllValues();
+        List<NotificationChannel> capturedChannels = channelCaptor.getAllValues();
+
+        assertEquals(2, capturedIds.size());
+        assertEquals(2, capturedChannels.size());
+        assertEquals(savedNotification.getId(), capturedIds.get(0));
+        assertEquals("WEB", String.valueOf(capturedChannels.get(0)));
+        assertEquals("EMAIL", String.valueOf(capturedChannels.get(1)));
     }
+
 
     @Test
     void deleteNotificationShouldDeleteANotificationFromDatabase() {

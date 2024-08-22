@@ -7,6 +7,7 @@ import org.java.mentorship.notification.domain.NotificationEntity;
 import org.java.mentorship.notification.domain.enums.NotificationChannel;
 import org.java.mentorship.notification.domain.enums.NotificationType;
 import org.java.mentorship.notification.mapper.NotificationContractMapper;
+import org.java.mentorship.notification.mapper.NotificationRowMapper;
 import org.java.mentorship.notification.service.NotificationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -53,18 +54,18 @@ public class NotificationController {
     }
 
     @PostMapping("/notifications")
-    public ResponseEntity<Notification> postNotification(@RequestBody @Valid NotificationEntity notification) {
-        return ResponseEntity.ok(notificationContractMapper.map(notificationService.createNotification(notification)));
+    public ResponseEntity<Notification> postNotification(@RequestBody @Valid Notification notification) {
+        return ResponseEntity.ok(notificationContractMapper.map(notificationService.createNotification(notificationContractMapper.map(notification))));
     }
 
     @PutMapping("/notifications/{id}")
-    public ResponseEntity<Notification> putNotification(@PathVariable("id") Integer id, @RequestBody @Valid NotificationEntity notification) {
+    public ResponseEntity<Notification> putNotification(@PathVariable("id") Integer id, @RequestBody @Valid Notification notification) {
         notification.setId(id);
-        return ResponseEntity.ok(notificationContractMapper.map(notificationService.updateNotification(id, notification)));
+        return ResponseEntity.ok(notificationContractMapper.map(notificationService.updateNotification(id,notificationContractMapper.map(notification))));
     }
 
-    @PostMapping("/notifications/{id}/read")
-    public ResponseEntity<Notification> postNotificationMarkAsRead(@PathVariable(name = "id") Integer id) {
+    @PutMapping("/notifications/read/{id}")
+    public ResponseEntity<Notification> postNotificationMarkAsRead(@PathVariable(name = "id") Integer id, @RequestBody @Valid Notification notification) {
         return ResponseEntity.ok(notificationContractMapper.map(notificationService.markAsRead(id)));
     }
 
