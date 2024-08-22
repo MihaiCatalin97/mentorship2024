@@ -33,7 +33,7 @@ class RestValidatorHandlerTest {
 
         assertEquals(400, responseEntity.getStatusCode().value());
         assertTrue(Objects.nonNull(responseEntity.getBody()));
-        assertEquals("Name should not be empty", responseEntity.getBody().getError());
+        assertEquals("Name should not be empty", responseEntity.getBody().getErrors().getFirst());
     }
 
 }

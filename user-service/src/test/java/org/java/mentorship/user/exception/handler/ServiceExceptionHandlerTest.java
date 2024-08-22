@@ -22,7 +22,7 @@ class ServiceExceptionHandlerTest {
 
         assertEquals(500, responseEntity.getStatusCode().value());
         assertTrue(Objects.nonNull(responseEntity.getBody()));
-        assertEquals("Message", responseEntity.getBody().getError());
+        assertEquals("Message", responseEntity.getBody().getErrors().getFirst());
     }
 
 }

@@ -18,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.nio.ByteBuffer;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,7 +50,7 @@ class GeneralExceptionHandlerTest {
 
         // Then
         assertNotNull(actual.getBody());
-        assertEquals(errorResponse.getError(), actual.getBody().getError());
+        assertEquals(errorResponse.getErrors(), actual.getBody().getErrors());
         assertEquals(status, actual.getStatusCode());
     }
 
@@ -64,7 +65,7 @@ class GeneralExceptionHandlerTest {
 
         // Then
         assertNotNull(actual.getBody());
-        assertEquals(errorResponse.getError(), actual.getBody().getError());
+        assertEquals(errorResponse.getErrors(), actual.getBody().getErrors());
         assertEquals(status, actual.getStatusCode());
     }
 
@@ -86,7 +87,7 @@ class GeneralExceptionHandlerTest {
 
         // Then
         assertNotNull(actual.getBody());
-        assertEquals(errorResponse.getError(), actual.getBody().getError());
+        assertEquals(errorResponse.getErrors(), actual.getBody().getErrors());
         assertEquals(errorResponse.getService(), actual.getBody().getService());
         assertEquals(errorResponse.getTimestamp(), actual.getBody().getTimestamp());
         assertEquals(status, actual.getStatusCode());
@@ -109,7 +110,7 @@ class GeneralExceptionHandlerTest {
 
         // Then
         assertNotNull(actual.getBody());
-        assertEquals(message, actual.getBody().getError());
+        assertEquals(message, actual.getBody().getErrors().getFirst());
         assertEquals(status, actual.getStatusCode());
     }
 
@@ -120,7 +121,7 @@ class GeneralExceptionHandlerTest {
 
         // Then
         assertNotNull(actual.getBody());
-        assertEquals("Unknown service error.", actual.getBody().getError());
+        assertEquals("Unknown service error.", actual.getBody().getErrors().getFirst());
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, actual.getStatusCode());
     }
 }
