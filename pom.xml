@@ -136,7 +136,12 @@
             <dependency>
                 <groupId>org.java.mentorship</groupId>
                 <artifactId>notification-contracts</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.java.mentorship</groupId>
                 <artifactId>common-contracts</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
