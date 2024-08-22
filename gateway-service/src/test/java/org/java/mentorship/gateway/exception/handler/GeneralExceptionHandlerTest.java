@@ -10,6 +10,7 @@ import org.java.mentorship.gateway.exception.domain.GatewayErrorResponse;
 import org.java.mentorship.gateway.exception.domain.GatewayException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +45,7 @@ class GeneralExceptionHandlerTest {
         ErrorResponse errorResponse = new GatewayErrorResponse("message");
 
         // When
-        ResponseEntity<ErrorResponse> actual = handler.handleGatewayException(new GatewayException(errorResponse, status));
+        ResponseEntity<ErrorResponse> actual = handler.handleGatewayException(new GatewayException(errorResponse, status), Mockito.mock(HttpServletRequest.class));
 
         // Then
         assertNotNull(actual.getBody());
@@ -59,7 +60,7 @@ class GeneralExceptionHandlerTest {
         ErrorResponse errorResponse = new GatewayErrorResponse("message");
 
         // When
-        ResponseEntity<ErrorResponse> actual = handler.handleGatewayException(new GatewayException(errorResponse, new RuntimeException(), status));
+        ResponseEntity<ErrorResponse> actual = handler.handleGatewayException(new GatewayException(errorResponse, new RuntimeException(), status), Mockito.mock(HttpServletRequest.class));
 
         // Then
         assertNotNull(actual.getBody());
