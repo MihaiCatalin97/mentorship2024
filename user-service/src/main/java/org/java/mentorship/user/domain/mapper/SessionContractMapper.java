@@ -3,9 +3,7 @@ package org.java.mentorship.user.domain.mapper;
 import lombok.experimental.UtilityClass;
 import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.SessionWithKey;
-import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.user.domain.SessionEntity;
-import org.java.mentorship.user.domain.UserEntity;
 
 @UtilityClass
 public class SessionContractMapper {

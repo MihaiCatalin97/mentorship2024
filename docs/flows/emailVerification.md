@@ -3,6 +3,7 @@
 ## Happy Flows
 
 ### Verify email
+
 __When__ a user uses the verification link to verify its account \
 __And__ the Gateway Service receives the request\
 __And__ the Gateway calls the User Service\
@@ -15,6 +16,7 @@ __And__ the Notification Service calls the Email Service\
 __And__ an welcoming email is sent to the user
 
 ### Resend verification email
+
 __When__ a user prompts the resending of its verification email \
 __And__ the Gateway Service receives the request\
 __And__ the Gateway calls the User Service\

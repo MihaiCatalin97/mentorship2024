@@ -1,6 +1,5 @@
 package org.java.mentorship.user.repository;
 
-import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.user.domain.SessionEntity;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
