@@ -5,8 +5,6 @@ import lombok.EqualsAndHashCode;
 import org.java.mentorship.contracts.common.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 
-import java.util.Optional;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class GatewayException extends RuntimeException {
@@ -15,13 +13,13 @@ public class GatewayException extends RuntimeException {
     private final ErrorResponse errorResponse;
 
     public GatewayException(ErrorResponse errorResponse, HttpStatus statusCode) {
-        super(errorResponse.getError());
+        super(errorResponse.joinErrors());
         this.statusCode = statusCode;
         this.errorResponse = errorResponse;
     }
 
     public GatewayException(ErrorResponse errorResponse, Exception sourceException, HttpStatus statusCode) {
-        super(errorResponse.getError(), sourceException);
+        super(errorResponse.joinErrors(), sourceException);
         this.statusCode = statusCode;
         this.errorResponse = errorResponse;
     }
