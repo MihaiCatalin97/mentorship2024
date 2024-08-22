@@ -20,7 +20,7 @@ public class GatewayException extends RuntimeException {
         this.errorResponse = errorResponse;
     }
 
-    public GatewayException(ErrorResponse errorResponse, RuntimeException sourceException, HttpStatus statusCode) {
+    public GatewayException(ErrorResponse errorResponse, Exception sourceException, HttpStatus statusCode) {
         super(errorResponse.getError(), sourceException);
         this.statusCode = statusCode;
         this.errorResponse = errorResponse;
