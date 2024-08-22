@@ -25,7 +25,7 @@ public class GeneralExceptionHandler {
 
     @ExceptionHandler(GatewayException.class)
     public ResponseEntity<ErrorResponse> handleGatewayException(final GatewayException exception, final HttpServletRequest request) {
-        log.error(String.format("[%s] Caught exception", request.getRequestURI()), exception);
+        log.error("[{}] Caught exception", request.getRequestURI(), exception);
         return ResponseEntity.status(exception.getStatusCode())
                 .body(exception.getErrorResponse());
     }
@@ -33,20 +33,20 @@ public class GeneralExceptionHandler {
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<ErrorResponse> handleFeignException(final FeignException exception, final HttpServletRequest request) {
         ErrorResponse errorResponse = new GatewayErrorResponse("No message");
+        String responseString = StandardCharsets.UTF_8.decode(exception.responseBody().get()).toString();
 
         if (exception.responseBody().isPresent()) {
-            String responseString = StandardCharsets.UTF_8.decode(exception.responseBody().get()).toString();
             try {
                 errorResponse = objectMapper.readValue(responseString, ErrorResponse.class);
             } catch (JsonProcessingException e) {
-                log.error(String.format("[%s] Caught exception when parsing JSON: %s (%s)",
-                        request.getRequestURI(),
-                        exception.getMessage(),
-                        exception.getClass()), exception);
+                log.error("[{}] Caught exception when parsing JSON from service error: '{}' {} ({})",
+                        request.getRequestURI(), responseString, exception.getMessage(), exception.getClass(), exception);
                 errorResponse = new GatewayErrorResponse(responseString);
             }
         }
 
+        log.error("[{}] Caught {} service error: {}",
+                request.getRequestURI(), errorResponse.getService(), errorResponse.getError());
         return ResponseEntity.status(exception.status())
                 .body(errorResponse);
     }
