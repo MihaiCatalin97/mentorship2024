@@ -31,7 +31,7 @@ public class NotificationService {
         notification.getChannels().forEach(channel -> {
             notificationChannelRepository.createNotificationChannel(entity.getId(), channel);
         });
-
+        entity.setChannels(notification.getChannels());
         return entity;
     }
 

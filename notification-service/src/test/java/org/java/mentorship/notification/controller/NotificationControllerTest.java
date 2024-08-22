@@ -1,8 +1,8 @@
 package org.java.mentorship.notification.controller;
 
 import org.java.mentorship.contracts.notification.dto.Notification;
-import org.java.mentorship.contracts.notification.dto.NotificationChannel;
 import org.java.mentorship.notification.domain.NotificationEntity;
+import org.java.mentorship.notification.domain.enums.NotificationChannel;
 import org.java.mentorship.notification.domain.enums.NotificationType;
 import org.java.mentorship.notification.mapper.NotificationContractMapper;
 import org.java.mentorship.notification.service.NotificationService;
@@ -32,9 +32,11 @@ class NotificationControllerTest {
     @InjectMocks
     private NotificationController notificationController;
 
+    private NotificationContractMapper mapper = new NotificationContractMapper();
+
     @BeforeEach
     void setUp() {
-        this.notificationController = new NotificationController(notificationService, new NotificationContractMapper());
+        this.notificationController = new NotificationController(notificationService, mapper);
     }
 
     private List<NotificationEntity> notifications = List.of(new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now()));
@@ -50,37 +52,21 @@ class NotificationControllerTest {
         assertNotNull(response.getBody());
     }
 
-//    @Test
-//    void getNotificationsShouldReturnContractsFromNotificationServiceWhereChannelsAreNotNull() {
-//            // Given
-//            Integer userId = null;
-//            String email = null;
-//        org.java.mentorship.notification.domain.enums.NotificationChannel channelEntity = org.java.mentorship.notification.domain.enums.NotificationChannel.WEB;
-//            NotificationChannel channel = NotificationChannel.WEB;
-//            NotificationType type = NotificationType.OVER_SPENDING;
-//            Boolean marked = true;
-//
-//            NotificationEntity notificationEntity = new NotificationEntity();
-//            notificationEntity.setId(1);
-//            notificationEntity.setChannels(Collections.singletonList(channelEntity));
-//
-//            Notification notification = new Notification();
-//            notification.setId(1);
-//            notification.setChannels(Collections.singletonList(channel));
-//
-//            when(notificationService.getNotifications(any(Map.class))).thenReturn(Arrays.asList(notificationEntity));
-//            when(notificationContractMapper.map(notificationEntity)).thenReturn(notification);
-//
-//            // When
-//            ResponseEntity<List<Notification>> response = notificationController.getNotifications(userId, email, channelEntity, type, marked);
-//
-//            // Then
-//            assertEquals(200, response.getStatusCodeValue());
-//            List<Notification> notifications = response.getBody();
-//            assertEquals(1, notifications.size());
-//            assertEquals(1, notifications.get(0).getId());
-//            assertEquals(channel, notifications.get(0).getChannels().get(0));
-//    }
+    @Test
+    void postNotificationsShouldCreateContractFromNotificationServiceWhereChannelsAreNotNull() {
+        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now());
+
+        when(notificationService.createNotification(notificationEntity)).thenAnswer(invocationOnMock -> {
+            notificationEntity.setChannels(List.of(NotificationChannel.WEB));
+            return notificationEntity;
+        });
+
+        ResponseEntity<Notification> response = notificationController.postNotification(mapper.map(notificationEntity));
+
+        assertEquals(200, response.getStatusCode().value());
+        assertNotNull(response.getBody());
+        assertNotNull(response.getBody().getChannels());
+    }
 
     @Test
     void createNotificationShouldReturnContractAndPostFromNotificationService() {

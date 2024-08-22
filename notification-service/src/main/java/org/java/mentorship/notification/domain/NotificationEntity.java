@@ -20,18 +20,11 @@ import java.util.Map;
 public class NotificationEntity {
 
     private Integer id;
-
     private Integer userId;
-
     private String email;
-
     private List<NotificationChannel> channels;
-
     private NotificationType type;
-
     private Map<String, Object> payload;
-
     private Boolean markedAsRead;
-
     private OffsetDateTime createdAt;
 }

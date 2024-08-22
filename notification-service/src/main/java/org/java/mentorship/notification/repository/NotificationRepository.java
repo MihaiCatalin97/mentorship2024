@@ -5,9 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.java.mentorship.notification.domain.NotificationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -42,15 +48,29 @@ public class NotificationRepository {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(paylodJson);
-        jdbcTemplate.update("INSERT INTO notifications (user_id, email, marked_as_read, created_at, payload, type) " +
-                        "VALUES (?,?,?,?,?,?)",
-                notification.getUserId(),
-                notification.getEmail(),
-                notification.getMarkedAsRead(),
-                notification.getCreatedAt(),
-                paylodJson,
-                String.valueOf(notification.getType()));
+
+        String sql = "INSERT INTO notifications (user_id, email, marked_as_read, created_at, payload, type) " +
+                "VALUES (?,?,?,?,?,?)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        PreparedStatementCreator psc = connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            ps.setInt(1, notification.getUserId());
+            ps.setString(2, notification.getEmail());
+            ps.setBoolean(3, notification.getMarkedAsRead());
+            ps.setObject(4, Timestamp.from(notification.getCreatedAt().toInstant()));
+            ps.setString(5, paylodJson);
+            ps.setString(6, String.valueOf(notification.getType()));
+            return ps;
+        };
+
+        jdbcTemplate.update(psc, keyHolder);
+
+        Number key = keyHolder.getKey();
+        if (key != null) {
+            notification.setId(key.intValue());
+        }
         return notification;
     }
 
