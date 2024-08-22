@@ -1,6 +1,7 @@
 package org.java.mentorship.notification.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.java.mentorship.contracts.common.dto.ErrorResponse;
 import org.java.mentorship.notification.exception.domain.NotificationServiceError;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +31,11 @@ class ValidatorHandlerTest {
         when(bindingResult.getFieldErrors()).thenReturn(Collections.singletonList(new FieldError("object", "name", "Id should not be empty")));
         when(exception.getBindingResult()).thenReturn(bindingResult);
 
-        ResponseEntity<NotificationServiceError> responseEntity = validatorHandler.handleException(exception, request);
+        ResponseEntity<ErrorResponse> responseEntity = validatorHandler.handleException(exception, request);
 
         assertEquals(400, responseEntity.getStatusCode().value());
         assertTrue(Objects.nonNull(responseEntity.getBody()));
-        assertEquals(List.of("Id should not be empty"), responseEntity.getBody().getMessage());
+        assertEquals("Id should not be empty", responseEntity.getBody().joinErrors());
     }
 
 }
