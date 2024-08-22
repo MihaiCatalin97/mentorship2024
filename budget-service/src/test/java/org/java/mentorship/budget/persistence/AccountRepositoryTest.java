@@ -42,7 +42,7 @@ class AccountRepositoryTest {
         List<BankAccountEntity> results = accountRepository.findAll();
 
         // Then
-        assertEquals(4, results.size());  // Adjust the expected size based on test data
+        assertEquals(4, results.size());
     }
 
     @Test
@@ -60,7 +60,7 @@ class AccountRepositoryTest {
 
         // Then
         List<BankAccountEntity> result = accountRepository.findAll();
-        assertEquals(5, result.size());  // Adjust the expected size based on test data
+        assertEquals(5, result.size());
         assertTrue(result.stream().anyMatch(a -> "New Checking Account".equals(a.getName())));
     }
 
@@ -105,7 +105,7 @@ class AccountRepositoryTest {
 
         // Then
         List<BankAccountEntity> results = accountRepository.findAll();
-        assertEquals(3, results.size());  // Adjust the expected size based on test data
+        assertEquals(3, results.size());
         assertFalse(results.stream().anyMatch(a -> a.getId().equals(account.getId())));
     }
 }

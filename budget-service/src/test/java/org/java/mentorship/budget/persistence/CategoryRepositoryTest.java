@@ -31,7 +31,6 @@ class CategoryRepositoryTest {
 
     @BeforeAll
     static void initTest() throws SQLException {
-        // Start the H2 web server to make the database accessible via browser for debugging
         Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8089")
                 .start();
     }
@@ -42,7 +41,7 @@ class CategoryRepositoryTest {
         List<CategoryEntity> results = categoryRepository.findAll();
 
         // Then
-        assertEquals(3, results.size());  // Adjust the expected size based on test data
+        assertEquals(3, results.size());
     }
 
     @Test
@@ -100,7 +99,7 @@ class CategoryRepositoryTest {
 
         // Then
         List<CategoryEntity> results = categoryRepository.findAll();
-        assertEquals(2, results.size());  // Adjust the expected size based on test data
+        assertEquals(2, results.size());
         assertFalse(results.stream().anyMatch(c -> c.getId().equals(deletedCategory.getId())));
     }
 }

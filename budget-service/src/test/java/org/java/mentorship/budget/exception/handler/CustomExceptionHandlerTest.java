@@ -23,7 +23,6 @@ class CustomExceptionHandlerTest {
         BindingResult bindingResult = mock(BindingResult.class);
         MethodArgumentNotValidException exception = new MethodArgumentNotValidException(null, bindingResult);
 
-        // Mock the behavior of BindingResult to return field errors
         when(bindingResult.getFieldErrors()).thenReturn(Collections.singletonList(
                 new FieldError("objectName", "field", "Field error message")));
 

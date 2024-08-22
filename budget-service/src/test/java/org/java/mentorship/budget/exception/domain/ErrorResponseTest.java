@@ -53,8 +53,8 @@ class ErrorResponseTest {
         ErrorResponse errorResponse2 = new ErrorResponse("Error message");
 
         // Then
-        assertEquals(errorResponse1, errorResponse2);  // Should be equal based on the same error list
-        assertEquals(errorResponse1.hashCode(), errorResponse2.hashCode());  // Hash codes should also be equal
+        assertEquals(errorResponse1, errorResponse2);
+        assertEquals(errorResponse1.hashCode(), errorResponse2.hashCode());
     }
 
     @Test
@@ -64,6 +64,6 @@ class ErrorResponseTest {
         ErrorResponse errorResponse2 = new ErrorResponse(Arrays.asList("Error message 2"));
 
         // Then
-        assertNotEquals(errorResponse1, errorResponse2);  // Different error messages should make them unequal
+        assertNotEquals(errorResponse1, errorResponse2);
     }
 }

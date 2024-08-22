@@ -18,7 +18,6 @@ class CategoryRowMapperTest {
         // Given
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
-        // Mocking the behavior of ResultSet
         Mockito.when(resultSet.getInt("id")).thenReturn(1);
         Mockito.when(resultSet.getInt("user_id")).thenReturn(2);
         Mockito.when(resultSet.getString("name")).thenReturn("Travel");

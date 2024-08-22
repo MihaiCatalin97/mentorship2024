@@ -5,7 +5,6 @@ import org.java.mentorship.contracts.budget.dto.Category;
 
 public class CategoryContractMapper {
 
-    // Converts CategoryEntity to Category DTO
     public static Category entityToContract(CategoryEntity categoryEntity) {
         Category categoryContract = new Category();
 
@@ -16,7 +15,6 @@ public class CategoryContractMapper {
         return categoryContract;
     }
 
-    // Converts Category DTO to CategoryEntity
     public static CategoryEntity contractToEntity(Category categoryContract) {
         CategoryEntity categoryEntity = new CategoryEntity();
 

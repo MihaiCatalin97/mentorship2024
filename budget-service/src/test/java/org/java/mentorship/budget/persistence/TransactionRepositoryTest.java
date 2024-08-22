@@ -33,7 +33,6 @@ class TransactionRepositoryTest {
 
     @BeforeAll
     static void initTest() throws SQLException {
-        // Start the H2 web server to make the database accessible via browser for debugging
         Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8083")
                 .start();
     }
@@ -53,12 +52,12 @@ class TransactionRepositoryTest {
         // Given
         TransactionEntity transaction = new TransactionEntity();
         transaction.setUserId(1);
-        transaction.setType(TransactionType.INCOME); // Using the TransactionType enum
+        transaction.setType(TransactionType.INCOME);
         transaction.setValue(1000);
         transaction.setDescription("New income transaction");
-        transaction.setCategoryId(1); // Ensure this ID exists in the categories table
-        transaction.setAccountId(1); // Ensure this ID exists in the accounts table
-        transaction.setTimestamp(OffsetDateTime.now()); // Use OffsetDateTime
+        transaction.setCategoryId(1);
+        transaction.setAccountId(1);
+        transaction.setTimestamp(OffsetDateTime.now());
 
         // When
         transactionRepository.save(transaction);

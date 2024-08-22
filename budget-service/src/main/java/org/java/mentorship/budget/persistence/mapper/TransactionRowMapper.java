@@ -24,7 +24,6 @@ public class TransactionRowMapper implements RowMapper<TransactionEntity> {
         transactionEntity.setCategoryId(rs.getInt("category_id"));
         transactionEntity.setAccountId(rs.getInt("account_id"));
 
-        // Convert SQL timestamp to OffsetDateTime
         transactionEntity.setTimestamp(rs.getObject("timestamp", OffsetDateTime.class));
 
         return transactionEntity;

@@ -92,7 +92,7 @@ class AccountServiceTest {
     void deleteShouldReturnDeletedAccountWhenExists() {
         BankAccountEntity bankAccountEntity = new BankAccountEntity();
         when(repository.findById(1)).thenReturn(bankAccountEntity);
-        when(repository.delete(1)).thenReturn(bankAccountEntity);  // Mock delete to return the bankAccountEntity
+        when(repository.delete(1)).thenReturn(bankAccountEntity);
 
         BankAccountEntity result = accountService.delete(1);
 

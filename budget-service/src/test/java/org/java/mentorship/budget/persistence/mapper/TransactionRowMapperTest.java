@@ -21,14 +21,13 @@ class TransactionRowMapperTest {
         ResultSet resultSet = Mockito.mock(ResultSet.class);
         OffsetDateTime timestamp = OffsetDateTime.now();
 
-        // Mocking the behavior of ResultSet
         Mockito.when(resultSet.getInt("id")).thenReturn(1);
         Mockito.when(resultSet.getInt("user_id")).thenReturn(2);
         Mockito.when(resultSet.getString("type")).thenReturn(TransactionType.INCOME.name());
         Mockito.when(resultSet.getInt("transaction_value")).thenReturn(1500);
         Mockito.when(resultSet.getString("description")).thenReturn("Payment for services");
         Mockito.when(resultSet.getInt("account_id")).thenReturn(456);
-        Mockito.when(resultSet.getInt("category_id")).thenReturn(789); // Adjust if category_id is used
+        Mockito.when(resultSet.getInt("category_id")).thenReturn(789);
         Mockito.when(resultSet.getObject("timestamp", OffsetDateTime.class)).thenReturn(timestamp);
 
         // When
@@ -41,7 +40,7 @@ class TransactionRowMapperTest {
         assertEquals(1500, transactionEntity.getValue());
         assertEquals("Payment for services", transactionEntity.getDescription());
         assertEquals(456, transactionEntity.getAccountId());
-        assertEquals(789, transactionEntity.getCategoryId()); // Ensure this matches if category_id is included
+        assertEquals(789, transactionEntity.getCategoryId());
         assertEquals(timestamp, transactionEntity.getTimestamp());
     }
 }

@@ -125,7 +125,7 @@ class TransactionEntityTest {
 
     @Test
     void validateShouldFailWhenDescriptionIsTooLong() {
-        String longDescription = "a".repeat(256); // 256 characters
+        String longDescription = "a".repeat(256);
 
         TransactionEntity transaction = TransactionEntity.builder()
                 .id(1)

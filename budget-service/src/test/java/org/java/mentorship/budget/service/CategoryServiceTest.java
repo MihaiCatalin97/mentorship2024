@@ -94,7 +94,7 @@ class CategoryServiceTest {
     void deleteShouldReturnDeletedCategoryWhenExists() {
         CategoryEntity categoryEntity = new CategoryEntity();
         when(repository.findById(1)).thenReturn(categoryEntity);
-        when(repository.delete(1)).thenReturn(categoryEntity);  // Mock delete to return the categoryEntity
+        when(repository.delete(1)).thenReturn(categoryEntity);
 
         CategoryEntity result = categoryService.delete(1);
 

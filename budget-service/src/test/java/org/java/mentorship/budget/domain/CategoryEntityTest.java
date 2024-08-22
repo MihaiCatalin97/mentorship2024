@@ -68,7 +68,7 @@ class CategoryEntityTest {
 
     @Test
     void validateShouldFailWhenNameIsTooLong() {
-        String longName = "a".repeat(101); // 101 characters
+        String longName = "a".repeat(101);
 
         CategoryEntity category = CategoryEntity.builder()
                 .id(1)

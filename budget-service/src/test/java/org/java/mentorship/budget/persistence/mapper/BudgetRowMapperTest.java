@@ -19,13 +19,12 @@ class BudgetRowMapperTest {
         // Given
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
-        // Mocking the behavior of ResultSet
         Mockito.when(resultSet.getInt("id")).thenReturn(1);
         Mockito.when(resultSet.getInt("user_id")).thenReturn(2);
         Mockito.when(resultSet.getString("name")).thenReturn("Monthly Budget");
         Mockito.when(resultSet.getInt("maximum_allowed")).thenReturn(5000);
         Mockito.when(resultSet.getString("budget_interval")).thenReturn(BudgetInterval.MONTHLY.name());
-        Mockito.when(resultSet.getInt("category_id")).thenReturn(789); // Adjust if category_id is used
+        Mockito.when(resultSet.getInt("category_id")).thenReturn(789);
         Mockito.when(resultSet.getInt("account_id")).thenReturn(456);
 
         // When
@@ -37,7 +36,7 @@ class BudgetRowMapperTest {
         assertEquals("Monthly Budget", budgetEntity.getName());
         assertEquals(5000, budgetEntity.getMaximumAllowed());
         assertEquals(BudgetInterval.MONTHLY, budgetEntity.getInterval());
-        assertEquals(789, budgetEntity.getCategoryId()); // Ensure this matches if category_id is included
+        assertEquals(789, budgetEntity.getCategoryId());
         assertEquals(456, budgetEntity.getAccountId());
     }
 }
