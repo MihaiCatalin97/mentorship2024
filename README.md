@@ -2,7 +2,7 @@
 
 ## How to run
 
-Run with docker locally by using the command `docker-compose -f  .\docker-compose.yml up -d`.
+Run with docker locally by using the command `docker-compose -f .\docker-compose.yml up -d`.
 
 ## Description
 

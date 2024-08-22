@@ -1,6 +1,7 @@
 # Login User Flows
 
 ## Happy Flows
+
 __When__ a user logs into the application\
 __And__ the Gateway Service receives the request\
 __And__ the Gateway calls the User Service\
@@ -12,6 +13,7 @@ __Then__ a successful login message is propagated back to the user
 ## Negative Flows
 
 ### Account not verified
+
 __Given__ a user logs into the application\
 __And__ the Gateway Service receives the request\
 __And__ the Gateway calls the User Service\
@@ -21,6 +23,7 @@ __Then__ an error is propagated back to the user\
 __And__ the error message clearly explains the encountered issue
 
 ### Credentials do not match
+
 __Given__ a user logs into the application\
 __And__ the Gateway Service receives the request\
 __And__ the Gateway calls the User Service\
@@ -31,6 +34,7 @@ __And__ the error message clearly explains the encountered issue\
 __And__ the error message does not leak any information about the account's existence
 
 ### Any other internal error
+
 __Given__ a user logs into the application\
 __And__ the Gateway Service receives the request\
 __And__ the Gateway calls the User Service\
