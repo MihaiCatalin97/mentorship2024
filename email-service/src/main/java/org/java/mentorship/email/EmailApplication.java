@@ -1,6 +1,7 @@
 package org.java.mentorship.email;
 
 import org.java.mentorship.email.dto.EmailRequest;
+import org.java.mentorship.email.dto.EmailResponse;
 import org.java.mentorship.email.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -20,12 +21,11 @@ public class EmailApplication {
     private EmailService emailService;
 
     @PostMapping("/sendtest")
-    public EmailService sendEmail(@RequestBody EmailRequest request) {
+    public EmailResponse sendEmail(@RequestBody EmailRequest request) {
 
         Map<String,Object> model = new HashMap<>();
 
-        emailService.sendEmail(request,model);
-        return emailService;
+        return emailService.sendEmail(request,model);
     }
 
     public static void main(String[] args) {
