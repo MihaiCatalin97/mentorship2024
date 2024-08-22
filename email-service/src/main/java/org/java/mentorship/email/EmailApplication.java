@@ -6,6 +6,7 @@ import org.java.mentorship.email.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 @SpringBootApplication
 @RestController
+@PropertySource("classpath:email.properties")
 public class EmailApplication {
 
     @Autowired
