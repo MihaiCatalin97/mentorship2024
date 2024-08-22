@@ -24,12 +24,8 @@ public class GeneralExceptionHandler {
     private final ObjectMapper objectMapper;
 
     @ExceptionHandler(GatewayException.class)
-    public ResponseEntity<ErrorResponse> handleGatewayException(final GatewayException exception) {
-        if (exception.getSourceException().isPresent()) {
-            log.error(String.format("Caught exception: %s (%s)",
-                    exception.getSourceException().get().getMessage(),
-                    exception.getSourceException().get().getClass()));
-        }
+    public ResponseEntity<ErrorResponse> handleGatewayException(final GatewayException exception, final HttpServletRequest request) {
+        log.error(String.format("[%s] Caught exception", request.getRequestURI()), exception);
         return ResponseEntity.status(exception.getStatusCode())
                 .body(exception.getErrorResponse());
     }
@@ -46,7 +42,7 @@ public class GeneralExceptionHandler {
                 log.error(String.format("[%s] Caught exception when parsing JSON: %s (%s)",
                         request.getRequestURI(),
                         exception.getMessage(),
-                        exception.getClass()));
+                        exception.getClass()), exception);
                 errorResponse = new GatewayErrorResponse(responseString);
             }
         }
@@ -60,7 +56,7 @@ public class GeneralExceptionHandler {
         log.error(String.format("[%s] Caught exception: %s (%s)",
                 request.getRequestURI(),
                 exception.getMessage(),
-                exception.getClass()));
+                exception.getClass()), exception);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new GatewayErrorResponse("Unknown service error."));
     }
