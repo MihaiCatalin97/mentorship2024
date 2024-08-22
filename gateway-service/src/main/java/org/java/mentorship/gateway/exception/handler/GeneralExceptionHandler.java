@@ -46,7 +46,7 @@ public class GeneralExceptionHandler {
         }
 
         log.error("[{}] Caught {} service error: {}",
-                request.getRequestURI(), errorResponse.getService(), errorResponse.getError());
+                request.getRequestURI(), errorResponse.getService(), errorResponse.getErrors());
         return ResponseEntity.status(exception.status())
                 .body(errorResponse);
     }
