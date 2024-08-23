@@ -83,6 +83,17 @@ services:
     ports:
       - "8084:8080"
       - "6004:6000"
+  calculation-service:
+    image: calculation-service:latest
+    hostname: calculation
+    networks:
+      - budget-tracker-internal
+    environment:
+      - SPRING_PROFILES_ACTIVE= docker
+      - JAVA_TOOL_OPTIONS= -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:6000
+    ports:
+      - "8085:8080"
+      - "6005:6000"
 networks:
   budget-tracker-internal:
     name: budget-tracker-internal

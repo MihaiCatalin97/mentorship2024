@@ -42,6 +42,11 @@
             <artifactId>user-service</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.java.mentorship</groupId>
+            <artifactId>calculation-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
 
         <dependency>
@@ -104,6 +109,13 @@
                                 </resource>
                                 <resource>
                                     <directory>../notification-service/target</directory>
+                                    <includes>
+                                        <include>*.exec</include>
+                                        <include>classes/</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>../calculation-service/target</directory>
                                     <includes>
                                         <include>*.exec</include>
                                         <include>classes/</include>
