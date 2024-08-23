@@ -16,6 +16,10 @@ public class UserContractMapper {
         userContract.setVerified(userEntity.getVerified());
         userContract.setEmail(userEntity.getEmail());
 
+        userContract.setCreatedAt(userEntity.getCreatedAt());
+        userContract.setLastSentVerificationNotification(userEntity.getLastSentVerificationNotification());
+        userContract.setVerifiedAt(userEntity.getVerifiedAt());
+
         return userContract;
     }
 

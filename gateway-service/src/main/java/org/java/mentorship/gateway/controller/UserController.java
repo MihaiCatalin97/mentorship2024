@@ -37,4 +37,9 @@ public class UserController {
     ResponseEntity<Boolean> verifyUser(@PathVariable(name = "id") Integer id, @PathVariable(name = "token") String token) {
         return ResponseEntity.ok(userFeignClient.verifyUser(id, token));
     }
+
+    @PostMapping("/verify/{id}")
+    ResponseEntity<Boolean> resendNotificationToken(@PathVariable(name = "id") Integer id) {
+        return ResponseEntity.ok(userFeignClient.resendVerificationToken(id));
+    }
 }

@@ -5,7 +5,10 @@ CREATE TABLE users (
        last_name VARCHAR(128) NOT NULL,
        verified BOOLEAN NOT NULL DEFAULT FALSE,
        hashed_password VARCHAR(128) NOT NULL,
-       verification_token VARCHAR(128) NOT NULL,
+       verification_token VARCHAR(128),
+       created_at TIMESTAMP NOT NULL,
+       last_sent_verification_notification TIMESTAMP,
+       verified_at TIMESTAMP,
        PRIMARY KEY (id)
 );
 

@@ -1,5 +1,6 @@
 package org.java.mentorship.user.controller;
 
+import feign.Response;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.dto.User;
@@ -48,6 +49,11 @@ public class UserController {
     public ResponseEntity<Boolean> verifyUser(@PathVariable(name = "id") Integer id,
                                               @PathVariable(name = "token") String token) {
         return ResponseEntity.ok(userService.verifyUserUsingToken(id, token));
+    }
+
+    @PostMapping("/verify/{id}")
+    public ResponseEntity<Boolean> resendVerificationToken(@PathVariable(name = "id") Integer id) {
+        return ResponseEntity.ok(userService.resendVerificationToken(id));
     }
 
 }

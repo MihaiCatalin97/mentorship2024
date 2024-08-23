@@ -47,20 +47,9 @@ public class UserService {
         user.setLastName(registrationRequest.getLastName());
         user.setVerified(false);
         user.setHashedPassword(getMd5(registrationRequest.getPassword()));
-        user.setVerificationToken(UUID.randomUUID().toString());
+        user.setCreatedAt(OffsetDateTime.now());
 
         mapper.insert(user);
-
-        notificationFeignClient.postNotification(new Notification(
-                user.getId(), user.getEmail(),
-                Collections.singletonList(NotificationChannel.EMAIL), NotificationType.VERIFICATION,
-                Map.of(
-                        "firstName", user.getFirstName(),
-                        "lastName", user.getLastName(),
-                        "verificationToken", user.getVerificationToken(),
-                        "requestedAt", OffsetDateTime.now()
-                )
-        ));
 
         return Optional.of(user);
     }
@@ -73,12 +62,40 @@ public class UserService {
     }
 
     public boolean verifyUserUsingToken(Integer id, String token) {
-        Optional<UserEntity> user = getUserById(id);
-        if (user.isEmpty()) throw new UserNotFoundException();
-        if (!user.get().getVerificationToken().equals(token)) {
+        UserEntity user = getUserById(id).orElseThrow(UserNotFoundException::new);
+        if (!user.getVerificationToken().equals(token)) {
             return false;
         }
 
-        return mapper.setUserVerifiedStatus(id, true);
+        user.setVerifiedAt(OffsetDateTime.now());
+        user.setVerified(true);
+        mapper.update(user);
+
+        return true;
+    }
+
+    public Boolean resendVerificationToken(Integer userId) {
+        UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
+
+        if (user.getLastSentVerificationNotification() != null)
+            if (!OffsetDateTime.now().isAfter(user.getLastSentVerificationNotification().plusMinutes(10))) return false;
+
+        user.setVerificationToken(UUID.randomUUID().toString());
+        user.setLastSentVerificationNotification(OffsetDateTime.now());
+
+        notificationFeignClient.postNotification(new Notification(
+                user.getId(), user.getEmail(),
+                Collections.singletonList(NotificationChannel.EMAIL), NotificationType.VERIFICATION,
+                Map.of(
+                        "firstName", user.getFirstName(),
+                        "lastName", user.getLastName(),
+                        "verificationToken", user.getVerificationToken(),
+                        "requestedAt", OffsetDateTime.now()
+                )
+        ));
+
+        mapper.update(user);
+
+        return true;
     }
 }

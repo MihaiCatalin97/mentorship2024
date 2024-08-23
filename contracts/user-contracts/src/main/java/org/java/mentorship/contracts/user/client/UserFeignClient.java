@@ -36,4 +36,10 @@ public interface UserFeignClient {
             value = "/verify/{userId}/{token}"
     )
     Boolean verifyUser(@PathVariable("userId") Integer userId, @PathVariable("token") String token);
+
+    @RequestMapping(
+            method = RequestMethod.POST,
+            value = "/verify/{userId}"
+    )
+    Boolean resendVerificationToken(@PathVariable("userId") Integer userId);
 }

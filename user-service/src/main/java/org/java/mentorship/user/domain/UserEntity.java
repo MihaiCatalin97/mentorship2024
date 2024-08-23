@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.OffsetDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -19,4 +21,7 @@ public class UserEntity {
     private String hashedPassword;
     private String verificationToken;
 
+    private OffsetDateTime createdAt;
+    private OffsetDateTime verifiedAt;
+    private OffsetDateTime lastSentVerificationNotification;
 }

@@ -1,5 +1,6 @@
 package org.java.mentorship.user.service;
 
+import org.java.mentorship.contracts.notification.client.NotificationFeignClient;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.user.crypt.MD5;
 import org.java.mentorship.user.domain.UserEntity;
@@ -27,6 +28,9 @@ class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private NotificationFeignClient notificationFeignClient;
 
     @Captor
     private ArgumentCaptor<UserEntity> userArgumentCaptor;
@@ -132,13 +136,12 @@ class UserServiceTest {
         when(userRepository.findById(1)).thenReturn(Optional.ofNullable(
                 UserEntity.builder().verificationToken(verificationToken).build()
         ));
-        when(userRepository.setUserVerifiedStatus(1, true)).thenReturn(true);
 
         boolean result = userService.verifyUserUsingToken(1, verificationToken);
 
         assertTrue(result);
         verify(userRepository, times(1)).findById(1);
-        verify(userRepository, times(1)).setUserVerifiedStatus(1, true);
+        verify(userRepository, times(1)).update(any());
     }
 
     @Test
