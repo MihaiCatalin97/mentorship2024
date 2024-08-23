@@ -106,4 +106,16 @@ class UserControllerTest {
         assertEquals(true, response.getBody());
     }
 
+    @Test
+    void resendNotificationTokenShouldReturnFromService() {
+        when(userService.resendVerificationToken(anyInt()))
+                .thenReturn(true);
+
+        ResponseEntity<Boolean> response = userController.resendVerificationToken(1);
+
+        assertEquals(200, response.getStatusCode().value());
+        assertNotNull(response.getBody());
+        assertEquals(true, response.getBody());
+    }
+
 }

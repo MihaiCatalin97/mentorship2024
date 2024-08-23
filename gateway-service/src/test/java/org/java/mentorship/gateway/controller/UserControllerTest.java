@@ -70,4 +70,16 @@ class UserControllerTest {
         assertTrue(response.getBody());
     }
 
+    @Test
+    void resendNotificationTokenShouldCallFeign() {
+        when(userFeignClient.resendVerificationToken(anyInt()))
+                .thenReturn(true);
+
+        ResponseEntity<Boolean> response = userController.resendNotificationToken(1);
+
+        assertEquals(200, response.getStatusCode().value());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody());
+    }
+
 }
