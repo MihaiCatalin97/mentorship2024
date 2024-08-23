@@ -10,6 +10,5 @@ import lombok.Generated;
 @Configuration
 @EnableScheduling
 @PropertySource("classpath:task.properties")
-@Generated
 public class SpringConfig {
 }
