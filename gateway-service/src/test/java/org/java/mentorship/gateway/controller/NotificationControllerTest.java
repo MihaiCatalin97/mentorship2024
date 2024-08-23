@@ -44,7 +44,7 @@ class NotificationControllerTest {
 
     @Test
     void markNotificationAsReadShouldCallFeign() {
-        when(notificationFeignClient.markNotificationMarkAsRead(anyInt(),any())).thenReturn(new Notification());
+        when(notificationFeignClient.markNotificationMarkAsRead(anyInt(), any())).thenReturn(new Notification());
 
         ResponseEntity<Notification> response = notificationController.markNotificationMarkAsRead(1, new Notification());
 

@@ -2,7 +2,6 @@ package org.java.mentorship.notification.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.java.mentorship.contracts.common.dto.ErrorResponse;
-import org.java.mentorship.notification.exception.domain.NotificationServiceError;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -10,7 +9,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

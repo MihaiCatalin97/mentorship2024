@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -62,8 +63,8 @@ class SessionServiceTest {
         verify(sessionRepository, times(1)).insert(sessionCaptor.capture());
 
         assertEquals(1, sessionCaptor.getValue().getUserId());
-        assertTrue(sessionCaptor.getValue().getExpiresAt().isAfter(OffsetDateTime.now().plusDays(29)));
-        assertTrue(sessionCaptor.getValue().getExpiresAt().isBefore(OffsetDateTime.now().plusDays(31)));
+        assertTrue(sessionCaptor.getValue().getExpiresAt().isAfter(OffsetDateTime.now(ZoneOffset.UTC).plusDays(29)));
+        assertTrue(sessionCaptor.getValue().getExpiresAt().isBefore(OffsetDateTime.now(ZoneOffset.UTC).plusDays(31)));
     }
 
     @Test
@@ -130,7 +131,7 @@ class SessionServiceTest {
         String sessionKey = UUID.randomUUID().toString();
         when(sessionRepository.getByKey(anyString())).thenReturn(
                 Optional.of(SessionEntity.builder()
-                        .expiresAt(OffsetDateTime.now().plusDays(20)).build())
+                        .expiresAt(OffsetDateTime.now(ZoneOffset.UTC).plusDays(20)).build())
         );
 
         Optional<SessionEntity> session = sessionService.getSession(sessionKey);
@@ -145,7 +146,7 @@ class SessionServiceTest {
         String sessionKey = UUID.randomUUID().toString();
         when(sessionRepository.getByKey(sessionKey)).thenReturn(
                 Optional.of(SessionEntity.builder()
-                        .expiresAt(OffsetDateTime.now().minusDays(10))
+                        .expiresAt(OffsetDateTime.now(ZoneOffset.UTC).minusDays(10))
                         .build())
         );
 
@@ -167,7 +168,7 @@ class SessionServiceTest {
     @Test
     void isExpiredShouldReturnTrueWhenSessionExpired() {
         SessionEntity session = SessionEntity.builder()
-                .expiresAt(OffsetDateTime.now().minusSeconds(10))
+                .expiresAt(OffsetDateTime.now(ZoneOffset.UTC).minusSeconds(10))
                 .build();
 
         assertTrue(SessionService.isExpired(session));
@@ -176,7 +177,7 @@ class SessionServiceTest {
     @Test
     void isExpiredShouldReturnFalseWhenSessionNotExpired() {
         SessionEntity session = SessionEntity.builder()
-                .expiresAt(OffsetDateTime.now().plusDays(10))
+                .expiresAt(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10))
                 .build();
 
         assertFalse(SessionService.isExpired(session));
@@ -187,9 +188,9 @@ class SessionServiceTest {
         when(sessionRepository.find(1)).thenReturn(
                 Arrays.asList(
                         SessionEntity.builder()
-                                .expiresAt(OffsetDateTime.now().plusDays(20)).build(),
+                                .expiresAt(OffsetDateTime.now(ZoneOffset.UTC).plusDays(20)).build(),
                         SessionEntity.builder()
-                                .expiresAt(OffsetDateTime.now().minusDays(20)).build()
+                                .expiresAt(OffsetDateTime.now(ZoneOffset.UTC).minusDays(20)).build()
                 )
         );
 
@@ -203,9 +204,9 @@ class SessionServiceTest {
         when(sessionRepository.find(1)).thenReturn(
                 Arrays.asList(
                         SessionEntity.builder()
-                                .expiresAt(OffsetDateTime.now().plusDays(20)).build(),
+                                .expiresAt(OffsetDateTime.now(ZoneOffset.UTC).plusDays(20)).build(),
                         SessionEntity.builder()
-                                .expiresAt(OffsetDateTime.now().minusDays(20)).build()
+                                .expiresAt(OffsetDateTime.now(ZoneOffset.UTC).minusDays(20)).build()
                 )
         );
 
@@ -219,9 +220,9 @@ class SessionServiceTest {
         when(sessionRepository.find(1)).thenReturn(
                 Arrays.asList(
                         SessionEntity.builder()
-                                .expiresAt(OffsetDateTime.now().plusDays(20)).build(),
+                                .expiresAt(OffsetDateTime.now(ZoneOffset.UTC).plusDays(20)).build(),
                         SessionEntity.builder()
-                                .expiresAt(OffsetDateTime.now().minusDays(20)).build()
+                                .expiresAt(OffsetDateTime.now(ZoneOffset.UTC).minusDays(20)).build()
                 )
         );
 

@@ -1,6 +1,5 @@
 package org.java.mentorship.user.controller;
 
-import feign.Response;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.dto.User;

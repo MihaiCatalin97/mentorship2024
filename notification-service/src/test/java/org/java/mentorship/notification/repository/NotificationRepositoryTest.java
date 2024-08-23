@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,7 @@ class NotificationRepositoryTest {
 
     @Test
     void createShouldAddANewEntityInDatabase() throws JsonProcessingException {
-        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "fname"), true, OffsetDateTime.now());
+        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "fname"), true, OffsetDateTime.now(ZoneOffset.UTC));
         Map<String, Object> params = new HashMap<>();
         when(objectMapper.writeValueAsString(any())).thenReturn("{\"firstName\":\"ffname\"}");
         notificationRepository.create(notificationEntity);
@@ -66,7 +67,7 @@ class NotificationRepositoryTest {
 
     @Test
     void createShouldThrowExceptionIfPayloadCannotBeParsedToJSON() throws JsonProcessingException {
-        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "fname"), true, OffsetDateTime.now());
+        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "fname"), true, OffsetDateTime.now(ZoneOffset.UTC));
 
         when(objectMapper.writeValueAsString(any())).thenThrow(JsonProcessingException.class);
 
@@ -81,7 +82,7 @@ class NotificationRepositoryTest {
 
     @Test
     void updateShouldModifyAEntityInDatabase() {
-        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "fname"), true, OffsetDateTime.now());
+        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "fname"), true, OffsetDateTime.now(ZoneOffset.UTC));
 
         notificationEntity.setEmail("b@gmail.com");
 

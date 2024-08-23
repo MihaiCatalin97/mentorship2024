@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.ZoneOffset;
 import java.util.TimeZone;
 
 @Configuration
@@ -16,7 +17,7 @@ public class JacksonConfig {
         return new ObjectMapper()
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .registerModule(new JavaTimeModule())
-                .setTimeZone(TimeZone.getDefault());
+                .setTimeZone(TimeZone.getTimeZone(ZoneOffset.UTC));
     }
 
 }

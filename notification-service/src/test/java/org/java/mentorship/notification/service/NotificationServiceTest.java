@@ -15,7 +15,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.time.ZoneOffset;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -44,7 +48,7 @@ class NotificationServiceTest {
         Map<String, Object> params = new HashMap<>();
 
         when(notificationRepository.getNotifications(params)).thenAnswer(invocationOnMock -> {
-            List<NotificationEntity> notifications = List.of(new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now()));
+            List<NotificationEntity> notifications = List.of(new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now(ZoneOffset.UTC)));
 
             return notifications;
         });
@@ -57,7 +61,7 @@ class NotificationServiceTest {
     @Test
     void updateNotificationShouldModify() {
         Integer notificationId = 1;
-        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now());
+        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now(ZoneOffset.UTC));
 
         when(notificationRepository.update(notificationId, notificationEntity)).thenAnswer(invocationOnMock -> {
             notificationEntity.setUserId(3);
@@ -72,10 +76,10 @@ class NotificationServiceTest {
 
 //    @Test
 //    void createShoudAddANewNotification() {
-//        NotificationEntity notification = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now());
+//        NotificationEntity notification = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now(ZoneOffset.UTC));
 //
 //        when(notificationRepository.create(notification)).thenAnswer(invocationOnMock -> {
-//            NotificationEntity expected = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now());
+//            NotificationEntity expected = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now(ZoneOffset.UTC));
 //            List<NotificationChannel> channels = new ArrayList<>();
 //            when(notificationChannelRepository.getNotificationsById(1)).thenReturn(channels);
 //            expected.setChannels(channels);
@@ -136,7 +140,7 @@ class NotificationServiceTest {
     void getByIdShouldReturnANotification() {
         Integer id = 1;
 
-        when(notificationRepository.getNotificationById(id)).thenReturn(new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now()));
+        when(notificationRepository.getNotificationById(id)).thenReturn(new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now(ZoneOffset.UTC)));
 
         NotificationEntity result = notificationService.getById(id);
 
@@ -146,7 +150,7 @@ class NotificationServiceTest {
 
     @Test
     void markedAsReadShouldModifyTheMarkedField() {
-        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now());
+        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now(ZoneOffset.UTC));
 
         when(notificationRepository.getNotificationById(1)).thenReturn(notificationEntity);
 

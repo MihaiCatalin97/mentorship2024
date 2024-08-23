@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,13 +18,13 @@ public class ErrorResponse {
     public ErrorResponse(String error, String service) {
         this.errors = Collections.singletonList(error);
         this.service = service;
-        this.timestamp = OffsetDateTime.now();
+        this.timestamp = OffsetDateTime.now(ZoneOffset.UTC);
     }
 
     public ErrorResponse(List<String> errors, String service) {
         this.errors = errors;
         this.service = service;
-        this.timestamp = OffsetDateTime.now();
+        this.timestamp = OffsetDateTime.now(ZoneOffset.UTC);
     }
 
     public String joinErrors() {

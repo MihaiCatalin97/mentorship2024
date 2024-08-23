@@ -5,7 +5,6 @@ import org.java.mentorship.contracts.notification.client.NotificationFeignClient
 import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.contracts.notification.dto.NotificationChannel;
 import org.java.mentorship.contracts.notification.dto.NotificationType;
-import org.java.mentorship.contracts.user.client.SessionFeignClient;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.exception.domain.AlreadyRegisteredException;
@@ -14,6 +13,7 @@ import org.java.mentorship.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 
 import static org.java.mentorship.user.crypt.MD5.getMd5;
@@ -47,7 +47,7 @@ public class UserService {
         user.setLastName(registrationRequest.getLastName());
         user.setVerified(false);
         user.setHashedPassword(getMd5(registrationRequest.getPassword()));
-        user.setCreatedAt(OffsetDateTime.now());
+        user.setCreatedAt(OffsetDateTime.now(ZoneOffset.UTC));
 
         mapper.insert(user);
 
@@ -67,7 +67,7 @@ public class UserService {
             return false;
         }
 
-        user.setVerifiedAt(OffsetDateTime.now());
+        user.setVerifiedAt(OffsetDateTime.now(ZoneOffset.UTC));
         user.setVerified(true);
         mapper.update(user);
 
@@ -78,10 +78,11 @@ public class UserService {
         UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
 
         if (user.getLastSentVerificationNotification() != null)
-            if (!OffsetDateTime.now().isAfter(user.getLastSentVerificationNotification().plusMinutes(10))) return false;
+            if (!OffsetDateTime.now(ZoneOffset.UTC).isAfter(user.getLastSentVerificationNotification().plusMinutes(10)))
+                return false;
 
         user.setVerificationToken(UUID.randomUUID().toString());
-        user.setLastSentVerificationNotification(OffsetDateTime.now());
+        user.setLastSentVerificationNotification(OffsetDateTime.now(ZoneOffset.UTC));
 
         notificationFeignClient.postNotification(new Notification(
                 user.getId(), user.getEmail(),
@@ -90,7 +91,7 @@ public class UserService {
                         "firstName", user.getFirstName(),
                         "lastName", user.getLastName(),
                         "verificationToken", user.getVerificationToken(),
-                        "requestedAt", OffsetDateTime.now()
+                        "requestedAt", OffsetDateTime.now(ZoneOffset.UTC)
                 )
         ));
 

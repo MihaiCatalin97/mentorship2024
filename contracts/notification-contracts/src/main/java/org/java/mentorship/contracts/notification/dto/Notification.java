@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +50,6 @@ public class Notification {
         this.type = type;
         this.payload = payload;
         this.markedAsRead = false;
-        this.createdAt = OffsetDateTime.now();
+        this.createdAt = OffsetDateTime.now(ZoneOffset.UTC);
     }
 }

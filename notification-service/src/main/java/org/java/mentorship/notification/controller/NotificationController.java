@@ -3,11 +3,9 @@ package org.java.mentorship.notification.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.notification.dto.Notification;
-import org.java.mentorship.notification.domain.NotificationEntity;
 import org.java.mentorship.notification.domain.enums.NotificationChannel;
 import org.java.mentorship.notification.domain.enums.NotificationType;
 import org.java.mentorship.notification.mapper.NotificationContractMapper;
-import org.java.mentorship.notification.mapper.NotificationRowMapper;
 import org.java.mentorship.notification.service.NotificationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -61,7 +59,7 @@ public class NotificationController {
     @PutMapping("/notifications/{id}")
     public ResponseEntity<Notification> putNotification(@PathVariable("id") Integer id, @RequestBody @Valid Notification notification) {
         notification.setId(id);
-        return ResponseEntity.ok(notificationContractMapper.map(notificationService.updateNotification(id,notificationContractMapper.map(notification))));
+        return ResponseEntity.ok(notificationContractMapper.map(notificationService.updateNotification(id, notificationContractMapper.map(notification))));
     }
 
     @PutMapping("/notifications/read/{id}")
