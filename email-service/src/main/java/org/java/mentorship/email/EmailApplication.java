@@ -23,14 +23,28 @@ public class EmailApplication {
     private EmailService emailService;
 
     @PostMapping("/sendtest")
-    public EmailResponse sendEmail(@RequestBody EmailRequest request) {
+    public EmailResponse sendTest(@RequestBody EmailRequest request) {
 
-        Map<String,Object> model = new HashMap<>();
+        Map<String, Object> model = new HashMap<>();
 
-        return emailService.sendEmail(request,model);
+        return emailService.sendTest(request, model);
     }
 
+    @PostMapping("/verify")
+    public EmailResponse sendVerification(@RequestBody EmailRequest request) {
 
+        Map<String, Object> model = new HashMap<>();
+
+        return emailService.sendVerification(request, model);
+    }
+
+    @PostMapping("/overspend")
+    public EmailResponse sendOverSpend(@RequestBody EmailRequest request) {
+
+        Map<String, Object> model = new HashMap<>();
+
+        return emailService.sendOverSpend(request, model);
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(EmailApplication.class, args);

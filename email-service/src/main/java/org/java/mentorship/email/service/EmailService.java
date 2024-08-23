@@ -25,7 +25,7 @@ public class EmailService {
     @Autowired
     private Configuration config;
 
-    public EmailResponse sendEmail(EmailRequest request, Map<String, Object> model) {
+    public EmailResponse sendTest(EmailRequest request, Map<String, Object> model) {
 
         EmailResponse response = new EmailResponse();
         MimeMessage message = sender.createMimeMessage();
@@ -33,7 +33,7 @@ public class EmailService {
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED);
 
-            Template template = config.getTemplate("email-template.ftl");
+            Template template = config.getTemplate("email-test.ftl");
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
 
             helper.setTo(request.getTo());
@@ -42,10 +42,62 @@ public class EmailService {
             helper.setSubject(request.getSubject());
             sender.send(message);
 
-            response.setMessage("Mail sent to: "+ request.getTo());
+            response.setMessage("Mail sent to " + request.getTo());
             response.setConfirmation(Boolean.TRUE);
         } catch (MessagingException | IOException | TemplateException e) {
-            response.setMessage("Failed! "+ e.getMessage());
+            response.setMessage("Failed! " + e.getMessage());
+            response.setConfirmation(Boolean.FALSE);
+        }
+        return response;
+    }
+
+    public EmailResponse sendVerification(EmailRequest request, Map<String, Object> model) {
+
+        EmailResponse response = new EmailResponse();
+        MimeMessage message = sender.createMimeMessage();
+
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED);
+
+            Template template = config.getTemplate("email-verification.ftl");
+            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+
+            helper.setTo(request.getTo());
+            helper.setFrom("budget.tracker@dfourmusic.com");
+            helper.setText(html, true);
+            helper.setSubject(request.getSubject());
+            sender.send(message);
+
+            response.setMessage("Mail sent to " + request.getTo());
+            response.setConfirmation(Boolean.TRUE);
+        } catch (MessagingException | IOException | TemplateException e) {
+            response.setMessage("Failed! " + e.getMessage());
+            response.setConfirmation(Boolean.FALSE);
+        }
+        return response;
+    }
+
+    public EmailResponse sendOverSpend(EmailRequest request, Map<String, Object> model) {
+
+        EmailResponse response = new EmailResponse();
+        MimeMessage message = sender.createMimeMessage();
+
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED);
+
+            Template template = config.getTemplate("email-overspend.ftl");
+            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+
+            helper.setTo(request.getTo());
+            helper.setFrom("budget.tracker@dfourmusic.com");
+            helper.setText(html, true);
+            helper.setSubject(request.getSubject());
+            sender.send(message);
+
+            response.setMessage("Mail sent to " + request.getTo());
+            response.setConfirmation(Boolean.TRUE);
+        } catch (MessagingException | IOException | TemplateException e) {
+            response.setMessage("Failed! " + e.getMessage());
             response.setConfirmation(Boolean.FALSE);
         }
         return response;

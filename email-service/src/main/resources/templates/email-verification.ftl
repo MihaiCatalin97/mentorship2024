@@ -15,7 +15,7 @@
                         style="background-color: #a0cccb; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; padding: 0px 15px 10px 15px;">
 
                         <div style="font-size: 48px; color:#000000;">
-                            <b>Sample Mail</b>
+                            <b>Verificatrion Sample</b>
                         </div>
 
                         <div style="font-size: 24px; color: #a0cccb;">
