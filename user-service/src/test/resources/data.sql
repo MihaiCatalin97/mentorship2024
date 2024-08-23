@@ -3,7 +3,6 @@ INSERT INTO users VALUES (
                              'admin@localhost.com',
                              'First Name',
                              'Last Name',
-                             true,
                              upper('8b1a9953c4611296a827abf8c47804d7'), -- Hello
                              'AA-BB-CC',
                              now(),
@@ -15,7 +14,6 @@ INSERT INTO users VALUES (
                              'admin2@localhost.com',
                              'First Name',
                              'Last Name',
-                             true,
                              upper('8b1a9953c4611296a827abf8c47804d7'), -- Hello
                              'AA-BB-CC',
                              now(),
