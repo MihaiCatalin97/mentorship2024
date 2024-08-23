@@ -1,5 +1,6 @@
 package org.java.mentorship.gateway.config;
 
+import org.java.mentorship.contracts.calculation.client.CalculationFeignClient;
 import lombok.Generated;
 import org.java.mentorship.contracts.notification.client.NotificationFeignClient;
 import org.java.mentorship.contracts.user.client.SessionFeignClient;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableFeignClients(clients = {
         UserFeignClient.class,
         SessionFeignClient.class,
+        CalculationFeignClient.class,
         NotificationFeignClient.class
 })
 @Generated
