@@ -1,6 +1,11 @@
 package org.java.mentorship.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.java.mentorship.contracts.notification.client.NotificationFeignClient;
+import org.java.mentorship.contracts.notification.dto.Notification;
+import org.java.mentorship.contracts.notification.dto.NotificationChannel;
+import org.java.mentorship.contracts.notification.dto.NotificationType;
+import org.java.mentorship.contracts.user.client.SessionFeignClient;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.exception.domain.AlreadyRegisteredException;
@@ -8,9 +13,8 @@ import org.java.mentorship.user.exception.domain.UserNotFoundException;
 import org.java.mentorship.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.OffsetDateTime;
+import java.util.*;
 
 import static org.java.mentorship.user.crypt.MD5.getMd5;
 
@@ -18,6 +22,7 @@ import static org.java.mentorship.user.crypt.MD5.getMd5;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository mapper;
+    private final NotificationFeignClient notificationFeignClient;
 
     public List<UserEntity> getAllUsers() {
         return mapper.find();
@@ -44,8 +49,22 @@ public class UserService {
         user.setHashedPassword(getMd5(registrationRequest.getPassword()));
         user.setVerificationToken(UUID.randomUUID().toString());
 
-        // TODO: Call notification service with VERIFICATION message type
         mapper.insert(user);
+
+        Notification verificationNotification = new Notification();
+
+        verificationNotification.setEmail(user.getEmail());
+        verificationNotification.setUserId(user.getId());
+        verificationNotification.setChannels(Collections.singletonList(NotificationChannel.EMAIL));
+        verificationNotification.setType(NotificationType.VERIFICATION);
+        verificationNotification.setPayload(Map.of(
+                "firstName", user.getFirstName(),
+                "lastName", user.getLastName(),
+                "verificationToken", user.getVerificationToken(),
+                "requestedAt", OffsetDateTime.now()
+        ));
+
+        notificationFeignClient.postNotification(verificationNotification);
 
         return Optional.of(user);
     }

@@ -17,9 +17,9 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Notification {
-
-    @NotNull(message = "ID cannot be null")
     private Integer id;
+    private Boolean markedAsRead;
+    private OffsetDateTime createdAt;
 
     @NotNull(message = "User ID cannot be null")
     private Integer userId;
@@ -37,10 +37,4 @@ public class Notification {
     @NotNull(message = "Payload cannot be null")
     @Size(min = 1, message = "Payload cannot be empty")
     private Map<String, Object> payload;
-
-    @NotNull(message = "Marked as read status cannot be null")
-    private Boolean markedAsRead;
-
-    @NotNull(message = "Creation date cannot be null")
-    private OffsetDateTime createdAt;
 }
