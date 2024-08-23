@@ -18,6 +18,7 @@
         <module>calculation-service</module>
         <module>contracts</module>
         <module>aggregate-coverage-report</module>
+        <module>contracts/email-contracts</module>
     </modules>
 
     <properties>
