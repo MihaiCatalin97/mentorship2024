@@ -22,8 +22,7 @@ public class NotificationService {
     private NotificationChannelRepository notificationChannelRepository;
 
     public List<NotificationEntity> getNotifications(Map<String, Object> params) {
-        List<NotificationEntity> notificationEntities = notificationRepository.getNotifications(params);
-        return notificationEntities;
+        return notificationRepository.getNotifications(params);
     }
 
     public NotificationEntity createNotification(NotificationEntity notification) {

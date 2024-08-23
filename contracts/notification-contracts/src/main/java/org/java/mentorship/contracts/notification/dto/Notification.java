@@ -18,8 +18,6 @@ import java.util.Map;
 @NoArgsConstructor
 public class Notification {
     private Integer id;
-    private Boolean markedAsRead;
-    private OffsetDateTime createdAt;
 
     @NotNull(message = "User ID cannot be null")
     private Integer userId;
@@ -37,4 +35,20 @@ public class Notification {
     @NotNull(message = "Payload cannot be null")
     @Size(min = 1, message = "Payload cannot be empty")
     private Map<String, Object> payload;
+
+    @NotNull(message = "Marked as read status cannot be null")
+    private Boolean markedAsRead;
+
+    @NotNull(message = "Creation date cannot be null")
+    private OffsetDateTime createdAt;
+
+    public Notification(Integer userId, String email, List<NotificationChannel> channels, NotificationType type, Map<String, Object> payload) {
+        this.userId = userId;
+        this.email = email;
+        this.channels = channels;
+        this.type = type;
+        this.payload = payload;
+        this.markedAsRead = false;
+        this.createdAt = OffsetDateTime.now();
+    }
 }

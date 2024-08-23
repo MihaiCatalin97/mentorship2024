@@ -51,20 +51,16 @@ public class UserService {
 
         mapper.insert(user);
 
-        Notification verificationNotification = new Notification();
-
-        verificationNotification.setEmail(user.getEmail());
-        verificationNotification.setUserId(user.getId());
-        verificationNotification.setChannels(Collections.singletonList(NotificationChannel.EMAIL));
-        verificationNotification.setType(NotificationType.VERIFICATION);
-        verificationNotification.setPayload(Map.of(
-                "firstName", user.getFirstName(),
-                "lastName", user.getLastName(),
-                "verificationToken", user.getVerificationToken(),
-                "requestedAt", OffsetDateTime.now()
+        notificationFeignClient.postNotification(new Notification(
+                user.getId(), user.getEmail(),
+                Collections.singletonList(NotificationChannel.EMAIL), NotificationType.VERIFICATION,
+                Map.of(
+                        "firstName", user.getFirstName(),
+                        "lastName", user.getLastName(),
+                        "verificationToken", user.getVerificationToken(),
+                        "requestedAt", OffsetDateTime.now()
+                )
         ));
-
-        notificationFeignClient.postNotification(verificationNotification);
 
         return Optional.of(user);
     }
