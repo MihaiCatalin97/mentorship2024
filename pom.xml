@@ -168,6 +168,11 @@
                 <artifactId>common-contracts</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.java.mentorship</groupId>
+                <artifactId>budget-contracts</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
