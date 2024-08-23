@@ -3,7 +3,6 @@ CREATE TABLE users (
        email VARCHAR(128) UNIQUE NOT NULL,
        first_name VARCHAR(128) NOT NULL,
        last_name VARCHAR(128) NOT NULL,
-       verified BOOLEAN NOT NULL DEFAULT FALSE,
        hashed_password VARCHAR(128) NOT NULL,
        verification_token VARCHAR(128),
        created_at TIMESTAMP NOT NULL,

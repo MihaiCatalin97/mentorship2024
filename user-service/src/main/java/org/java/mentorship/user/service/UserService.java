@@ -45,7 +45,6 @@ public class UserService {
         user.setEmail(registrationRequest.getEmail());
         user.setFirstName(registrationRequest.getFirstName());
         user.setLastName(registrationRequest.getLastName());
-        user.setVerified(false);
         user.setHashedPassword(getMd5(registrationRequest.getPassword()));
         user.setCreatedAt(OffsetDateTime.now(ZoneOffset.UTC));
 
@@ -68,7 +67,6 @@ public class UserService {
         }
 
         user.setVerifiedAt(OffsetDateTime.now(ZoneOffset.UTC));
-        user.setVerified(true);
         mapper.update(user);
 
         return true;

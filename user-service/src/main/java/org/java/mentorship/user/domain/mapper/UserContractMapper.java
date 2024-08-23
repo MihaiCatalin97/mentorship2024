@@ -13,7 +13,6 @@ public class UserContractMapper {
         userContract.setId(userEntity.getId());
         userContract.setFirstName(userEntity.getFirstName());
         userContract.setLastName(userEntity.getLastName());
-        userContract.setVerified(userEntity.getVerified());
         userContract.setEmail(userEntity.getEmail());
 
         userContract.setCreatedAt(userEntity.getCreatedAt());

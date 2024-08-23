@@ -17,7 +17,6 @@ public class UserEntity {
     private String email;
     private String firstName;
     private String lastName;
-    private Boolean verified;
     private String hashedPassword;
     private String verificationToken;
 

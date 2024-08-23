@@ -11,7 +11,6 @@ public class User {
     private String email;
     private String firstName;
     private String lastName;
-    private Boolean verified;
 
     private OffsetDateTime createdAt;
     private OffsetDateTime verifiedAt;

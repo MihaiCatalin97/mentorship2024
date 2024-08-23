@@ -19,8 +19,7 @@
     </insert>
 
     <update id="update">
-        UPDATE users SET verified = #{verified},
-                         verification_token = #{verificationToken},
+        UPDATE users SET verification_token = #{verificationToken},
                          last_sent_verification_notification = #{lastSentVerificationNotification},
                          verified_at = #{verifiedAt}
                      WHERE id = #{id}

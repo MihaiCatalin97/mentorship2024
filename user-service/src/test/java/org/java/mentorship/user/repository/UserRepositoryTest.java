@@ -49,7 +49,7 @@ class UserRepositoryTest {
     void insertShouldInsertUser() {
         UserEntity user = UserEntity.builder()
                 .verificationToken("AA-BB-CC")
-                .verified(false)
+                .verifiedAt(OffsetDateTime.now())
                 .firstName("First Name")
                 .lastName("Last Name")
                 .email("email10@localhost.com")
