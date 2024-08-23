@@ -156,7 +156,7 @@ class UserServiceTest {
 
         assertFalse(result);
         verify(userRepository, times(1)).findById(1);
-        verify(userRepository, times(0)).setUserVerifiedStatus(anyInt(), anyBoolean());
+        verify(userRepository, times(0)).update(any());
     }
 
     @Test

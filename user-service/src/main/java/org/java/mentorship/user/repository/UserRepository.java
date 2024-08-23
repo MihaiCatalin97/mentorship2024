@@ -18,6 +18,4 @@ public interface UserRepository {
     void insert(UserEntity user);
 
     void update(UserEntity user);
-
-    boolean setUserVerifiedStatus(@Param("id") Integer id, @Param("verified") Boolean verified);
 }

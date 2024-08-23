@@ -7,6 +7,7 @@ import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +53,7 @@ class UserRepositoryTest {
                 .lastName("Last Name")
                 .email("email10@localhost.com")
                 .hashedPassword(MD5.getMd5("Secret"))
+                .createdAt(OffsetDateTime.now())
                 .build();
 
         userRepository.insert(user);
