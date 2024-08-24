@@ -131,7 +131,7 @@ public class UserService {
         UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
 
         if (user.getLastSentPasswordChangeToken() != null)
-            if (!OffsetDateTime.now(ZoneOffset.UTC).isAfter(user.getLastSentPasswordChangeToken().plusMinutes(10)))
+            if (!OffsetDateTime.now(ZoneOffset.UTC).isAfter(user.getLastSentPasswordChangeToken().plusMinutes(5)))
                 return false;
 
         user.setPasswordChangeToken(UUID.randomUUID().toString());
