@@ -16,6 +16,15 @@ ALTER TABLE users
 ALTER TABLE users
     ADD COLUMN verified_at TIMESTAMP;
 
+ALTER TABLE users
+    ADD COLUMN last_changed_password TIMESTAMP;
+
+ALTER TABLE users
+    ADD COLUMN password_change_token TIMESTAMP;
+
+ALTER TABLE users
+    ADD COLUMN last_sent_password_change_token TIMESTAMP;
+
 -- Step 4: Update existing records
 -- If needed, update 'created_at' with a value that makes sense (like now or based on existing data)
 -- You can set the `verified_at` for all users who were previously marked as verified, for example:

@@ -14,14 +14,38 @@
     </select>
 
     <insert id="insert" parameterType="UserEntity" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        INSERT INTO users(email, first_name, last_name, hashed_password, verification_token, last_sent_verification_notification, created_at, verified_at)
-        VALUES (#{email}, #{firstName}, #{lastName}, #{hashedPassword}, #{verificationToken}, #{lastSentVerificationNotification}, #{createdAt}, #{verifiedAt})
+        INSERT INTO users(email,
+                          first_name,
+                          last_name,
+                          hashed_password,
+                          verification_token,
+                          last_sent_verification_notification,
+                          created_at,
+                          verified_at,
+                          password_change_token,
+                          last_changed_password,
+                          last_sent_password_change_token)
+        VALUES (#{email},
+                #{firstName},
+                #{lastName},
+                #{hashedPassword},
+                #{verificationToken},
+                #{lastSentVerificationNotification},
+                #{createdAt},
+                #{verifiedAt},
+                #{passwordChangeToken},
+                #{lastChangedPassword},
+                #{lastSentPasswordChangeToken})
     </insert>
 
     <update id="update">
         UPDATE users SET verification_token = #{verificationToken},
                          last_sent_verification_notification = #{lastSentVerificationNotification},
-                         verified_at = #{verifiedAt}
+                         verified_at = #{verifiedAt},
+                         password_change_token = #{passwordChangeToken},
+                         last_changed_password = #{lastChangedPassword},
+                         hashed_password = #{hashedPassword},
+                         last_sent_password_change_token = #{lastSentPasswordChangeToken}
                      WHERE id = #{id}
     </update>
 </mapper>

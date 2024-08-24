@@ -17,10 +17,15 @@ public class UserEntity {
     private String email;
     private String firstName;
     private String lastName;
-    private String hashedPassword;
-    private String verificationToken;
 
     private OffsetDateTime createdAt;
     private OffsetDateTime verifiedAt;
     private OffsetDateTime lastSentVerificationNotification;
+    private OffsetDateTime lastChangedPassword;
+    private OffsetDateTime lastSentPasswordChangeToken;
+
+    // Hidden Values
+    private String hashedPassword;
+    private String passwordChangeToken;
+    private String verificationToken;
 }

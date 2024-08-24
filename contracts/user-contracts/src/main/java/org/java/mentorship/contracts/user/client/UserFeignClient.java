@@ -1,6 +1,7 @@
 package org.java.mentorship.contracts.user.client;
 
 import org.java.mentorship.contracts.user.dto.User;
+import org.java.mentorship.contracts.user.dto.request.PasswordChangeRequest;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,4 +43,16 @@ public interface UserFeignClient {
             value = "/verify/{userId}"
     )
     Boolean resendVerificationToken(@PathVariable("userId") Integer userId);
+
+    @RequestMapping(
+            method = RequestMethod.POST,
+            value = "/changepassword/{userId}"
+    )
+    Boolean sendPasswordChangeRequest(@PathVariable("userId") Integer userId);
+
+    @RequestMapping(
+            method = RequestMethod.PUT,
+            value = "/changepassword/{userId}"
+    )
+    Boolean changePasswordWithToken(@PathVariable("userId") Integer userId, @RequestBody PasswordChangeRequest passwordChangeRequest);
 }

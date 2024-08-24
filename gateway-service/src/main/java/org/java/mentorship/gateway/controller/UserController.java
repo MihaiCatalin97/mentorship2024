@@ -3,6 +3,7 @@ package org.java.mentorship.gateway.controller;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.client.UserFeignClient;
 import org.java.mentorship.contracts.user.dto.User;
+import org.java.mentorship.contracts.user.dto.request.PasswordChangeRequest;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,5 +42,15 @@ public class UserController {
     @PostMapping("/verify/{id}")
     ResponseEntity<Boolean> resendNotificationToken(@PathVariable(name = "id") Integer id) {
         return ResponseEntity.ok(userFeignClient.resendVerificationToken(id));
+    }
+
+    @PostMapping("/changepassword/{id}")
+    ResponseEntity<Boolean> sendPasswordChangeRequest(@PathVariable(name = "id") Integer id) {
+        return ResponseEntity.ok(userFeignClient.sendPasswordChangeRequest(id));
+    }
+
+    @PutMapping("/changepassword/{id}")
+    ResponseEntity<Boolean> resendNotificationToken(@PathVariable(name = "id") Integer id, @RequestBody PasswordChangeRequest passwordChangeRequest) {
+        return ResponseEntity.ok(userFeignClient.changePasswordWithToken(id, passwordChangeRequest));
     }
 }
