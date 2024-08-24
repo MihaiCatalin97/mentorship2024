@@ -108,6 +108,9 @@ public class UserService {
 
         user.setHashedPassword(getMd5(newPassword));
         user.setLastChangedPassword(OffsetDateTime.now(ZoneOffset.UTC));
+        user.setPasswordChangeToken(null);
+
+        mapper.update(user);
 
         return true;
     }
@@ -144,6 +147,8 @@ public class UserService {
                         "requestedAt", OffsetDateTime.now(ZoneOffset.UTC)
                 )
         ));
+
+        mapper.update(user);
 
         return true;
     }

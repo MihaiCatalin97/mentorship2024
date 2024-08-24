@@ -20,7 +20,7 @@ ALTER TABLE users
     ADD COLUMN last_changed_password TIMESTAMP;
 
 ALTER TABLE users
-    ADD COLUMN password_change_token TIMESTAMP;
+    ADD COLUMN password_change_token VARCHAR(128);
 
 ALTER TABLE users
     ADD COLUMN last_sent_password_change_token TIMESTAMP;
