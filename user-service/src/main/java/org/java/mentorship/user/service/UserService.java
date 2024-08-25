@@ -40,12 +40,11 @@ public class UserService {
         user.setEmail(registrationRequest.getEmail());
         user.setFirstName(registrationRequest.getFirstName());
         user.setLastName(registrationRequest.getLastName());
-        user.setVerified(false);
         user.setIsAdmin(false);
         user.setHashedPassword(getMd5(registrationRequest.getPassword()));
-        user.setVerificationToken(UUID.randomUUID().toString());
+        user.setLastChangedPassword(OffsetDateTime.now(ZoneOffset.UTC));
+        user.setCreatedAt(OffsetDateTime.now(ZoneOffset.UTC));
 
-        // TODO: Call notification service with VERIFICATION message type
         mapper.insert(user);
 
         return Optional.of(user);
@@ -59,12 +58,94 @@ public class UserService {
     }
 
     public boolean verifyUserUsingToken(Integer id, String token) {
-        Optional<UserEntity> user = getUserById(id);
-        if (user.isEmpty()) throw new UserNotFoundException();
-        if (!user.get().getVerificationToken().equals(token)) {
+        UserEntity user = getUserById(id).orElseThrow(UserNotFoundException::new);
+        if (!user.getVerificationToken().equals(token)) {
             return false;
         }
 
-        return mapper.setUserVerifiedStatus(id, true);
+        if (user.getLastSentVerificationNotification() != null)
+            if (OffsetDateTime.now(ZoneOffset.UTC).isAfter(user.getLastSentVerificationNotification().plusDays(1)))
+                return false;
+
+        user.setVerifiedAt(OffsetDateTime.now(ZoneOffset.UTC));
+        mapper.update(user);
+
+        return true;
+    }
+
+    public Boolean resendVerificationToken(Integer userId) {
+        UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
+
+        if (user.getLastSentVerificationNotification() != null)
+            if (!OffsetDateTime.now(ZoneOffset.UTC).isAfter(user.getLastSentVerificationNotification().plusMinutes(10)))
+                return false;
+
+        user.setVerificationToken(UUID.randomUUID().toString());
+        user.setLastSentVerificationNotification(OffsetDateTime.now(ZoneOffset.UTC));
+
+        notificationFeignClient.postNotification(new Notification(
+                user.getId(), user.getEmail(),
+                Collections.singletonList(NotificationChannel.EMAIL), NotificationType.VERIFICATION,
+                Map.of(
+                        "firstName", user.getFirstName(),
+                        "lastName", user.getLastName(),
+                        "verificationToken", user.getVerificationToken(),
+                        "requestedAt", OffsetDateTime.now(ZoneOffset.UTC)
+                )
+        ));
+
+        mapper.update(user);
+
+        return true;
+    }
+
+    public Boolean changePassword(Integer userId, String newPassword) {
+        UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
+
+        user.setHashedPassword(getMd5(newPassword));
+        user.setLastChangedPassword(OffsetDateTime.now(ZoneOffset.UTC));
+        user.setPasswordChangeToken(null);
+
+        mapper.update(user);
+
+        return true;
+    }
+
+    public Boolean changePasswordWithToken(Integer userId, String newPassword, String token) {
+        UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
+
+        if (user.getLastSentPasswordChangeToken() != null)
+            if (OffsetDateTime.now(ZoneOffset.UTC).isAfter(user.getLastSentPasswordChangeToken().plusDays(1)))
+                return false;
+
+        if (!Objects.equals(user.getPasswordChangeToken(), token)) return false;
+
+        return changePassword(userId, newPassword);
+    }
+
+    public Boolean requestChangePasswordToken(Integer userId) {
+        UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
+
+        if (user.getLastSentPasswordChangeToken() != null)
+            if (!OffsetDateTime.now(ZoneOffset.UTC).isAfter(user.getLastSentPasswordChangeToken().plusMinutes(5)))
+                return false;
+
+        user.setPasswordChangeToken(UUID.randomUUID().toString());
+        user.setLastSentPasswordChangeToken(OffsetDateTime.now(ZoneOffset.UTC));
+
+        notificationFeignClient.postNotification(new Notification(
+                user.getId(), user.getEmail(),
+                Collections.singletonList(NotificationChannel.EMAIL), NotificationType.PASSWORD_CHANGE,
+                Map.of(
+                        "firstName", user.getFirstName(),
+                        "lastName", user.getLastName(),
+                        "passwordChangeToken", user.getPasswordChangeToken(),
+                        "requestedAt", OffsetDateTime.now(ZoneOffset.UTC)
+                )
+        ));
+
+        mapper.update(user);
+
+        return true;
     }
 }

@@ -1,5 +1,7 @@
 package org.java.mentorship.user.service;
 
+import org.java.mentorship.contracts.notification.client.NotificationFeignClient;
+import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.user.crypt.MD5;
 import org.java.mentorship.user.domain.UserEntity;
@@ -28,8 +30,13 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private NotificationFeignClient notificationFeignClient;
+
     @Captor
     private ArgumentCaptor<UserEntity> userArgumentCaptor;
+    @Captor
+    private ArgumentCaptor<Notification> notificationArgumentCaptor;
 
     @Test
     void registerUserShouldSaveUser() {
@@ -132,13 +139,12 @@ class UserServiceTest {
         when(userRepository.findById(1)).thenReturn(Optional.ofNullable(
                 UserEntity.builder().verificationToken(verificationToken).build()
         ));
-        when(userRepository.setUserVerifiedStatus(1, true)).thenReturn(true);
 
         boolean result = userService.verifyUserUsingToken(1, verificationToken);
 
         assertTrue(result);
         verify(userRepository, times(1)).findById(1);
-        verify(userRepository, times(1)).setUserVerifiedStatus(1, true);
+        verify(userRepository, times(1)).update(any());
     }
 
     @Test
@@ -153,7 +159,7 @@ class UserServiceTest {
 
         assertFalse(result);
         verify(userRepository, times(1)).findById(1);
-        verify(userRepository, times(0)).setUserVerifiedStatus(anyInt(), anyBoolean());
+        verify(userRepository, times(0)).update(any());
     }
 
     @Test
@@ -163,5 +169,29 @@ class UserServiceTest {
         when(userRepository.findById(1)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.verifyUserUsingToken(1, verificationToken));
+    }
+
+    @Test
+    void resendVerificationTokenShouldSetVerificationToken() {
+        when(userRepository.findById(1)).thenReturn(Optional.of(
+                UserEntity.builder()
+                        .firstName("first")
+                        .lastName("last")
+                        .email("email@email.com")
+                        .id(1)
+                        .build()
+        ));
+
+        Boolean result = userService.resendVerificationToken(1);
+
+        verify(notificationFeignClient).postNotification(notificationArgumentCaptor.capture());
+        verify(userRepository).update(userArgumentCaptor.capture());
+        Notification notification = notificationArgumentCaptor.getValue();
+        UserEntity user = userArgumentCaptor.getValue();
+
+        assertTrue(result);
+        assertEquals(1, notification.getUserId());
+        assertNotNull(user.getVerificationToken());
+        assertNotNull(user.getLastSentVerificationNotification());
     }
 }

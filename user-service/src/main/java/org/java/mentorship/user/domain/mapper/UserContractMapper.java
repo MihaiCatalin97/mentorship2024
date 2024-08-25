@@ -13,8 +13,13 @@ public class UserContractMapper {
         userContract.setId(userEntity.getId());
         userContract.setFirstName(userEntity.getFirstName());
         userContract.setLastName(userEntity.getLastName());
-        userContract.setVerified(userEntity.getVerified());
         userContract.setEmail(userEntity.getEmail());
+
+        userContract.setCreatedAt(userEntity.getCreatedAt());
+        userContract.setLastSentVerificationNotification(userEntity.getLastSentVerificationNotification());
+        userContract.setVerifiedAt(userEntity.getVerifiedAt());
+        userContract.setLastChangedPassword(userEntity.getLastChangedPassword());
+        userContract.setLastSentPasswordChangeToken(userEntity.getLastSentPasswordChangeToken());
 
         return userContract;
     }

@@ -6,6 +6,8 @@ import org.java.mentorship.notification.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,13 +23,12 @@ public class NotificationService {
     private NotificationChannelRepository notificationChannelRepository;
 
     public List<NotificationEntity> getNotifications(Map<String, Object> params) {
-        List<NotificationEntity> notificationEntities = notificationRepository.getNotifications(params);
-        return notificationEntities;
+        return notificationRepository.getNotifications(params);
     }
 
     public NotificationEntity createNotification(NotificationEntity notification) {
         NotificationEntity entity = notificationRepository.create(notification);
-
+        notification.setCreatedAt(OffsetDateTime.now(ZoneOffset.UTC));
         notification.getChannels().forEach(channel -> {
             notificationChannelRepository.createNotificationChannel(entity.getId(), channel);
         });

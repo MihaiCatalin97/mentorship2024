@@ -20,7 +20,6 @@ class UserContractMapperTest {
                 .lastName("Last Name")
                 .hashedPassword(MD5.getMd5("Secret Password"))
                 .verificationToken(UUID.randomUUID().toString())
-                .verified(false)
                 .build();
 
         User user = UserContractMapper.userToContract(userEntity);
@@ -29,7 +28,6 @@ class UserContractMapperTest {
         assertEquals(userEntity.getEmail(), user.getEmail());
         assertEquals(userEntity.getFirstName(), user.getFirstName());
         assertEquals(userEntity.getLastName(), user.getLastName());
-        assertEquals(userEntity.getVerified(), user.getVerified());
     }
 
 }

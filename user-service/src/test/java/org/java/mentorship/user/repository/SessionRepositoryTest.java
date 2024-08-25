@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +40,7 @@ class SessionRepositoryTest {
     @Test
     void insertShouldInsertSession() {
         sessionRepository.insert(SessionEntity.builder()
-                .expiresAt(OffsetDateTime.now())
+                .expiresAt(OffsetDateTime.now(ZoneOffset.UTC))
                 .sessionKey("sess-key10")
                 .userId(1)
                 .build());

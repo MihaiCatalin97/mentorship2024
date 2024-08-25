@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +18,6 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Notification {
-
-    @NotNull(message = "ID cannot be null")
     private Integer id;
 
     @NotNull(message = "User ID cannot be null")
@@ -43,4 +42,14 @@ public class Notification {
 
     @NotNull(message = "Creation date cannot be null")
     private OffsetDateTime createdAt;
+
+    public Notification(Integer userId, String email, List<NotificationChannel> channels, NotificationType type, Map<String, Object> payload) {
+        this.userId = userId;
+        this.email = email;
+        this.channels = channels;
+        this.type = type;
+        this.payload = payload;
+        this.markedAsRead = false;
+        this.createdAt = OffsetDateTime.now(ZoneOffset.UTC);
+    }
 }

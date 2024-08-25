@@ -19,4 +19,3 @@ CREATE TABLE sessions (
                               REFERENCES users(id)
                               ON DELETE CASCADE
 );
-

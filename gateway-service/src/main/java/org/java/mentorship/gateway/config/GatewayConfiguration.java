@@ -1,10 +1,11 @@
 package org.java.mentorship.gateway.config;
 
+import lombok.Generated;
 import org.java.mentorship.contracts.calculation.client.CalculationFeignClient;
 import org.java.mentorship.contracts.budget.client.AccountFeignClient;
 import org.java.mentorship.contracts.budget.client.CategoryFeignClient;
 import org.java.mentorship.contracts.budget.client.TransactionFeignClient;
-import lombok.Generated;
+import org.java.mentorship.contracts.calculation.client.CalculationFeignClient;
 import org.java.mentorship.contracts.notification.client.NotificationFeignClient;
 import org.java.mentorship.contracts.user.client.SessionFeignClient;
 import org.java.mentorship.contracts.user.client.UserFeignClient;

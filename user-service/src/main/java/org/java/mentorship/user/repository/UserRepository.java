@@ -1,7 +1,6 @@
 package org.java.mentorship.user.repository;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.java.mentorship.user.domain.UserEntity;
 
 import java.util.List;
@@ -17,5 +16,5 @@ public interface UserRepository {
 
     void insert(UserEntity user);
 
-    boolean setUserVerifiedStatus(@Param("id") Integer id, @Param("verified") Boolean verified);
+    void update(UserEntity user);
 }
