@@ -16,6 +16,8 @@ public class UserIdAuthorization {
 
     public static void loggedInAsUser(Integer userId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (Objects.isNull(authentication))
+            throw new UnauthorizedException("Unauthorized");
         if (!authentication.isAuthenticated())
             throw new UnauthorizedException("Unauthorized");
         if (!Objects.equals(userId, ((User) authentication.getDetails()).getId()))
