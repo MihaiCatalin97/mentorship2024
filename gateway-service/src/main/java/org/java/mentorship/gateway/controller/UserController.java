@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.client.UserFeignClient;
 import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
+import org.java.mentorship.gateway.security.authorization.UserIdAuthorization;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     ResponseEntity<User> getUserById(@PathVariable(name = "id") Integer id) {
-        // TODO: Users can't read other users
+        UserIdAuthorization.loggedInAsUser(id);
         return ResponseEntity.ok(userFeignClient.getUser(id));
     }
 

@@ -3,6 +3,7 @@ package org.java.mentorship.gateway.controller;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.budget.client.AccountFeignClient;
 import org.java.mentorship.contracts.budget.dto.Account;
+import org.java.mentorship.gateway.security.authorization.UserIdAuthorization;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,13 +30,14 @@ public class AccountController {
 
     @PostMapping()
     ResponseEntity<Account> createAccount(@RequestBody Account account) {
-        // TODO: Add any necessary validation or pre-processing before creating the account
+        UserIdAuthorization.loggedInAsUser(account.getUserId());
         return ResponseEntity.ok(accountFeignClient.createAccount(account));
     }
 
     @PutMapping("/{id}")
     ResponseEntity<Account> updateAccount(@PathVariable(name = "id") Integer id, @RequestBody Account account) {
-        // TODO: Add any necessary validation or pre-processing before updating the account
+        // TODO: !!!! Unauthorized users could still modify other fields !!!!
+        UserIdAuthorization.loggedInAsUser(account.getUserId());
         return ResponseEntity.ok(accountFeignClient.updateAccount(id, account));
     }
 

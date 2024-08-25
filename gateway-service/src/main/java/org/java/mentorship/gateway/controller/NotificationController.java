@@ -7,6 +7,7 @@ import org.java.mentorship.contracts.notification.client.NotificationFeignClient
 import org.java.mentorship.contracts.notification.dto.Notification;
 import org.java.mentorship.contracts.notification.dto.NotificationChannel;
 import org.java.mentorship.contracts.notification.dto.NotificationType;
+import org.java.mentorship.gateway.security.authorization.UserIdAuthorization;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +25,9 @@ public class NotificationController {
                                                                @RequestParam(required = false, name = "email") String email,
                                                                @RequestParam(required = false, name = "channel") NotificationChannel channel,
                                                                @RequestParam(required = false, name = "type") NotificationType type,
-                                                               @RequestParam(required = false, name = "marked") Boolean marked) {
-        return ResponseEntity.ok(notificationFeignClient.getNotifications(userId, email, channel, type, marked));
+                                                               @RequestParam(required = false, name = "markedAsRead") Boolean markedAsRead) {
+        UserIdAuthorization.loggedInAsUser(userId);
+        return ResponseEntity.ok(notificationFeignClient.getNotifications(userId, email, channel, type, markedAsRead));
     }
 
     @PutMapping("/read/{id}")

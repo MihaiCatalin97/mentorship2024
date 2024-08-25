@@ -3,6 +3,7 @@ package org.java.mentorship.gateway.controller;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.budget.client.BudgetFeignClient;
 import org.java.mentorship.contracts.budget.dto.Budget;
+import org.java.mentorship.gateway.security.authorization.UserIdAuthorization;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,13 +30,14 @@ public class BudgetController {
 
     @PostMapping()
     ResponseEntity<Budget> createBudget(@RequestBody Budget budget) {
-        // TODO: Add any necessary validation or pre-processing before creating the budget
+        UserIdAuthorization.loggedInAsUser(budget.getUserId());
         return ResponseEntity.ok(budgetFeignClient.createBudget(budget));
     }
 
     @PutMapping("/{id}")
     ResponseEntity<Budget> updateBudget(@PathVariable(name = "id") Integer id, @RequestBody Budget budget) {
-        // TODO: Add any necessary validation or pre-processing before updating the budget
+        // TODO: !!!! Unauthorized users could still modify other fields !!!!
+        UserIdAuthorization.loggedInAsUser(budget.getUserId());
         return ResponseEntity.ok(budgetFeignClient.updateBudget(id, budget));
     }
 

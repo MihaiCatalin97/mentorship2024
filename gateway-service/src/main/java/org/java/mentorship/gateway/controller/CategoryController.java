@@ -3,6 +3,7 @@ package org.java.mentorship.gateway.controller;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.budget.client.CategoryFeignClient;
 import org.java.mentorship.contracts.budget.dto.Category;
+import org.java.mentorship.gateway.security.authorization.UserIdAuthorization;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,13 +30,14 @@ public class CategoryController {
 
     @PostMapping()
     ResponseEntity<Category> createCategory(@RequestBody Category category) {
-        // TODO: Add any necessary validation or pre-processing before creating the category
+        UserIdAuthorization.loggedInAsUser(category.getUserId());
         return ResponseEntity.ok(categoryFeignClient.createCategory(category));
     }
 
     @PutMapping("/{id}")
     ResponseEntity<Category> updateCategory(@PathVariable(name = "id") Integer id, @RequestBody Category category) {
-        // TODO: Add any necessary validation or pre-processing before updating the category
+        // TODO: !!!! Unauthorized users could still modify other fields !!!!
+        UserIdAuthorization.loggedInAsUser(category.getUserId());
         return ResponseEntity.ok(categoryFeignClient.updateCategory(id, category));
     }
 

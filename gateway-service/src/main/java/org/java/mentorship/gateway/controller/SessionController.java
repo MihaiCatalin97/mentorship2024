@@ -5,6 +5,7 @@ import org.java.mentorship.contracts.user.client.SessionFeignClient;
 import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.SessionWithKey;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
+import org.java.mentorship.gateway.security.authorization.UserIdAuthorization;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ public class SessionController {
     @GetMapping()
     public ResponseEntity<List<Session>> findSessions(@RequestParam(name = "userId", required = false) Integer userId,
                                                       @RequestParam(name = "isActive", required = false) Boolean isActive) {
+        UserIdAuthorization.loggedInAsUser(userId);
         return ResponseEntity.ok(sessionFeignClient.find(userId, isActive));
     }
 

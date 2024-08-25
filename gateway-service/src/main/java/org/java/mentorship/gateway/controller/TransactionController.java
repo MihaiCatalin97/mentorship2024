@@ -3,6 +3,7 @@ package org.java.mentorship.gateway.controller;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.budget.client.TransactionFeignClient;
 import org.java.mentorship.contracts.budget.dto.Transaction;
+import org.java.mentorship.gateway.security.authorization.UserIdAuthorization;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,13 +30,14 @@ public class TransactionController {
 
     @PostMapping()
     ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction) {
-        // TODO: Add any necessary validation or pre-processing before creating the transaction
+        UserIdAuthorization.loggedInAsUser(transaction.getUserId());
         return ResponseEntity.ok(transactionFeignClient.createTransaction(transaction));
     }
 
     @PutMapping("/{id}")
     ResponseEntity<Transaction> updateTransaction(@PathVariable(name = "id") Integer id, @RequestBody Transaction transaction) {
-        // TODO: Add any necessary validation or pre-processing before updating the transaction
+        // TODO: !!!! Unauthorized users could still modify other fields !!!!
+        UserIdAuthorization.loggedInAsUser(transaction.getUserId());
         return ResponseEntity.ok(transactionFeignClient.updateTransaction(id, transaction));
     }
 
