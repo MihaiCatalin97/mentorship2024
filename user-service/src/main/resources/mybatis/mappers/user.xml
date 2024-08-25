@@ -14,8 +14,8 @@
     </select>
 
     <insert id="insert" parameterType="UserEntity" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        INSERT INTO users(email, first_name, last_name, hashed_password, verification_token)
-        VALUES (#{email}, #{firstName}, #{lastName}, #{hashedPassword}, #{verificationToken})
+        INSERT INTO users(email, first_name, last_name, hashed_password, verification_token, is_admin)
+        VALUES (#{email}, #{firstName}, #{lastName}, #{hashedPassword}, #{verificationToken}, #{isAdmin})
     </insert>
 
     <update id="setUserVerifiedStatus">

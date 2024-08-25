@@ -41,6 +41,7 @@ public class UserService {
         user.setFirstName(registrationRequest.getFirstName());
         user.setLastName(registrationRequest.getLastName());
         user.setVerified(false);
+        user.setIsAdmin(false);
         user.setHashedPassword(getMd5(registrationRequest.getPassword()));
         user.setVerificationToken(UUID.randomUUID().toString());
 

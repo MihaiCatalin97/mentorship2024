@@ -18,5 +18,5 @@ public class UserEntity {
     private Boolean verified;
     private String hashedPassword;
     private String verificationToken;
-
+    private Boolean isAdmin;
 }
