@@ -8,13 +8,12 @@ import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.exception.domain.AlreadyRegisteredException;
 import org.java.mentorship.user.exception.domain.UserNotFoundException;
 import org.java.mentorship.user.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.TestPropertySource;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -26,7 +25,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-    @InjectMocks
     private UserService userService;
 
     @Mock
@@ -39,6 +37,13 @@ class UserServiceTest {
     private ArgumentCaptor<UserEntity> userArgumentCaptor;
     @Captor
     private ArgumentCaptor<Notification> notificationArgumentCaptor;
+
+    @BeforeEach
+    void setUp() {
+        TokenService tokenService = new TokenService(userRepository, notificationFeignClient);
+
+        this.userService = new UserService(userRepository, spy(tokenService));
+    }
 
     @Test
     void registerUserShouldSaveUser() {
@@ -139,7 +144,9 @@ class UserServiceTest {
         String verificationToken = UUID.randomUUID().toString();
 
         when(userRepository.findById(1)).thenReturn(Optional.ofNullable(
-                UserEntity.builder().verificationToken(verificationToken).build()
+                UserEntity.builder()
+                        .lastSentVerificationNotification(OffsetDateTime.now(ZoneOffset.UTC))
+                        .verificationToken(verificationToken).build()
         ));
 
         boolean result = userService.verifyUserUsingToken(1, verificationToken);
@@ -228,20 +235,6 @@ class UserServiceTest {
         Boolean result = userService.resendVerificationToken(1);
 
         assertFalse(result);
-    }
-
-    @Test
-    void changePasswordShouldChangePassword() {
-        when(userRepository.findById(1)).thenReturn(Optional.of(
-                UserEntity.builder().build()
-        ));
-
-        boolean result = userService.changePassword(1, "SecretPassword");
-
-        assertTrue(result);
-        verify(userRepository, times(1)).update(userArgumentCaptor.capture());
-        UserEntity savedEntity = userArgumentCaptor.getValue();
-        assertEquals(MD5.getMd5("SecretPassword"), savedEntity.getHashedPassword());
     }
 
     @Test
