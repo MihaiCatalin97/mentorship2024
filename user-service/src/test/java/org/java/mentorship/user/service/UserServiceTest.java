@@ -16,6 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -172,6 +174,22 @@ class UserServiceTest {
     }
 
     @Test
+    void verifyUserUsingTokenShouldThrowWhenTokenExpired() {
+        String verificationToken = UUID.randomUUID().toString();
+
+        when(userRepository.findById(1)).thenReturn(
+                Optional.of(UserEntity.builder()
+                                .verificationToken(verificationToken)
+                                .lastSentVerificationNotification(OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(11))
+                        .build())
+        );
+
+        boolean result = userService.verifyUserUsingToken(1, verificationToken);
+
+        assertFalse(result);
+    }
+
+    @Test
     void resendVerificationTokenShouldSetVerificationToken() {
         when(userRepository.findById(1)).thenReturn(Optional.of(
                 UserEntity.builder()
@@ -193,5 +211,93 @@ class UserServiceTest {
         assertEquals(1, notification.getUserId());
         assertNotNull(user.getVerificationToken());
         assertNotNull(user.getLastSentVerificationNotification());
+    }
+
+    @Test
+    void resendVerificationTokenShouldReturnFalseWhenUserAlreadyRequestedAToken() {
+        when(userRepository.findById(1)).thenReturn(Optional.of(
+                UserEntity.builder()
+                        .firstName("first")
+                        .lastName("last")
+                        .email("email@email.com")
+                        .lastSentVerificationNotification(OffsetDateTime.now(ZoneOffset.UTC))
+                        .id(1)
+                        .build()
+        ));
+
+        Boolean result = userService.resendVerificationToken(1);
+
+        assertFalse(result);
+    }
+
+    @Test
+    void changePasswordShouldChangePassword() {
+        when(userRepository.findById(1)).thenReturn(Optional.of(
+                UserEntity.builder().build()
+        ));
+
+        boolean result = userService.changePassword(1, "SecretPassword");
+
+        assertTrue(result);
+        verify(userRepository, times(1)).update(userArgumentCaptor.capture());
+        UserEntity savedEntity = userArgumentCaptor.getValue();
+        assertEquals(MD5.getMd5("SecretPassword"), savedEntity.getHashedPassword());
+    }
+
+    @Test
+    void changePasswordWithTokenShouldChangePassword() {
+        when(userRepository.findById(1)).thenReturn(Optional.of(
+                UserEntity.builder()
+                        .passwordChangeToken("aaa-bbb")
+                        .build()
+        ));
+
+        boolean result = userService.changePasswordWithToken(1, "SecretPassword", "aaa-bbb");
+
+        verify(userRepository, times(1)).update(userArgumentCaptor.capture());
+
+        UserEntity savedEntity = userArgumentCaptor.getValue();
+
+        assertTrue(result);
+        assertEquals(MD5.getMd5("SecretPassword"), savedEntity.getHashedPassword());
+    }
+
+    @Test
+    void changePasswordWithTokenShouldNotChangeWhenTokenInvalid() {
+        when(userRepository.findById(1)).thenReturn(Optional.of(
+                UserEntity.builder()
+                        .passwordChangeToken("aaa-bbb")
+                        .lastSentPasswordChangeToken(OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(11))
+                        .build()
+        ));
+
+        boolean result = userService.changePasswordWithToken(1, "SecretPassword", "aaa-bbb");
+
+        verify(userRepository, times(0)).update(any());
+
+        assertFalse(result);
+    }
+
+    @Test
+    void requestChangePasswordTokenShouldCallNotification() {
+        when(userRepository.findById(1)).thenReturn(Optional.of(
+                UserEntity.builder()
+                        .firstName("First name")
+                        .lastName("Last name")
+                        .build()
+        ));
+
+        boolean result = userService.requestChangePasswordToken(1);
+
+        verify(notificationFeignClient).postNotification(notificationArgumentCaptor.capture());
+        verify(userRepository).update(userArgumentCaptor.capture());
+
+        Notification notification = notificationArgumentCaptor.getValue();
+        UserEntity savedEntity = userArgumentCaptor.getValue();
+
+        assertTrue(result);
+        assertNotNull(notification.getPayload().get("passwordChangeToken"));
+        assertNotNull(savedEntity.getLastSentPasswordChangeToken());
+        assertNotNull(savedEntity.getPasswordChangeToken());
     }
 }
