@@ -68,7 +68,7 @@ public class UserService {
         }
 
         if (user.getLastSentVerificationNotification() != null)
-            if (OffsetDateTime.now(ZoneOffset.UTC).isAfter(user.getLastSentVerificationNotification().plusDays(1)))
+            if (OffsetDateTime.now(ZoneOffset.UTC).isAfter(user.getLastSentVerificationNotification().plusMinutes(10)))
                 return false;
 
         user.setVerifiedAt(OffsetDateTime.now(ZoneOffset.UTC));
@@ -119,7 +119,7 @@ public class UserService {
         UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
 
         if (user.getLastSentPasswordChangeToken() != null)
-            if (OffsetDateTime.now(ZoneOffset.UTC).isAfter(user.getLastSentPasswordChangeToken().plusDays(1)))
+            if (OffsetDateTime.now(ZoneOffset.UTC).isAfter(user.getLastSentPasswordChangeToken().plusMinutes(1)))
                 return false;
 
         if (!Objects.equals(user.getPasswordChangeToken(), token)) return false;

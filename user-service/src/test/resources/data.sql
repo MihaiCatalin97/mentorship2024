@@ -7,6 +7,9 @@ INSERT INTO users VALUES (
                              'AA-BB-CC',
                              now(),
                              now(),
+                             now(),
+                             now(),
+                             now(),
                              now()
                          );
 INSERT INTO users VALUES (
@@ -16,6 +19,9 @@ INSERT INTO users VALUES (
                              'Last Name',
                              upper('8b1a9953c4611296a827abf8c47804d7'), -- Hello
                              'AA-BB-CC',
+                             now(),
+                             now(),
+                             now(),
                              now(),
                              now(),
                              now()

@@ -1,6 +1,7 @@
 package org.java.mentorship.user.controller;
 
 import org.java.mentorship.contracts.user.dto.User;
+import org.java.mentorship.contracts.user.dto.request.PasswordChangeRequest;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.service.UserService;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -118,4 +120,30 @@ class UserControllerTest {
         assertEquals(true, response.getBody());
     }
 
+    @Test
+    void requestChangePasswordShouldReturnFromService() {
+        when(userService.requestChangePasswordToken(anyInt()))
+                .thenReturn(true);
+
+        ResponseEntity<Boolean> response = userController.requestChangePassword(3);
+
+        assertEquals(200, response.getStatusCode().value());
+        assertNotNull(response.getBody());
+        assertEquals(true, response.getBody());
+    }
+
+    @Test
+    void changePasswordWithTokenShouldReturnFromService() {
+        when(userService.changePasswordWithToken(anyInt(), anyString(), anyString()))
+            .thenReturn(true);
+
+        ResponseEntity<Boolean> response = userController.changePasswordWithToken(1, PasswordChangeRequest.builder()
+                        .token("aaa")
+                        .password("abc")
+                .build());
+
+        assertEquals(200, response.getStatusCode().value());
+        assertNotNull(response.getBody());
+        assertEquals(true, response.getBody());
+    }
 }
