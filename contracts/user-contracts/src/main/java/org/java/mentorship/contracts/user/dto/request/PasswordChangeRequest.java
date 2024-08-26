@@ -19,7 +19,4 @@ public class PasswordChangeRequest {
             "a number and be at least 8 characters long.")
     private String password;
 
-    @NotBlank(message = "Verification token must not be empty")
-    private String token;
-
 }

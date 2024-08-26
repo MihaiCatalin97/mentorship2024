@@ -3,6 +3,8 @@ package org.java.mentorship.contracts.user.client;
 import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.contracts.user.dto.request.PasswordChangeRequest;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
+import org.java.mentorship.contracts.user.dto.request.SendPasswordChangeTokenRequest;
+import org.java.mentorship.contracts.user.dto.request.SendVerificationTokenRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,26 +35,26 @@ public interface UserFeignClient {
     User registerUser(@RequestBody RegistrationRequest registrationRequest);
 
     @RequestMapping(
-            method = RequestMethod.POST,
-            value = "/verify/{userId}/{token}"
+            method = RequestMethod.PUT,
+            value = "/verify/{token}"
     )
-    Boolean verifyUser(@PathVariable("userId") Integer userId, @PathVariable("token") String token);
+    Boolean verifyUser(@PathVariable("token") String token);
 
     @RequestMapping(
             method = RequestMethod.POST,
-            value = "/verify/{userId}"
+            value = "/verify"
     )
-    Boolean resendVerificationToken(@PathVariable("userId") Integer userId);
+    Boolean resendVerificationToken(@RequestBody SendVerificationTokenRequest sendVerificationTokenRequest);
 
     @RequestMapping(
             method = RequestMethod.POST,
-            value = "/changepassword/{userId}"
+            value = "/recovery"
     )
-    Boolean sendPasswordChangeRequest(@PathVariable("userId") Integer userId);
+    Boolean sendPasswordChangeRequest(@RequestBody SendPasswordChangeTokenRequest sendPasswordChangeTokenRequest);
 
     @RequestMapping(
             method = RequestMethod.PUT,
-            value = "/changepassword/{userId}"
+            value = "/recovery/{token}"
     )
-    Boolean changePasswordWithToken(@PathVariable("userId") Integer userId, @RequestBody PasswordChangeRequest passwordChangeRequest);
+    Boolean changePasswordWithToken(@PathVariable("token") String token, @RequestBody PasswordChangeRequest passwordChangeRequest);
 }

@@ -3,6 +3,8 @@ package org.java.mentorship.user.controller;
 import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.contracts.user.dto.request.PasswordChangeRequest;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
+import org.java.mentorship.contracts.user.dto.request.SendPasswordChangeTokenRequest;
+import org.java.mentorship.contracts.user.dto.request.SendVerificationTokenRequest;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +21,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -99,9 +100,9 @@ class UserControllerTest {
 
     @Test
     void verifyUserShouldCallAndReturnFromUserService() {
-        when(userService.verifyUserUsingToken(1, "1")).thenReturn(true);
+        when(userService.verifyUserUsingToken("1")).thenReturn(true);
 
-        ResponseEntity<Boolean> response = userController.verifyUser(1, "1");
+        ResponseEntity<Boolean> response = userController.verifyUser("1");
 
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());
@@ -113,7 +114,11 @@ class UserControllerTest {
         when(userService.resendVerificationToken(anyInt()))
                 .thenReturn(true);
 
-        ResponseEntity<Boolean> response = userController.resendVerificationToken(1);
+        ResponseEntity<Boolean> response = userController.sendVerificationToken(
+                SendVerificationTokenRequest.builder()
+                    .userId(1)
+                    .build()
+        );
 
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());
@@ -125,7 +130,11 @@ class UserControllerTest {
         when(userService.requestChangePasswordToken(anyInt()))
                 .thenReturn(true);
 
-        ResponseEntity<Boolean> response = userController.requestChangePassword(3);
+        ResponseEntity<Boolean> response = userController.requestChangePassword(
+            SendPasswordChangeTokenRequest.builder()
+                    .userId(1)
+                    .build()
+        );
 
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());
@@ -134,11 +143,10 @@ class UserControllerTest {
 
     @Test
     void changePasswordWithTokenShouldReturnFromService() {
-        when(userService.changePasswordWithToken(anyInt(), anyString(), anyString()))
+        when(userService.changePasswordWithToken(anyString(), any()))
             .thenReturn(true);
 
-        ResponseEntity<Boolean> response = userController.changePasswordWithToken(1, PasswordChangeRequest.builder()
-                        .token("aaa")
+        ResponseEntity<Boolean> response = userController.changePasswordWithToken("aaa", PasswordChangeRequest.builder()
                         .password("abc")
                 .build());
 

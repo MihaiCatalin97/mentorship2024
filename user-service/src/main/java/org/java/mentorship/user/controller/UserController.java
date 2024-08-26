@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.contracts.user.dto.request.PasswordChangeRequest;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
+import org.java.mentorship.contracts.user.dto.request.SendPasswordChangeTokenRequest;
+import org.java.mentorship.contracts.user.dto.request.SendVerificationTokenRequest;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.domain.mapper.UserContractMapper;
 import org.java.mentorship.user.service.UserService;
@@ -45,29 +47,27 @@ public class UserController {
                 .orElse(ResponseEntity.badRequest().build());
     }
 
-    @PostMapping("/verify/{id}/{token}")
-    public ResponseEntity<Boolean> verifyUser(@PathVariable(name = "id") Integer id,
-                                              @PathVariable(name = "token") String token) {
-        return ResponseEntity.ok(userService.verifyUserUsingToken(id, token));
+    @PutMapping("/verify/{token}")
+    public ResponseEntity<Boolean> verifyUser(@PathVariable(name = "token") String token) {
+        return ResponseEntity.ok(userService.verifyUserUsingToken(token));
     }
 
-    @PostMapping("/verify/{id}")
-    public ResponseEntity<Boolean> resendVerificationToken(@PathVariable(name = "id") Integer id) {
-        return ResponseEntity.ok(userService.resendVerificationToken(id));
+    @PostMapping("/verify")
+    public ResponseEntity<Boolean> sendVerificationToken(@RequestBody SendVerificationTokenRequest sendVerificationTokenRequest) {
+        return ResponseEntity.ok(userService.resendVerificationToken(sendVerificationTokenRequest.getUserId()));
     }
 
-    @PostMapping("/changepassword/{id}")
-    public ResponseEntity<Boolean> requestChangePassword(@PathVariable(name = "id") Integer id) {
-        return ResponseEntity.ok(userService.requestChangePasswordToken(id));
+    @PostMapping("/recovery")
+    public ResponseEntity<Boolean> requestChangePassword(@RequestBody SendPasswordChangeTokenRequest sendPasswordChangeTokenRequest) {
+        return ResponseEntity.ok(userService.requestChangePasswordToken(sendPasswordChangeTokenRequest.getUserId()));
     }
 
-    @PutMapping("/changepassword/{id}")
-    public ResponseEntity<Boolean> changePasswordWithToken(@PathVariable(name = "id") Integer id,
+    @PutMapping("/recovery/{token}")
+    public ResponseEntity<Boolean> changePasswordWithToken(@PathVariable(name = "token") String token,
                                                            @RequestBody @Valid PasswordChangeRequest passwordChangeRequest) {
         return ResponseEntity.ok(userService.changePasswordWithToken(
-                id,
                 passwordChangeRequest.getPassword(),
-                passwordChangeRequest.getToken())
+                token)
         );
     }
 

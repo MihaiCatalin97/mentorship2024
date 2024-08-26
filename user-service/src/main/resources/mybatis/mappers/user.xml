@@ -42,4 +42,14 @@
                          hashed_password = #{hashedPassword}
                      WHERE id = #{id}
     </update>
+
+    <select id="findByPasswordChangeToken">
+        SELECT * FROM users
+        WHERE password_change_token=${token}
+    </select>
+
+    <select id="findByVerificationToken">
+        SELECT * FROM users
+        WHERE verification_token=${token}
+    </select>
 </mapper>

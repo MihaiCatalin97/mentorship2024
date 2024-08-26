@@ -58,8 +58,8 @@ public class UserService {
                 .orElse(false);
     }
 
-    public boolean verifyUserUsingToken(Integer id, String token) {
-        UserEntity user = getUserById(id).orElseThrow(UserNotFoundException::new);
+    public boolean verifyUserUsingToken(String token) {
+        UserEntity user = mapper.findByVerificationToken(token).orElseThrow(UserNotFoundException::new);
 
         if (!tokenService.verifyVerificationToken(user, token)) return false;
 
@@ -87,12 +87,12 @@ public class UserService {
         return true;
     }
 
-    public Boolean changePasswordWithToken(Integer userId, String newPassword, String token) {
-        UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
+    public Boolean changePasswordWithToken(String newPassword, String token) {
+        UserEntity user = mapper.findByPasswordChangeToken(token).orElseThrow(UserNotFoundException::new);
 
         if (!tokenService.verifyPasswordChangeToken(user, token)) return false;
 
-        return changePassword(userId, newPassword);
+        return changePassword(user.getId(), newPassword);
     }
 
     public Boolean requestChangePasswordToken(Integer userId) {
