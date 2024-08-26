@@ -22,8 +22,8 @@ public class BudgetController {
     private final BudgetService budgetService;
 
     @GetMapping
-    public ResponseEntity<List<Budget>> getAllBudgets() {
-        List<Budget> budgets = budgetService.findAll().stream()
+    public ResponseEntity<List<Budget>> getAllBudgets(@RequestParam(required = false, name = "userId") Integer userId) {
+        List<Budget> budgets = budgetService.findAll(userId).stream()
                 .map(BudgetContractMapper::entityToContract)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(budgets);
@@ -62,11 +62,4 @@ public class BudgetController {
         return ResponseEntity.ok(budget);
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Budget>> getBudgetsByUserId(@PathVariable("userId") Integer userId) {
-        List<Budget> budgets = budgetService.findByUserId(userId).stream()
-                .map(BudgetContractMapper::entityToContract)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(budgets);
-    }
 }

@@ -36,14 +36,26 @@ class BudgetServiceTest {
     }
 
     @Test
-    void findAllShouldCallRepository() {
+    void findAllShouldCallRepositoryWithoutUserId() {
         List<BudgetEntity> budgets = Arrays.asList(new BudgetEntity(), new BudgetEntity());
         when(repository.findAll()).thenReturn(budgets);
 
-        List<BudgetEntity> result = budgetService.findAll();
+        List<BudgetEntity> result = budgetService.findAll(null);
 
         assertEquals(budgets, result);
         verify(repository).findAll();
+    }
+
+    @Test
+    void findAllShouldCallRepositoryWithUserId() {
+        Integer userId = 1;
+        List<BudgetEntity> budgets = Arrays.asList(new BudgetEntity(), new BudgetEntity());
+        when(repository.findByUserId(userId)).thenReturn(budgets);
+
+        List<BudgetEntity> result = budgetService.findAll(userId);
+
+        assertEquals(budgets, result);
+        verify(repository).findByUserId(userId);
     }
 
     @Test
@@ -110,28 +122,5 @@ class BudgetServiceTest {
         assertThrows(NoEntityFoundException.class, () -> budgetService.delete(1));
         verify(repository).findById(1);
         verify(repository, never()).delete(1);
-    }
-
-    @Test
-    void findByUserIdShouldReturnBudgetsWhenBudgetsExist() {
-        Integer userId = 1;
-        BudgetEntity budget1 = new BudgetEntity();
-        BudgetEntity budget2 = new BudgetEntity();
-        List<BudgetEntity> budgets = Arrays.asList(budget1, budget2);
-        when(repository.findByUserId(userId)).thenReturn(budgets);
-
-        List<BudgetEntity> result = budgetService.findByUserId(userId);
-
-        assertEquals(budgets, result);
-        verify(repository).findByUserId(userId);
-    }
-
-    @Test
-    void findByUserIdShouldThrowExceptionWhenNoBudgetsExist() {
-        Integer userId = 1;
-        when(repository.findByUserId(userId)).thenReturn(Arrays.asList());
-
-        assertThrows(NoEntityFoundException.class, () -> budgetService.findByUserId(userId));
-        verify(repository).findByUserId(userId);
     }
 }

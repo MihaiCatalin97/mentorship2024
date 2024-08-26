@@ -20,7 +20,10 @@ public class BudgetService {
         return repository.save(budgetEntity);
     }
 
-    public List<BudgetEntity> findAll() {
+    public List<BudgetEntity> findAll(Integer userId) {
+        if (userId != null) {
+            return repository.findByUserId(userId);
+        }
         return repository.findAll();
     }
 
@@ -49,15 +52,6 @@ public class BudgetService {
         }
         repository.delete(id);
         return budgetEntity;
-    }
-
-    @Transactional
-    public List<BudgetEntity> findByUserId(final Integer userId) {
-        List<BudgetEntity> budgets = repository.findByUserId(userId);
-        if (budgets.isEmpty()) {
-            throw new NoEntityFoundException("No budgets found for user with id " + userId);
-        }
-        return budgets;
     }
 
 }

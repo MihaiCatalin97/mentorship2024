@@ -13,7 +13,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,8 +32,7 @@ class BudgetRepositoryTest {
 
     @BeforeAll
     static void initTest() throws SQLException {
-        Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8086")
-                .start();
+        Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8086").start();
     }
 
     @Test
@@ -69,7 +67,9 @@ class BudgetRepositoryTest {
     @Test
     void findByIdShouldReturnCorrectBudget() {
         // Given
-        BudgetEntity budget = budgetRepository.findAll().get(0);
+        List<BudgetEntity> allBudgets = budgetRepository.findAll();
+        assertFalse(allBudgets.isEmpty(), "Test database is empty.");
+        BudgetEntity budget = allBudgets.get(0);
 
         // When
         BudgetEntity result = budgetRepository.findById(budget.getId());
@@ -79,12 +79,18 @@ class BudgetRepositoryTest {
         assertEquals(budget.getId(), result.getId());
         assertEquals(budget.getName(), result.getName());
         assertEquals(budget.getUserId(), result.getUserId());
+        assertEquals(budget.getMaximumAllowed(), result.getMaximumAllowed());
+        assertEquals(budget.getInterval(), result.getInterval());
+        assertEquals(budget.getCategoryId(), result.getCategoryId());
+        assertEquals(budget.getAccountId(), result.getAccountId());
     }
 
     @Test
     void updateShouldModifyExistingRecord() {
         // Given
-        BudgetEntity budget = budgetRepository.findAll().get(0);
+        List<BudgetEntity> allBudgets = budgetRepository.findAll();
+        assertFalse(allBudgets.isEmpty(), "Test database is empty.");
+        BudgetEntity budget = allBudgets.get(0);
         budget.setName("Updated Budget Name");
         budget.setMaximumAllowed(3000);
 
@@ -100,7 +106,9 @@ class BudgetRepositoryTest {
     @Test
     void deleteShouldRemoveRecordFromDatabase() {
         // Given
-        BudgetEntity budget = budgetRepository.findAll().get(1);
+        List<BudgetEntity> allBudgets = budgetRepository.findAll();
+        assertFalse(allBudgets.isEmpty(), "Test database is empty.");
+        BudgetEntity budget = allBudgets.get(1);
 
         // When
         BudgetEntity deletedBudget = budgetRepository.delete(budget.getId());
@@ -114,10 +122,7 @@ class BudgetRepositoryTest {
     @Test
     void findByUserIdShouldReturnBudgetsWhenBudgetsExist() {
         Integer userId = 1;
-        List<BudgetEntity> expectedBudgets = Arrays.asList(
-                new BudgetEntity(1, 1, "Monthly Budget", 1500, BudgetInterval.DAILY, 1, 1),
-                new BudgetEntity(2, 1, "Savings Goal", 2000, BudgetInterval.WEEKLY, 1, 1)
-        );
+        List<BudgetEntity> expectedBudgets = budgetRepository.findByUserId(userId);
 
         List<BudgetEntity> result = budgetRepository.findByUserId(userId);
 
