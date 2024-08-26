@@ -3,6 +3,7 @@ package org.java.mentorship.budget.domain.mapper;
 import org.java.mentorship.budget.domain.BankAccountEntity;
 import org.java.mentorship.contracts.budget.dto.Account;
 import org.java.mentorship.contracts.budget.dto.AccountType;
+import org.java.mentorship.contracts.budget.dto.CurrencyType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,7 +24,7 @@ class AccountContractMapperTest {
         bankAccountEntity.setName("Savings Account");
         bankAccountEntity.setType(AccountType.SAVINGS);
         bankAccountEntity.setBalance(1000);
-        bankAccountEntity.setCurrency("USD");
+        bankAccountEntity.setCurrency(CurrencyType.USD);
 
         // When
         Account accountContract = AccountContractMapper.entityToContract(bankAccountEntity);
@@ -35,7 +36,7 @@ class AccountContractMapperTest {
         assertEquals("Savings Account", accountContract.getName());
         assertEquals(AccountType.SAVINGS, accountContract.getType());
         assertEquals(1000, accountContract.getBalance());
-        assertEquals("USD", accountContract.getCurrency());
+        assertEquals(CurrencyType.USD, accountContract.getCurrency());
     }
 
     @Test
@@ -47,7 +48,7 @@ class AccountContractMapperTest {
         accountContract.setName("Savings Account");
         accountContract.setType(AccountType.SAVINGS);
         accountContract.setBalance(1000);
-        accountContract.setCurrency("USD");
+        accountContract.setCurrency(CurrencyType.USD);
 
         // When
         BankAccountEntity bankAccountEntity = AccountContractMapper.contractToEntity(accountContract);
@@ -59,6 +60,6 @@ class AccountContractMapperTest {
         assertEquals("Savings Account", bankAccountEntity.getName());
         assertEquals(AccountType.SAVINGS, bankAccountEntity.getType());
         assertEquals(1000, bankAccountEntity.getBalance());
-        assertEquals("USD", bankAccountEntity.getCurrency());
+        assertEquals(CurrencyType.USD, bankAccountEntity.getCurrency());
     }
 }

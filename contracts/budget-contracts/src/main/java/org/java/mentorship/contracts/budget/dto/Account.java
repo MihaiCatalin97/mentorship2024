@@ -34,6 +34,6 @@ public class Account {
     @Min(value = 0, message = "Field 'balance' must be at least 0")
     private Integer balance;
 
-    @NotEmpty(message = "Field 'currency' must not be null or empty")
-    private String currency;
+    @NotNull(message = "Field 'currency' must not be null")
+    private CurrencyType currency;
 }

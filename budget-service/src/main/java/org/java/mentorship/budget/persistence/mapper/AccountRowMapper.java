@@ -2,6 +2,7 @@ package org.java.mentorship.budget.persistence.mapper;
 
 import org.java.mentorship.budget.domain.BankAccountEntity;
 import org.java.mentorship.contracts.budget.dto.AccountType;
+import org.java.mentorship.contracts.budget.dto.CurrencyType;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ public class AccountRowMapper implements RowMapper<BankAccountEntity> {
         bankAccountEntity.setName(rs.getString("name"));
         bankAccountEntity.setType(AccountType.valueOf(rs.getString("type")));
         bankAccountEntity.setBalance(rs.getInt("balance"));
-        bankAccountEntity.setCurrency(rs.getString("currency"));
+        bankAccountEntity.setCurrency(CurrencyType.valueOf(rs.getString("currency")));
 
         return bankAccountEntity;
     }

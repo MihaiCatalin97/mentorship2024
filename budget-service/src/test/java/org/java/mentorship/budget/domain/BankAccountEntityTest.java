@@ -5,6 +5,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.java.mentorship.contracts.budget.dto.AccountType;
+import org.java.mentorship.contracts.budget.dto.CurrencyType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +31,7 @@ class BankAccountEntityTest {
                 .name("Test Account")
                 .type(AccountType.CHECKING)
                 .balance(100)
-                .currency("USD")
+                .currency(CurrencyType.USD)
                 .build();
 
         Set<ConstraintViolation<BankAccountEntity>> violations = validator.validate(account);
@@ -48,7 +49,7 @@ class BankAccountEntityTest {
                 .name("Test Account")
                 .type(AccountType.CHECKING)
                 .balance(100)
-                .currency("USD")
+                .currency(CurrencyType.USD)
                 .build();
 
         Set<ConstraintViolation<BankAccountEntity>> violations = validator.validate(account);
@@ -66,7 +67,7 @@ class BankAccountEntityTest {
                 .name("")
                 .type(AccountType.CHECKING)
                 .balance(100)
-                .currency("USD")
+                .currency(CurrencyType.USD)
                 .build();
 
         Set<ConstraintViolation<BankAccountEntity>> violations = validator.validate(account);
@@ -84,7 +85,7 @@ class BankAccountEntityTest {
                 .name("Test Account")
                 .type(AccountType.CHECKING)
                 .balance(-1)
-                .currency("USD")
+                .currency(CurrencyType.USD)
                 .build();
 
         Set<ConstraintViolation<BankAccountEntity>> violations = validator.validate(account);
@@ -102,7 +103,7 @@ class BankAccountEntityTest {
                 .name("Test Account")
                 .type(AccountType.CHECKING)
                 .balance(100)
-                .currency("USD")
+                .currency(CurrencyType.USD)
                 .build();
 
         Set<ConstraintViolation<BankAccountEntity>> violations = validator.validate(account);
