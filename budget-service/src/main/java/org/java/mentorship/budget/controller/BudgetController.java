@@ -61,4 +61,12 @@ public class BudgetController {
         Budget budget = BudgetContractMapper.entityToContract(deletedBudget);
         return ResponseEntity.ok(budget);
     }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Budget>> getBudgetsByUserId(@PathVariable("userId") Integer userId) {
+        List<Budget> budgets = budgetService.findByUserId(userId).stream()
+                .map(BudgetContractMapper::entityToContract)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(budgets);
+    }
 }

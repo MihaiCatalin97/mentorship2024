@@ -58,4 +58,13 @@ public class BudgetRepository {
         jdbcTemplate.update("DELETE FROM budgets WHERE id = ?", id);
         return budgetEntity;
     }
+
+    public List<BudgetEntity> findByUserId(final Integer userId) {
+        return jdbcTemplate.query(
+                "SELECT * FROM budgets WHERE user_id = ?",
+                new Object[]{userId},
+                rowMapper
+        );
+    }
+
 }

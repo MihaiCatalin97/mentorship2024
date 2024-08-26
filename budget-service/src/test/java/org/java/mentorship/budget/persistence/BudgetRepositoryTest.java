@@ -13,6 +13,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -108,5 +109,38 @@ class BudgetRepositoryTest {
         List<BudgetEntity> results = budgetRepository.findAll();
         assertEquals(1, results.size());
         assertFalse(results.stream().anyMatch(b -> b.getId().equals(deletedBudget.getId())));
+    }
+
+    @Test
+    void findByUserIdShouldReturnBudgetsWhenBudgetsExist() {
+        Integer userId = 1;
+        List<BudgetEntity> expectedBudgets = Arrays.asList(
+                new BudgetEntity(1, 1, "Monthly Budget", 1500, BudgetInterval.DAILY, 1, 1),
+                new BudgetEntity(2, 1, "Savings Goal", 2000, BudgetInterval.WEEKLY, 1, 1)
+        );
+
+        List<BudgetEntity> result = budgetRepository.findByUserId(userId);
+
+        assertEquals(expectedBudgets.size(), result.size());
+        for (BudgetEntity expected : expectedBudgets) {
+            assertTrue(result.stream().anyMatch(b ->
+                    b.getId().equals(expected.getId()) &&
+                            b.getUserId().equals(expected.getUserId()) &&
+                            b.getName().equals(expected.getName()) &&
+                            b.getMaximumAllowed().equals(expected.getMaximumAllowed()) &&
+                            b.getInterval().equals(expected.getInterval()) &&
+                            b.getCategoryId().equals(expected.getCategoryId()) &&
+                            b.getAccountId().equals(expected.getAccountId())
+            ));
+        }
+    }
+
+    @Test
+    void findByUserIdShouldReturnEmptyListWhenNoBudgetsExist() {
+        Integer userId = 999;
+
+        List<BudgetEntity> result = budgetRepository.findByUserId(userId);
+
+        assertTrue(result.isEmpty());
     }
 }

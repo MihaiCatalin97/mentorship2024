@@ -50,4 +50,14 @@ public class BudgetService {
         repository.delete(id);
         return budgetEntity;
     }
+
+    @Transactional
+    public List<BudgetEntity> findByUserId(final Integer userId) {
+        List<BudgetEntity> budgets = repository.findByUserId(userId);
+        if (budgets.isEmpty()) {
+            throw new NoEntityFoundException("No budgets found for user with id " + userId);
+        }
+        return budgets;
+    }
+
 }

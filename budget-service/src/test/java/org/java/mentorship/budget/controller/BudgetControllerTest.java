@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -125,5 +126,43 @@ class BudgetControllerTest {
         when(budgetService.delete(anyInt())).thenThrow(new IllegalArgumentException("Budget not found"));
 
         assertThrows(IllegalArgumentException.class, () -> budgetController.deleteBudget(999));
+    }
+
+    @Test
+    void getBudgetsByUserIdShouldReturnBudgetsWhenBudgetsExist() {
+        Integer userId = 1;
+        List<BudgetEntity> budgetEntities = Arrays.asList(
+                BudgetEntity.builder().id(1).name("Monthly Budget").build(),
+                BudgetEntity.builder().id(2).name("Savings Goal").build()
+        );
+
+        List<Budget> expectedBudgets = budgetEntities.stream()
+                .map(BudgetContractMapper::entityToContract)
+                .collect(Collectors.toList());
+
+        when(budgetService.findByUserId(userId)).thenReturn(budgetEntities);
+
+        ResponseEntity<List<Budget>> response = budgetController.getBudgetsByUserId(userId);
+
+        assertEquals(200, response.getStatusCode().value());
+        assertNotNull(response.getBody());
+        assertEquals(expectedBudgets.size(), response.getBody().size());
+        for (int i = 0; i < expectedBudgets.size(); i++) {
+            assertEquals(expectedBudgets.get(i).getId(), response.getBody().get(i).getId());
+            assertEquals(expectedBudgets.get(i).getName(), response.getBody().get(i).getName());
+        }
+    }
+
+    @Test
+    void getBudgetsByUserIdShouldReturnEmptyListWhenNoBudgetsExist() {
+        Integer userId = 999;
+
+        when(budgetService.findByUserId(userId)).thenReturn(Arrays.asList());
+
+        ResponseEntity<List<Budget>> response = budgetController.getBudgetsByUserId(userId);
+
+        assertEquals(200, response.getStatusCode().value());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().isEmpty());
     }
 }

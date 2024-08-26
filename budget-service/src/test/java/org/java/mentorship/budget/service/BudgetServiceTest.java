@@ -111,4 +111,27 @@ class BudgetServiceTest {
         verify(repository).findById(1);
         verify(repository, never()).delete(1);
     }
+
+    @Test
+    void findByUserIdShouldReturnBudgetsWhenBudgetsExist() {
+        Integer userId = 1;
+        BudgetEntity budget1 = new BudgetEntity();
+        BudgetEntity budget2 = new BudgetEntity();
+        List<BudgetEntity> budgets = Arrays.asList(budget1, budget2);
+        when(repository.findByUserId(userId)).thenReturn(budgets);
+
+        List<BudgetEntity> result = budgetService.findByUserId(userId);
+
+        assertEquals(budgets, result);
+        verify(repository).findByUserId(userId);
+    }
+
+    @Test
+    void findByUserIdShouldThrowExceptionWhenNoBudgetsExist() {
+        Integer userId = 1;
+        when(repository.findByUserId(userId)).thenReturn(Arrays.asList());
+
+        assertThrows(NoEntityFoundException.class, () -> budgetService.findByUserId(userId));
+        verify(repository).findByUserId(userId);
+    }
 }
