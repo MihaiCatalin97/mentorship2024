@@ -41,17 +41,18 @@ public class UserController {
     }
 
     @PostMapping("/verify/{id}")
-    ResponseEntity<Boolean> resendNotificationToken(@PathVariable(name = "id") Integer id) {
+    ResponseEntity<Boolean> changePasswordWithToken(@PathVariable(name = "id") Integer id) {
         return ResponseEntity.ok(userFeignClient.resendVerificationToken(id));
     }
 
     @PostMapping("/changepassword/{id}")
     ResponseEntity<Boolean> sendPasswordChangeRequest(@PathVariable(name = "id") Integer id) {
+        UserIdAuthorization.loggedInAsUser(id);
         return ResponseEntity.ok(userFeignClient.sendPasswordChangeRequest(id));
     }
 
     @PutMapping("/changepassword/{id}")
-    ResponseEntity<Boolean> resendNotificationToken(@PathVariable(name = "id") Integer id, @RequestBody PasswordChangeRequest passwordChangeRequest) {
+    ResponseEntity<Boolean> changePasswordWithToken(@PathVariable(name = "id") Integer id, @RequestBody PasswordChangeRequest passwordChangeRequest) {
         return ResponseEntity.ok(userFeignClient.changePasswordWithToken(id, passwordChangeRequest));
     }
 }

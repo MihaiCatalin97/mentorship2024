@@ -15,7 +15,7 @@ public class AppAuthentication implements Authentication {
     private final Object credentials;
     private final Object principal;
     private final User details;
-    private final Collection<? extends GrantedAuthority> authorities;
+    private final Collection<AppGrantedAuthority> authorities;
     private boolean authenticated;
 
     public AppAuthentication(User user) {
@@ -25,6 +25,8 @@ public class AppAuthentication implements Authentication {
         this.details = user;
         this.authorities = new ArrayList<>();
         this.authenticated = true;
+        if (user.getIsAdmin())
+            this.authorities.add(new AppGrantedAuthority("ADMIN"));
     }
 
     @Override

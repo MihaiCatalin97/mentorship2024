@@ -47,8 +47,6 @@
             <artifactId>calculation-service</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-
         <dependency>
             <groupId>org.java.mentorship</groupId>
             <artifactId>user-contracts</artifactId>
