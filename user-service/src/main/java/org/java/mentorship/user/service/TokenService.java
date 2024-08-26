@@ -54,11 +54,8 @@ public class TokenService {
 
     public OffsetDateTime getLastSentPasswordChangeTokenDate(UserEntity user) {
         List<Notification> notifications = notificationFeignClient.getNotifications(
-                user.getId(),
-                user.getEmail(),
-                null,
-                NotificationType.PASSWORD_CHANGE,
-                null
+                user.getId(), user.getEmail(), null,
+                NotificationType.PASSWORD_CHANGE, null
         );
 
         if (!notifications.isEmpty()) {
@@ -70,11 +67,8 @@ public class TokenService {
 
     public OffsetDateTime getLastSentVerificationNotificationDate(UserEntity user) {
         List<Notification> notifications = notificationFeignClient.getNotifications(
-                user.getId(),
-                user.getEmail(),
-                null,
-                NotificationType.PASSWORD_CHANGE,
-                null
+                user.getId(), user.getEmail(), null,
+                NotificationType.PASSWORD_CHANGE, null
         );
 
         if (!notifications.isEmpty()) {
@@ -95,24 +89,9 @@ public class TokenService {
     }
 
     public boolean generateVerificationToken(UserEntity user) {
-        OffsetDateTime lastSentVerificationNotification = null;
-
-        List<Notification> notifications = notificationFeignClient.getNotifications(
-                user.getId(),
-                user.getEmail(),
-                null,
-                NotificationType.VERIFICATION,
-                null
-        );
-
-        if (!notifications.isEmpty()) {
-            lastSentVerificationNotification = notifications.getLast().getCreatedAt();
-        }
-
-        if (inTimeout(lastSentVerificationNotification, Duration.ofMinutes(VERIFICATION_TOKEN_TIMEOUT))) return false;
+        if (inTimeout(getLastSentVerificationNotificationDate(user), Duration.ofMinutes(VERIFICATION_TOKEN_TIMEOUT))) return false;
 
         user.setVerificationToken(this.generateToken());
-
         userRepository.update(user);
 
         notificationFeignClient.postNotification(new Notification(
@@ -130,12 +109,9 @@ public class TokenService {
     }
 
     public boolean generatePasswordChangeToken(UserEntity user) {
-
-
         if (inTimeout(getLastSentPasswordChangeTokenDate(user), Duration.ofMinutes(PASSWORD_CHANGE_TOKEN_TIMEOUT))) return false;
 
         user.setPasswordChangeToken(this.generateToken());
-
         userRepository.update(user);
 
         notificationFeignClient.postNotification(new Notification(
