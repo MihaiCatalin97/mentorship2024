@@ -11,9 +11,6 @@ ALTER TABLE users
     ADD COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
 ALTER TABLE users
-    ADD COLUMN last_sent_verification_notification TIMESTAMP;
-
-ALTER TABLE users
     ADD COLUMN verified_at TIMESTAMP;
 
 ALTER TABLE users
@@ -21,9 +18,6 @@ ALTER TABLE users
 
 ALTER TABLE users
     ADD COLUMN password_change_token VARCHAR(128);
-
-ALTER TABLE users
-    ADD COLUMN last_sent_password_change_token TIMESTAMP;
 
 -- Step 4: Update existing records
 -- If needed, update 'created_at' with a value that makes sense (like now or based on existing data)

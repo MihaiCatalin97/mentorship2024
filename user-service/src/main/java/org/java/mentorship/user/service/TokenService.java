@@ -14,6 +14,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -51,21 +52,66 @@ public class TokenService {
         return OffsetDateTime.now().isBefore(creationDate.plus(duration));
     }
 
+    public OffsetDateTime getLastSentPasswordChangeTokenDate(UserEntity user) {
+        List<Notification> notifications = notificationFeignClient.getNotifications(
+                user.getId(),
+                user.getEmail(),
+                null,
+                NotificationType.PASSWORD_CHANGE,
+                null
+        );
+
+        if (!notifications.isEmpty()) {
+            return notifications.getLast().getCreatedAt();
+        }
+
+        return null;
+    }
+
+    public OffsetDateTime getLastSentVerificationNotificationDate(UserEntity user) {
+        List<Notification> notifications = notificationFeignClient.getNotifications(
+                user.getId(),
+                user.getEmail(),
+                null,
+                NotificationType.PASSWORD_CHANGE,
+                null
+        );
+
+        if (!notifications.isEmpty()) {
+            return notifications.getLast().getCreatedAt();
+        }
+
+        return null;
+    }
+
     public boolean verifyPasswordChangeToken(UserEntity user, String token) {
         if (!Objects.equals(user.getPasswordChangeToken(), token)) return false;
-        return isNotExpired(user.getLastSentPasswordChangeToken(), Duration.ofMinutes(PASSWORD_CHANGE_TOKEN_EXPIRATION));
+        return isNotExpired(getLastSentPasswordChangeTokenDate(user), Duration.ofMinutes(PASSWORD_CHANGE_TOKEN_EXPIRATION));
     }
 
     public boolean verifyVerificationToken(UserEntity user, String token) {
         if (!Objects.equals(user.getVerificationToken(), token)) return false;
-        return isNotExpired(user.getLastSentVerificationNotification(), Duration.ofMinutes(VERIFICATION_TOKEN_EXPIRATION));
+        return isNotExpired(getLastSentVerificationNotificationDate(user), Duration.ofMinutes(VERIFICATION_TOKEN_EXPIRATION));
     }
 
     public boolean generateVerificationToken(UserEntity user) {
-        if (inTimeout(user.getLastSentVerificationNotification(), Duration.ofMinutes(VERIFICATION_TOKEN_TIMEOUT))) return false;
+        OffsetDateTime lastSentVerificationNotification = null;
+
+        List<Notification> notifications = notificationFeignClient.getNotifications(
+                user.getId(),
+                user.getEmail(),
+                null,
+                NotificationType.VERIFICATION,
+                null
+        );
+
+        if (!notifications.isEmpty()) {
+            lastSentVerificationNotification = notifications.getLast().getCreatedAt();
+        }
+
+        if (inTimeout(lastSentVerificationNotification, Duration.ofMinutes(VERIFICATION_TOKEN_TIMEOUT))) return false;
 
         user.setVerificationToken(this.generateToken());
-        user.setLastSentVerificationNotification(OffsetDateTime.now());
 
         userRepository.update(user);
 
@@ -84,10 +130,11 @@ public class TokenService {
     }
 
     public boolean generatePasswordChangeToken(UserEntity user) {
-        if (inTimeout(user.getLastSentPasswordChangeToken(), Duration.ofMinutes(PASSWORD_CHANGE_TOKEN_TIMEOUT))) return false;
+
+
+        if (inTimeout(getLastSentPasswordChangeTokenDate(user), Duration.ofMinutes(PASSWORD_CHANGE_TOKEN_TIMEOUT))) return false;
 
         user.setPasswordChangeToken(this.generateToken());
-        user.setLastSentPasswordChangeToken(OffsetDateTime.now());
 
         userRepository.update(user);
 

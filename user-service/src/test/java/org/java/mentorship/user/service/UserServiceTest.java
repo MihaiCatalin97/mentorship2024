@@ -17,6 +17,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -145,7 +146,6 @@ class UserServiceTest {
 
         when(userRepository.findById(1)).thenReturn(Optional.ofNullable(
                 UserEntity.builder()
-                        .lastSentVerificationNotification(OffsetDateTime.now(ZoneOffset.UTC))
                         .verificationToken(verificationToken).build()
         ));
 
@@ -184,10 +184,15 @@ class UserServiceTest {
     void verifyUserUsingTokenShouldThrowWhenTokenExpired() {
         String verificationToken = UUID.randomUUID().toString();
 
+        Notification notification = new Notification();
+        notification.setCreatedAt(OffsetDateTime.now().minusDays(10));
+
+        when(notificationFeignClient.getNotifications(any(),any(),any(),any(),any())).thenReturn(
+                Collections.singletonList(notification)
+        );
         when(userRepository.findById(1)).thenReturn(
                 Optional.of(UserEntity.builder()
                                 .verificationToken(verificationToken)
-                                .lastSentVerificationNotification(OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(11))
                         .build())
         );
 
@@ -217,20 +222,25 @@ class UserServiceTest {
         assertTrue(result);
         assertEquals(1, notification.getUserId());
         assertNotNull(user.getVerificationToken());
-        assertNotNull(user.getLastSentVerificationNotification());
     }
 
     @Test
     void resendVerificationTokenShouldReturnFalseWhenUserAlreadyRequestedAToken() {
+        Notification notification = new Notification();
+        notification.setCreatedAt(OffsetDateTime.now());
+
         when(userRepository.findById(1)).thenReturn(Optional.of(
                 UserEntity.builder()
                         .firstName("first")
                         .lastName("last")
                         .email("email@email.com")
-                        .lastSentVerificationNotification(OffsetDateTime.now(ZoneOffset.UTC))
                         .id(1)
                         .build()
         ));
+
+        when(notificationFeignClient.getNotifications(any(), any(), any(), any(), any())).thenReturn(
+                Collections.singletonList(notification)
+        );
 
         Boolean result = userService.resendVerificationToken(1);
 
@@ -257,10 +267,15 @@ class UserServiceTest {
 
     @Test
     void changePasswordWithTokenShouldNotChangeWhenTokenInvalid() {
+        Notification notification = new Notification();
+        notification.setCreatedAt(OffsetDateTime.now().minusDays(10));
+
+        when(notificationFeignClient.getNotifications(any(),any(),any(),any(),any())).thenReturn(
+                Collections.singletonList(notification)
+        );
         when(userRepository.findById(1)).thenReturn(Optional.of(
                 UserEntity.builder()
                         .passwordChangeToken("aaa-bbb")
-                        .lastSentPasswordChangeToken(OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(11))
                         .build()
         ));
 
@@ -290,7 +305,6 @@ class UserServiceTest {
 
         assertTrue(result);
         assertNotNull(notification.getPayload().get("passwordChangeToken"));
-        assertNotNull(savedEntity.getLastSentPasswordChangeToken());
         assertNotNull(savedEntity.getPasswordChangeToken());
     }
 }

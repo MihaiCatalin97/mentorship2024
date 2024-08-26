@@ -16,10 +16,8 @@ public class UserContractMapper {
         userContract.setEmail(userEntity.getEmail());
 
         userContract.setCreatedAt(userEntity.getCreatedAt());
-        userContract.setLastSentVerificationNotification(userEntity.getLastSentVerificationNotification());
         userContract.setVerifiedAt(userEntity.getVerifiedAt());
         userContract.setLastChangedPassword(userEntity.getLastChangedPassword());
-        userContract.setLastSentPasswordChangeToken(userEntity.getLastSentPasswordChangeToken());
 
         return userContract;
     }

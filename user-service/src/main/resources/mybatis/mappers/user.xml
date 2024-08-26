@@ -19,33 +19,27 @@
                           last_name,
                           hashed_password,
                           verification_token,
-                          last_sent_verification_notification,
                           created_at,
                           verified_at,
                           password_change_token,
-                          last_changed_password,
-                          last_sent_password_change_token)
+                          last_changed_password)
         VALUES (#{email},
                 #{firstName},
                 #{lastName},
                 #{hashedPassword},
                 #{verificationToken},
-                #{lastSentVerificationNotification},
                 #{createdAt},
                 #{verifiedAt},
                 #{passwordChangeToken},
-                #{lastChangedPassword},
-                #{lastSentPasswordChangeToken})
+                #{lastChangedPassword})
     </insert>
 
     <update id="update">
         UPDATE users SET verification_token = #{verificationToken},
-                         last_sent_verification_notification = #{lastSentVerificationNotification},
                          verified_at = #{verifiedAt},
                          password_change_token = #{passwordChangeToken},
                          last_changed_password = #{lastChangedPassword},
-                         hashed_password = #{hashedPassword},
-                         last_sent_password_change_token = #{lastSentPasswordChangeToken}
+                         hashed_password = #{hashedPassword}
                      WHERE id = #{id}
     </update>
 </mapper>
