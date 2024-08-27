@@ -36,7 +36,6 @@ public class AccountController {
 
     @PutMapping("/{id}")
     ResponseEntity<Account> updateAccount(@PathVariable(name = "id") Integer id, @RequestBody Account account) {
-        // TODO: !!!! Unauthorized users could still modify other fields !!!!
         UserIdAuthorization.loggedInAsUser(account.getUserId());
         return ResponseEntity.ok(accountFeignClient.updateAccount(id, account));
     }

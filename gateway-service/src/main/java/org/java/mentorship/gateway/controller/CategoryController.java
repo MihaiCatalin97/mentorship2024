@@ -36,7 +36,6 @@ public class CategoryController {
 
     @PutMapping("/{id}")
     ResponseEntity<Category> updateCategory(@PathVariable(name = "id") Integer id, @RequestBody Category category) {
-        // TODO: !!!! Unauthorized users could still modify other fields !!!!
         UserIdAuthorization.loggedInAsUser(category.getUserId());
         return ResponseEntity.ok(categoryFeignClient.updateCategory(id, category));
     }

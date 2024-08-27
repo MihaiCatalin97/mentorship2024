@@ -1,14 +1,9 @@
 package org.java.mentorship.gateway.security.authorization;
 
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
-import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.gateway.exception.domain.UnauthorizedException;
 import org.java.mentorship.gateway.security.authentication.AppAuthentication;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
@@ -23,7 +18,7 @@ public class UserIdAuthorization {
             throw new UnauthorizedException("Unauthorized");
         if (userId == null && authentication.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals("ADMIN")))
             throw new UnauthorizedException("You are not authorized to access this resource");
-        if (!Objects.equals(userId, ((User) authentication.getDetails()).getId()))
+        if (!Objects.equals(userId, authentication.getDetails().getId()))
             throw new UnauthorizedException("You are not authorized to access this resource");
     }
 

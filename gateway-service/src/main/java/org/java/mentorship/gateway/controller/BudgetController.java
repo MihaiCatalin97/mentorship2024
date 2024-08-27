@@ -36,7 +36,6 @@ public class BudgetController {
 
     @PutMapping("/{id}")
     ResponseEntity<Budget> updateBudget(@PathVariable(name = "id") Integer id, @RequestBody Budget budget) {
-        // TODO: !!!! Unauthorized users could still modify other fields !!!!
         UserIdAuthorization.loggedInAsUser(budget.getUserId());
         return ResponseEntity.ok(budgetFeignClient.updateBudget(id, budget));
     }

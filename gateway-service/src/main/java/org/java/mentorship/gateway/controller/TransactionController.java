@@ -36,7 +36,6 @@ public class TransactionController {
 
     @PutMapping("/{id}")
     ResponseEntity<Transaction> updateTransaction(@PathVariable(name = "id") Integer id, @RequestBody Transaction transaction) {
-        // TODO: !!!! Unauthorized users could still modify other fields !!!!
         UserIdAuthorization.loggedInAsUser(transaction.getUserId());
         return ResponseEntity.ok(transactionFeignClient.updateTransaction(id, transaction));
     }

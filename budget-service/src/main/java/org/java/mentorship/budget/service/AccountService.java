@@ -2,11 +2,13 @@ package org.java.mentorship.budget.service;
 
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.budget.domain.BankAccountEntity;
+import org.java.mentorship.budget.exception.UnauthorizedException;
 import org.java.mentorship.budget.persistence.AccountRepository;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +34,9 @@ public class AccountService {
 
     public BankAccountEntity update(final BankAccountEntity bankAccountEntity) {
         BankAccountEntity existingAccount = repository.findById(bankAccountEntity.getId());
+        if (!Objects.equals(bankAccountEntity.getUserId(), existingAccount.getUserId())) {
+            throw new UnauthorizedException("You can't edit the user id field of this entity");
+        }
         if (existingAccount == null) {
             throw new NoEntityFoundException("Account with id " + bankAccountEntity.getId() + " not found");
         }
