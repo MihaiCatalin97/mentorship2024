@@ -34,11 +34,11 @@ public class CategoryService {
 
     public CategoryEntity update(final CategoryEntity categoryEntity) {
         CategoryEntity existingCategory = repository.findById(categoryEntity.getId());
-        if (!Objects.equals(categoryEntity.getUserId(), existingCategory.getUserId())) {
-            throw new UnauthorizedException("You can't edit the user id field of this entity");
-        }
         if (existingCategory == null) {
             throw new NoEntityFoundException("Category with id " + categoryEntity.getId() + " not found");
+        }
+        if (!Objects.equals(categoryEntity.getUserId(), existingCategory.getUserId())) {
+            throw new UnauthorizedException("You can't edit the user id field of this entity");
         }
         return repository.update(categoryEntity);
     }

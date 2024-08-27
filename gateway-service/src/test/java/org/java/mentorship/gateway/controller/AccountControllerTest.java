@@ -99,7 +99,7 @@ class AccountControllerTest extends AbstractControllerTest {
     @ParameterizedTest
     @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})
     void testDeleteAccount(final String sessionHeader) throws Exception {
-        Account account = Account.builder().id(1).userId(123).name("Account 1").type(AccountType.CHECKING).balance(100).currency("USD").build();
+        Account account = Account.builder().id(1).userId(123).name("Account 1").type(AccountType.CHECKING).balance(100).currency(CurrencyType.USD).build();
         when(accountFeignClient.getAccountById(1)).thenReturn(account);
 
         mockMvc.perform(delete("/accounts/1")
