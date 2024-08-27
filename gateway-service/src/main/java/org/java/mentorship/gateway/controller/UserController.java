@@ -43,8 +43,9 @@ public class UserController {
     }
 
     @PostMapping("/verify")
-    ResponseEntity<Boolean> resendNotificationToken(@RequestBody SendVerificationTokenRequest sendVerificationTokenRequest) {
-        return ResponseEntity.ok(userFeignClient.resendVerificationToken(sendVerificationTokenRequest));
+    ResponseEntity<Boolean> sendNotificationToken(@RequestBody SendVerificationTokenRequest sendVerificationTokenRequest) {
+        UserIdAuthorization.loggedInAsUser(sendVerificationTokenRequest.getUserId());
+        return ResponseEntity.ok(userFeignClient.sendNotificationToken(sendVerificationTokenRequest));
     }
 
     @PostMapping("/recovery")
@@ -53,7 +54,7 @@ public class UserController {
     }
 
     @PutMapping("/recovery/{token}")
-    ResponseEntity<Boolean> resendNotificationToken(@PathVariable(name = "token") String token, @RequestBody PasswordChangeRequest passwordChangeRequest) {
+    ResponseEntity<Boolean> sendNotificationToken(@PathVariable(name = "token") String token, @RequestBody PasswordChangeRequest passwordChangeRequest) {
         return ResponseEntity.ok(userFeignClient.changePasswordWithToken(token, passwordChangeRequest));
     }
 }

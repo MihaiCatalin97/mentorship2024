@@ -73,10 +73,10 @@ class UserControllerTest {
 
     @Test
     void resendNotificationTokenShouldCallFeign() {
-        when(userFeignClient.resendVerificationToken(any(SendVerificationTokenRequest.class)))
+        when(userFeignClient.sendNotificationToken(any(SendVerificationTokenRequest.class)))
                 .thenReturn(true);
 
-        ResponseEntity<Boolean> response = userController.resendNotificationToken(SendVerificationTokenRequest.builder()
+        ResponseEntity<Boolean> response = userController.sendNotificationToken(SendVerificationTokenRequest.builder()
                 .userId(1)
                 .build());
 

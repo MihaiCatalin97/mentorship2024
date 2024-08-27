@@ -40,7 +40,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             // Validate the session
             Session session = sessionClient.getSession(sessionHeader);
             if (session == null) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                chain.doFilter(request, response);
                 return;
             }
             // Retrieve user details using the session
