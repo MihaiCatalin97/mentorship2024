@@ -76,19 +76,4 @@ public class UserController {
         return ResponseEntity.ok(userService.resendVerificationToken(id));
     }
 
-    @PostMapping("/changepassword/{id}")
-    public ResponseEntity<Boolean> requestChangePassword(@PathVariable(name = "id") Integer id) {
-        return ResponseEntity.ok(userService.requestChangePasswordToken(id));
-    }
-
-    @PutMapping("/changepassword/{id}")
-    public ResponseEntity<Boolean> changePasswordWithToken(@PathVariable(name = "id") Integer id,
-                                                           @RequestBody @Valid PasswordChangeRequest passwordChangeRequest) {
-        return ResponseEntity.ok(userService.changePasswordWithToken(
-                id,
-                passwordChangeRequest.getPassword(),
-                passwordChangeRequest.getToken())
-        );
-    }
-
 }

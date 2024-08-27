@@ -16,11 +16,10 @@ public class UserContractMapper {
         userContract.setEmail(userEntity.getEmail());
         userContract.setIsAdmin(userEntity.getIsAdmin());
         userContract.setCreatedAt(userEntity.getCreatedAt());
-        userContract.setLastSentVerificationNotification(userEntity.getLastSentVerificationNotification());
         userContract.setVerifiedAt(userEntity.getVerifiedAt());
         userContract.setLastChangedPassword(userEntity.getLastChangedPassword());
-        userContract.setLastSentPasswordChangeToken(userEntity.getLastSentPasswordChangeToken());
 
+        userContract.setIsAdmin(userEntity.getIsAdmin());
         userContract.setCreatedAt(userEntity.getCreatedAt());
         userContract.setVerifiedAt(userEntity.getVerifiedAt());
         userContract.setLastChangedPassword(userEntity.getLastChangedPassword());
