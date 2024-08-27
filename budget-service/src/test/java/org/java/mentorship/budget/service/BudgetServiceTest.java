@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -71,7 +72,7 @@ class BudgetServiceTest {
 
     @Test
     void findByIdShouldThrowExceptionWhenNotFound() {
-        when(repository.findById(1)).thenReturn(null);
+        when(repository.findById(1)).thenThrow(EmptyResultDataAccessException.class);
 
         assertThrows(NoEntityFoundException.class, () -> budgetService.findById(1));
         verify(repository).findById(1);
@@ -95,7 +96,7 @@ class BudgetServiceTest {
     void updateShouldThrowExceptionWhenBudgetNotFound() {
         BudgetEntity budgetEntity = new BudgetEntity();
         budgetEntity.setId(1);
-        when(repository.findById(1)).thenReturn(null);
+        when(repository.findById(1)).thenThrow(EmptyResultDataAccessException.class);
 
         assertThrows(NoEntityFoundException.class, () -> budgetService.update(budgetEntity));
         verify(repository).findById(1);
@@ -117,7 +118,7 @@ class BudgetServiceTest {
 
     @Test
     void deleteShouldThrowExceptionWhenBudgetNotFound() {
-        when(repository.findById(1)).thenReturn(null);
+        when(repository.findById(1)).thenThrow(EmptyResultDataAccessException.class);
 
         assertThrows(NoEntityFoundException.class, () -> budgetService.delete(1));
         verify(repository).findById(1);

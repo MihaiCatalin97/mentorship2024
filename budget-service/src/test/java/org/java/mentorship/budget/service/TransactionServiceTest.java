@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -59,7 +60,7 @@ class TransactionServiceTest {
 
     @Test
     void findByIdShouldThrowExceptionWhenNotFound() {
-        when(repository.findById(1)).thenReturn(null);
+        when(repository.findById(1)).thenThrow(EmptyResultDataAccessException.class);
 
         assertThrows(NoEntityFoundException.class, () -> transactionService.findById(1));
         verify(repository).findById(1);
@@ -83,7 +84,7 @@ class TransactionServiceTest {
     void updateShouldThrowExceptionWhenTransactionNotFound() {
         TransactionEntity transactionEntity = new TransactionEntity();
         transactionEntity.setId(1);
-        when(repository.findById(1)).thenReturn(null);
+        when(repository.findById(1)).thenThrow(EmptyResultDataAccessException.class);
 
         assertThrows(NoEntityFoundException.class, () -> transactionService.update(transactionEntity));
         verify(repository).findById(1);
@@ -105,7 +106,7 @@ class TransactionServiceTest {
 
     @Test
     void deleteShouldThrowExceptionWhenTransactionNotFound() {
-        when(repository.findById(1)).thenReturn(null);
+        when(repository.findById(1)).thenThrow(EmptyResultDataAccessException.class);
 
         assertThrows(NoEntityFoundException.class, () -> transactionService.delete(1));
         verify(repository).findById(1);

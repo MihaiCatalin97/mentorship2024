@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -59,7 +60,7 @@ class CategoryServiceTest {
 
     @Test
     void findByIdShouldThrowExceptionWhenNotFound() {
-        when(repository.findById(1)).thenReturn(null);
+        when(repository.findById(1)).thenThrow(new EmptyResultDataAccessException(1));
 
         assertThrows(NoEntityFoundException.class, () -> categoryService.findById(1));
         verify(repository).findById(1);
@@ -83,7 +84,7 @@ class CategoryServiceTest {
     void updateShouldThrowExceptionWhenCategoryNotFound() {
         CategoryEntity categoryEntity = new CategoryEntity();
         categoryEntity.setId(1);
-        when(repository.findById(1)).thenReturn(null);
+        when(repository.findById(1)).thenThrow(new EmptyResultDataAccessException(1));
 
         assertThrows(NoEntityFoundException.class, () -> categoryService.update(categoryEntity));
         verify(repository).findById(1);
@@ -105,7 +106,7 @@ class CategoryServiceTest {
 
     @Test
     void deleteShouldThrowExceptionWhenCategoryNotFound() {
-        when(repository.findById(1)).thenReturn(null);
+        when(repository.findById(1)).thenThrow(new EmptyResultDataAccessException(1));
 
         assertThrows(NoEntityFoundException.class, () -> categoryService.delete(1));
         verify(repository).findById(1);

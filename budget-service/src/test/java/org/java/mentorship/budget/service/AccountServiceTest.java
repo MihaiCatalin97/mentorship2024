@@ -3,6 +3,7 @@ package org.java.mentorship.budget.service;
 import org.java.mentorship.budget.domain.BankAccountEntity;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
 import org.java.mentorship.budget.persistence.AccountRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,8 +30,9 @@ class AccountServiceTest {
         BankAccountEntity bankAccountEntity = new BankAccountEntity();
         when(repository.save(any(BankAccountEntity.class))).thenReturn(bankAccountEntity);
 
-        accountService.save(bankAccountEntity);
+        BankAccountEntity result = accountService.save(bankAccountEntity);
 
+        assertEquals(bankAccountEntity, result);
         verify(repository).save(bankAccountEntity);
     }
 
@@ -58,7 +60,7 @@ class AccountServiceTest {
 
     @Test
     void findByIdShouldThrowExceptionWhenNotFound() {
-        when(repository.findById(1)).thenReturn(null);
+        when(repository.findById(1)).thenThrow(new EmptyResultDataAccessException(1));
 
         assertThrows(NoEntityFoundException.class, () -> accountService.findById(1));
         verify(repository).findById(1);
@@ -71,8 +73,9 @@ class AccountServiceTest {
         when(repository.findById(1)).thenReturn(bankAccountEntity);
         when(repository.update(any(BankAccountEntity.class))).thenReturn(bankAccountEntity);
 
-        accountService.update(bankAccountEntity);
+        BankAccountEntity result = accountService.update(bankAccountEntity);
 
+        assertEquals(bankAccountEntity, result);
         verify(repository).findById(1);
         verify(repository).update(bankAccountEntity);
     }
@@ -81,7 +84,7 @@ class AccountServiceTest {
     void updateShouldThrowExceptionWhenAccountNotFound() {
         BankAccountEntity bankAccountEntity = new BankAccountEntity();
         bankAccountEntity.setId(1);
-        when(repository.findById(1)).thenReturn(null);
+        when(repository.findById(1)).thenThrow(new EmptyResultDataAccessException(1));
 
         assertThrows(NoEntityFoundException.class, () -> accountService.update(bankAccountEntity));
         verify(repository).findById(1);
@@ -103,7 +106,7 @@ class AccountServiceTest {
 
     @Test
     void deleteShouldThrowExceptionWhenAccountNotFound() {
-        when(repository.findById(1)).thenReturn(null);
+        when(repository.findById(1)).thenThrow(new EmptyResultDataAccessException(1));
 
         assertThrows(NoEntityFoundException.class, () -> accountService.delete(1));
         verify(repository).findById(1);
