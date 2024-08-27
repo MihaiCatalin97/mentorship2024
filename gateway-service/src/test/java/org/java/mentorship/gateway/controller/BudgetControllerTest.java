@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 class BudgetControllerTest {
@@ -36,13 +37,29 @@ class BudgetControllerTest {
                 new Budget(1, 1, "Budget 1", 1000, null, 1, 1),
                 new Budget(2, 2, "Budget 2", 2000, null, 2, 2)
         );
-        when(budgetFeignClient.getBudgets()).thenReturn(mockBudgets);
+        when(budgetFeignClient.getBudgets(null)).thenReturn(mockBudgets);
 
-        ResponseEntity<List<Budget>> response = budgetController.getBudgets();
+        ResponseEntity<List<Budget>> response = budgetController.getBudgets(null);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockBudgets, response.getBody());
-        verify(budgetFeignClient, times(1)).getBudgets();
+        verify(budgetFeignClient, times(1)).getBudgets(null);
+    }
+
+    @Test
+    void getBudgets_ShouldReturnListOfBudgets_WhenUserIdIsProvided() {
+        List<Budget> mockBudgets = Arrays.asList(
+                new Budget(1, 1, "Budget 1", 1000, null, 1, 1),
+                new Budget(2, 2, "Budget 2", 2000, null, 2, 2)
+        );
+        Integer userId = 1;
+        when(budgetFeignClient.getBudgets(eq(userId))).thenReturn(mockBudgets);
+
+        ResponseEntity<List<Budget>> response = budgetController.getBudgets(userId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(mockBudgets, response.getBody());
+        verify(budgetFeignClient, times(1)).getBudgets(eq(userId));
     }
 
     @Test

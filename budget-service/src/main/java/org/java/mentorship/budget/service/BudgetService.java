@@ -20,7 +20,10 @@ public class BudgetService {
         return repository.save(budgetEntity);
     }
 
-    public List<BudgetEntity> findAll() {
+    public List<BudgetEntity> findAll(Integer userId) {
+        if (userId != null) {
+            return repository.findByUserId(userId);
+        }
         return repository.findAll();
     }
 
@@ -50,4 +53,5 @@ public class BudgetService {
         repository.delete(id);
         return budgetEntity;
     }
+
 }

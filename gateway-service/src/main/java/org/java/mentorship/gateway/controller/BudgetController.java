@@ -15,10 +15,10 @@ public class BudgetController {
 
     private final BudgetFeignClient budgetFeignClient;
 
-    @GetMapping()
-    ResponseEntity<List<Budget>> getBudgets() {
+    @GetMapping
+    ResponseEntity<List<Budget>> getBudgets(@RequestParam(required = false, name = "userId") Integer userId) {
         // TODO: Add any necessary restrictions or filters for retrieving budgets
-        return ResponseEntity.ok(budgetFeignClient.getBudgets());
+        return ResponseEntity.ok(budgetFeignClient.getBudgets(userId));
     }
 
     @GetMapping("/{id}")
