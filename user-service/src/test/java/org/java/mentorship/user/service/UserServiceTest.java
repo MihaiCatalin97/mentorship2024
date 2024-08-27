@@ -8,16 +8,18 @@ import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.exception.domain.AlreadyRegisteredException;
 import org.java.mentorship.user.exception.domain.UserNotFoundException;
 import org.java.mentorship.user.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.TestPropertySource;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,8 +28,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-    @InjectMocks
-    private UserService userService;
 
     @Mock
     private UserRepository userRepository;
@@ -37,8 +37,18 @@ class UserServiceTest {
 
     @Captor
     private ArgumentCaptor<UserEntity> userArgumentCaptor;
+
     @Captor
     private ArgumentCaptor<Notification> notificationArgumentCaptor;
+
+    private UserService userService;
+
+    @BeforeEach
+    void setUp() {
+        TokenService tokenService = new TokenService(userRepository, notificationFeignClient);
+
+        this.userService = new UserService(userRepository, spy(tokenService));
+    }
 
     @Test
     void registerUserShouldSaveUser() {
@@ -138,14 +148,14 @@ class UserServiceTest {
     void verifyUserUsingTokenShouldEditUserWhenTokenMatches() {
         String verificationToken = UUID.randomUUID().toString();
 
-        when(userRepository.findById(1)).thenReturn(Optional.ofNullable(
-                UserEntity.builder().verificationToken(verificationToken).build()
+        when(userRepository.findByVerificationToken(verificationToken)).thenReturn(Optional.ofNullable(
+                UserEntity.builder()
+                        .verificationToken(verificationToken).build()
         ));
 
-        boolean result = userService.verifyUserUsingToken(1, verificationToken);
+        boolean result = userService.verifyUserUsingToken(verificationToken);
 
         assertTrue(result);
-        verify(userRepository, times(1)).findById(1);
         verify(userRepository, times(1)).update(any());
     }
 
@@ -153,14 +163,13 @@ class UserServiceTest {
     void verifyUserUsingTokenShouldNotEditUserWhenTokenWrong() {
         String verificationToken = UUID.randomUUID().toString();
 
-        when(userRepository.findById(1)).thenReturn(Optional.ofNullable(
+        when(userRepository.findByVerificationToken(verificationToken)).thenReturn(Optional.ofNullable(
                 UserEntity.builder().verificationToken(UUID.randomUUID().toString()).build()
         ));
 
-        boolean result = userService.verifyUserUsingToken(1, verificationToken);
+        boolean result = userService.verifyUserUsingToken(verificationToken);
 
         assertFalse(result);
-        verify(userRepository, times(1)).findById(1);
         verify(userRepository, times(0)).update(any());
     }
 
@@ -168,23 +177,28 @@ class UserServiceTest {
     void verifyUserUsingTokenShouldThrowWhenUserDoesntExist() {
         String verificationToken = UUID.randomUUID().toString();
 
-        when(userRepository.findById(1)).thenReturn(Optional.empty());
+        when(userRepository.findByVerificationToken(verificationToken)).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.verifyUserUsingToken(1, verificationToken));
+        assertThrows(UserNotFoundException.class, () -> userService.verifyUserUsingToken(verificationToken));
     }
 
     @Test
     void verifyUserUsingTokenShouldThrowWhenTokenExpired() {
         String verificationToken = UUID.randomUUID().toString();
 
-        when(userRepository.findById(1)).thenReturn(
+        Notification notification = new Notification();
+        notification.setCreatedAt(OffsetDateTime.now().minusDays(10));
+
+        when(notificationFeignClient.getNotifications(any(),any(),any(),any(),any())).thenReturn(
+                Collections.singletonList(notification)
+        );
+        when(userRepository.findByVerificationToken(verificationToken)).thenReturn(
                 Optional.of(UserEntity.builder()
                                 .verificationToken(verificationToken)
-                                .lastSentVerificationNotification(OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(11))
                         .build())
         );
 
-        boolean result = userService.verifyUserUsingToken(1, verificationToken);
+        boolean result = userService.verifyUserUsingToken(verificationToken);
 
         assertFalse(result);
     }
@@ -210,20 +224,25 @@ class UserServiceTest {
         assertTrue(result);
         assertEquals(1, notification.getUserId());
         assertNotNull(user.getVerificationToken());
-        assertNotNull(user.getLastSentVerificationNotification());
     }
 
     @Test
     void resendVerificationTokenShouldReturnFalseWhenUserAlreadyRequestedAToken() {
+        Notification notification = new Notification();
+        notification.setCreatedAt(OffsetDateTime.now());
+
         when(userRepository.findById(1)).thenReturn(Optional.of(
                 UserEntity.builder()
                         .firstName("first")
                         .lastName("last")
                         .email("email@email.com")
-                        .lastSentVerificationNotification(OffsetDateTime.now(ZoneOffset.UTC))
                         .id(1)
                         .build()
         ));
+
+        when(notificationFeignClient.getNotifications(any(), any(), any(), any(), any())).thenReturn(
+                Collections.singletonList(notification)
+        );
 
         Boolean result = userService.resendVerificationToken(1);
 
@@ -231,28 +250,17 @@ class UserServiceTest {
     }
 
     @Test
-    void changePasswordShouldChangePassword() {
-        when(userRepository.findById(1)).thenReturn(Optional.of(
-                UserEntity.builder().build()
-        ));
-
-        boolean result = userService.changePassword(1, "SecretPassword");
-
-        assertTrue(result);
-        verify(userRepository, times(1)).update(userArgumentCaptor.capture());
-        UserEntity savedEntity = userArgumentCaptor.getValue();
-        assertEquals(MD5.getMd5("SecretPassword"), savedEntity.getHashedPassword());
-    }
-
-    @Test
     void changePasswordWithTokenShouldChangePassword() {
-        when(userRepository.findById(1)).thenReturn(Optional.of(
+        Optional<UserEntity> user = Optional.of(
                 UserEntity.builder()
+                        .id(1)
                         .passwordChangeToken("aaa-bbb")
                         .build()
-        ));
+        );
+        when(userRepository.findByPasswordChangeToken("aaa-bbb")).thenReturn(user);
+        when(userRepository.findById(1)).thenReturn(user);
 
-        boolean result = userService.changePasswordWithToken(1, "SecretPassword", "aaa-bbb");
+        boolean result = userService.changePasswordWithToken("SecretPassword", "aaa-bbb");
 
         verify(userRepository, times(1)).update(userArgumentCaptor.capture());
 
@@ -264,17 +272,23 @@ class UserServiceTest {
 
     @Test
     void changePasswordWithTokenShouldNotChangeWhenTokenInvalid() {
-        when(userRepository.findById(1)).thenReturn(Optional.of(
+        Notification notification = new Notification();
+        notification.setCreatedAt(OffsetDateTime.now().minusDays(10));
+
+        Optional<UserEntity> userEntity = Optional.of(
                 UserEntity.builder()
                         .passwordChangeToken("aaa-bbb")
-                        .lastSentPasswordChangeToken(OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(11))
                         .build()
-        ));
+        );
 
-        boolean result = userService.changePasswordWithToken(1, "SecretPassword", "aaa-bbb");
+        when(notificationFeignClient.getNotifications(any(),any(),any(),any(),any())).thenReturn(
+                Collections.singletonList(notification)
+        );
+        when(userRepository.findByPasswordChangeToken("aaa-bbb")).thenReturn(userEntity);
+
+        boolean result = userService.changePasswordWithToken("SecretPassword", "aaa-bbb");
 
         verify(userRepository, times(0)).update(any());
-
         assertFalse(result);
     }
 
@@ -297,7 +311,6 @@ class UserServiceTest {
 
         assertTrue(result);
         assertNotNull(notification.getPayload().get("passwordChangeToken"));
-        assertNotNull(savedEntity.getLastSentPasswordChangeToken());
         assertNotNull(savedEntity.getPasswordChangeToken());
     }
 }

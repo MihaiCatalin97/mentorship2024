@@ -2,9 +2,6 @@ package org.java.mentorship.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.notification.client.NotificationFeignClient;
-import org.java.mentorship.contracts.notification.dto.Notification;
-import org.java.mentorship.contracts.notification.dto.NotificationChannel;
-import org.java.mentorship.contracts.notification.dto.NotificationType;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.exception.domain.AlreadyRegisteredException;
@@ -22,7 +19,7 @@ import static org.java.mentorship.user.crypt.MD5.getMd5;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository mapper;
-    private final NotificationFeignClient notificationFeignClient;
+    private final TokenService tokenService;
 
     public List<UserEntity> getAllUsers() {
         return mapper.find();
@@ -62,15 +59,10 @@ public class UserService {
                 .orElse(false);
     }
 
-    public boolean verifyUserUsingToken(Integer id, String token) {
-        UserEntity user = getUserById(id).orElseThrow(UserNotFoundException::new);
-        if (!user.getVerificationToken().equals(token)) {
-            return false;
-        }
+    public boolean verifyUserUsingToken(String token) {
+        UserEntity user = mapper.findByVerificationToken(token).orElseThrow(UserNotFoundException::new);
 
-        if (user.getLastSentVerificationNotification() != null)
-            if (OffsetDateTime.now(ZoneOffset.UTC).isAfter(user.getLastSentVerificationNotification().plusMinutes(10)))
-                return false;
+        if (!tokenService.verifyVerificationToken(user, token)) return false;
 
         user.setVerifiedAt(OffsetDateTime.now(ZoneOffset.UTC));
         mapper.update(user);
@@ -81,30 +73,10 @@ public class UserService {
     public Boolean resendVerificationToken(Integer userId) {
         UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
 
-        if (user.getLastSentVerificationNotification() != null)
-            if (!OffsetDateTime.now(ZoneOffset.UTC).isAfter(user.getLastSentVerificationNotification().plusMinutes(10)))
-                return false;
-
-        user.setVerificationToken(UUID.randomUUID().toString());
-        user.setLastSentVerificationNotification(OffsetDateTime.now(ZoneOffset.UTC));
-
-        notificationFeignClient.postNotification(new Notification(
-                user.getId(), user.getEmail(),
-                Collections.singletonList(NotificationChannel.EMAIL), NotificationType.VERIFICATION,
-                Map.of(
-                        "firstName", user.getFirstName(),
-                        "lastName", user.getLastName(),
-                        "verificationToken", user.getVerificationToken(),
-                        "requestedAt", OffsetDateTime.now(ZoneOffset.UTC)
-                )
-        ));
-
-        mapper.update(user);
-
-        return true;
+        return tokenService.generateVerificationToken(user);
     }
 
-    public Boolean changePassword(Integer userId, String newPassword) {
+    private Boolean changePassword(Integer userId, String newPassword) {
         UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
 
         user.setHashedPassword(getMd5(newPassword));
@@ -116,41 +88,17 @@ public class UserService {
         return true;
     }
 
-    public Boolean changePasswordWithToken(Integer userId, String newPassword, String token) {
-        UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
+    public Boolean changePasswordWithToken(String newPassword, String token) {
+        UserEntity user = mapper.findByPasswordChangeToken(token).orElseThrow(UserNotFoundException::new);
 
-        if (user.getLastSentPasswordChangeToken() != null)
-            if (OffsetDateTime.now(ZoneOffset.UTC).isAfter(user.getLastSentPasswordChangeToken().plusMinutes(1)))
-                return false;
+        if (!tokenService.verifyPasswordChangeToken(user, token)) return false;
 
-        if (!Objects.equals(user.getPasswordChangeToken(), token)) return false;
-
-        return changePassword(userId, newPassword);
+        return changePassword(user.getId(), newPassword);
     }
 
     public Boolean requestChangePasswordToken(Integer userId) {
         UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
 
-        if (user.getLastSentPasswordChangeToken() != null)
-            if (!OffsetDateTime.now(ZoneOffset.UTC).isAfter(user.getLastSentPasswordChangeToken().plusMinutes(5)))
-                return false;
-
-        user.setPasswordChangeToken(UUID.randomUUID().toString());
-        user.setLastSentPasswordChangeToken(OffsetDateTime.now(ZoneOffset.UTC));
-
-        notificationFeignClient.postNotification(new Notification(
-                user.getId(), user.getEmail(),
-                Collections.singletonList(NotificationChannel.EMAIL), NotificationType.PASSWORD_CHANGE,
-                Map.of(
-                        "firstName", user.getFirstName(),
-                        "lastName", user.getLastName(),
-                        "passwordChangeToken", user.getPasswordChangeToken(),
-                        "requestedAt", OffsetDateTime.now(ZoneOffset.UTC)
-                )
-        ));
-
-        mapper.update(user);
-
-        return true;
+        return tokenService.generatePasswordChangeToken(user);
     }
 }

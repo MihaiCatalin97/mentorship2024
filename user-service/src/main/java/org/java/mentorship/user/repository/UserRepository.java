@@ -9,12 +9,11 @@ import java.util.Optional;
 @Mapper
 public interface UserRepository {
     List<UserEntity> find();
-
     Optional<UserEntity> findById(Integer id);
-
     Optional<UserEntity> findByEmail(String email);
+    Optional<UserEntity> findByPasswordChangeToken(String token);
+    Optional<UserEntity> findByVerificationToken(String token);
 
     void insert(UserEntity user);
-
     void update(UserEntity user);
 }

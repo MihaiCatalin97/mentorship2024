@@ -21,6 +21,10 @@ public class UserContractMapper {
         userContract.setLastChangedPassword(userEntity.getLastChangedPassword());
         userContract.setLastSentPasswordChangeToken(userEntity.getLastSentPasswordChangeToken());
 
+        userContract.setCreatedAt(userEntity.getCreatedAt());
+        userContract.setVerifiedAt(userEntity.getVerifiedAt());
+        userContract.setLastChangedPassword(userEntity.getLastChangedPassword());
+
         return userContract;
     }
 

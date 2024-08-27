@@ -3,6 +3,7 @@ package org.java.mentorship.gateway.controller;
 import org.java.mentorship.contracts.user.client.UserFeignClient;
 import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
+import org.java.mentorship.contracts.user.dto.request.SendVerificationTokenRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -60,10 +61,24 @@ class UserControllerTest {
 
     @Test
     void verifyUserShouldReturnDataFromFeign() {
-        when(userFeignClient.verifyUser(anyInt(), anyString()))
+        when(userFeignClient.verifyUser(anyString()))
                 .thenReturn(true);
 
-        ResponseEntity<Boolean> response = userController.verifyUser(1, "AA-BB-CC");
+        ResponseEntity<Boolean> response = userController.verifyUser("AA-BB-CC");
+
+        assertEquals(200, response.getStatusCode().value());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody());
+    }
+
+    @Test
+    void resendNotificationTokenShouldCallFeign() {
+        when(userFeignClient.resendVerificationToken(any(SendVerificationTokenRequest.class)))
+                .thenReturn(true);
+
+        ResponseEntity<Boolean> response = userController.resendNotificationToken(SendVerificationTokenRequest.builder()
+                .userId(1)
+                .build());
 
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());

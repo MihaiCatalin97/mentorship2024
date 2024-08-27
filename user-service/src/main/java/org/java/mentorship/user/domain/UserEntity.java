@@ -20,9 +20,7 @@ public class UserEntity {
 
     private OffsetDateTime createdAt;
     private OffsetDateTime verifiedAt;
-    private OffsetDateTime lastSentVerificationNotification;
     private OffsetDateTime lastChangedPassword;
-    private OffsetDateTime lastSentPasswordChangeToken;
 
     // Hidden Values
     private String hashedPassword;

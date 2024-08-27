@@ -9,10 +9,8 @@ CREATE TABLE users (
                             hashed_password VARCHAR(128) NOT NULL,
                             verification_token VARCHAR(128),
                             created_at TIMESTAMP NOT NULL,
-                            last_sent_verification_notification TIMESTAMP,
                             last_changed_password TIMESTAMP,
                             password_change_token TIMESTAMP,
-                            last_sent_password_change_token TIMESTAMP,
                             verified_at TIMESTAMP,
                             PRIMARY KEY (id)
 );

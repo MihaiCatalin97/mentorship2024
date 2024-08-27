@@ -14,10 +14,5 @@ public class User {
 
     private OffsetDateTime createdAt;
     private OffsetDateTime verifiedAt;
-    private OffsetDateTime lastSentVerificationNotification;
     private OffsetDateTime lastChangedPassword;
-    private OffsetDateTime lastSentPasswordChangeToken;
-
-    private Boolean verified;
-    private Boolean isAdmin;
 }
