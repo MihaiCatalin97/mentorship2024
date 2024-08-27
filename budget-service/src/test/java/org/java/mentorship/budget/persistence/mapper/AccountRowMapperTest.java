@@ -2,6 +2,7 @@ package org.java.mentorship.budget.persistence.mapper;
 
 import org.java.mentorship.budget.domain.BankAccountEntity;
 import org.java.mentorship.contracts.budget.dto.AccountType;
+import org.java.mentorship.contracts.budget.dto.CurrencyType;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -24,7 +25,7 @@ class AccountRowMapperTest {
         Mockito.when(resultSet.getString("name")).thenReturn("AccountName");
         Mockito.when(resultSet.getString("type")).thenReturn(AccountType.SAVINGS.name());
         Mockito.when(resultSet.getInt("balance")).thenReturn(1000);
-        Mockito.when(resultSet.getString("currency")).thenReturn("USD");
+        Mockito.when(resultSet.getString("currency")).thenReturn(CurrencyType.USD.name());
 
         // When
         BankAccountEntity bankAccountEntity = rowMapper.mapRow(resultSet, 1);
@@ -35,6 +36,6 @@ class AccountRowMapperTest {
         assertEquals("AccountName", bankAccountEntity.getName());
         assertEquals(AccountType.SAVINGS, bankAccountEntity.getType());
         assertEquals(1000, bankAccountEntity.getBalance());
-        assertEquals("USD", bankAccountEntity.getCurrency());
+        assertEquals(CurrencyType.USD, bankAccountEntity.getCurrency());
     }
 }

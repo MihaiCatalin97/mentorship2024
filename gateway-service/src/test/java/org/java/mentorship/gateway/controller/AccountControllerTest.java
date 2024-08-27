@@ -1,25 +1,20 @@
 package org.java.mentorship.gateway.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.budget.client.AccountFeignClient;
 import org.java.mentorship.contracts.budget.dto.Account;
 import org.java.mentorship.contracts.budget.dto.AccountType;
+import org.java.mentorship.contracts.budget.dto.CurrencyType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -46,8 +41,8 @@ class AccountControllerTest {
 
     @Test
     void testGetAccounts() throws Exception {
-        Account account1 = Account.builder().id(1).userId(1).name("Account 1").type(AccountType.CHECKING).balance(100).currency("USD").build();
-        Account account2 = Account.builder().id(2).userId(1).name("Account 2").type(AccountType.SAVINGS).balance(200).currency("USD").build();
+        Account account1 = Account.builder().id(1).userId(1).name("Account 1").type(AccountType.CHECKING).balance(100).currency(CurrencyType.USD).build();
+        Account account2 = Account.builder().id(2).userId(1).name("Account 2").type(AccountType.SAVINGS).balance(200).currency(CurrencyType.USD).build();
         when(accountFeignClient.getAccounts()).thenReturn(Arrays.asList(account1, account2));
 
         mockMvc.perform(get("/accounts")
@@ -62,7 +57,7 @@ class AccountControllerTest {
 
     @Test
     void testGetAccountById() throws Exception {
-        Account account = Account.builder().id(1).userId(1).name("Account 1").type(AccountType.CHECKING).balance(100).currency("USD").build();
+        Account account = Account.builder().id(1).userId(1).name("Account 1").type(AccountType.CHECKING).balance(100).currency(CurrencyType.USD).build();
         when(accountFeignClient.getAccountById(anyInt())).thenReturn(account);
 
         mockMvc.perform(get("/accounts/1")
@@ -75,7 +70,7 @@ class AccountControllerTest {
 
     @Test
     void testCreateAccount() throws Exception {
-        Account account = Account.builder().id(1).userId(1).name("Account 1").type(AccountType.CHECKING).balance(100).currency("USD").build();
+        Account account = Account.builder().id(1).userId(1).name("Account 1").type(AccountType.CHECKING).balance(100).currency(CurrencyType.USD).build();
         when(accountFeignClient.createAccount(any(Account.class))).thenReturn(account);
 
         mockMvc.perform(post("/accounts")
@@ -89,7 +84,7 @@ class AccountControllerTest {
 
     @Test
     void testUpdateAccount() throws Exception {
-        Account account = Account.builder().id(1).userId(1).name("Updated Account").type(AccountType.SAVINGS).balance(150).currency("USD").build();
+        Account account = Account.builder().id(1).userId(1).name("Updated Account").type(AccountType.SAVINGS).balance(150).currency(CurrencyType.USD).build();
         when(accountFeignClient.updateAccount(anyInt(), any(Account.class))).thenReturn(account);
 
         mockMvc.perform(put("/accounts/1")
