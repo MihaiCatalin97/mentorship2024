@@ -1,27 +1,20 @@
 package org.java.mentorship.gateway.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.java.mentorship.contracts.user.client.UserFeignClient;
 import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.contracts.user.dto.request.SendVerificationTokenRequest;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -64,18 +57,18 @@ class UserControllerTest extends AbstractControllerTest {
 
 
         mockMvc.perform(post("/users/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(
-                        objectMapper.writeValueAsString(
-                                RegistrationRequest.builder()
-                                        .email("email@email.com")
-                                        .firstName("First name")
-                                        .lastName("Last name")
-                                        .password("Password")
-                                        .build()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                objectMapper.writeValueAsString(
+                                        RegistrationRequest.builder()
+                                                .email("email@email.com")
+                                                .firstName("First name")
+                                                .lastName("Last name")
+                                                .password("Password")
+                                                .build()
+                                )
                         )
                 )
-        )
                 .andExpect(status().isOk());
     }
 
