@@ -76,7 +76,7 @@ class UserControllerTest {
         when(userFeignClient.sendNotificationToken(any(SendVerificationTokenRequest.class)))
                 .thenReturn(true);
 
-        ResponseEntity<Boolean> response = userController.sendNotificationToken(SendVerificationTokenRequest.builder()
+        ResponseEntity<Boolean> response = userController.changePasswordWithToken(SendVerificationTokenRequest.builder()
                 .userId(1)
                 .build());
 
