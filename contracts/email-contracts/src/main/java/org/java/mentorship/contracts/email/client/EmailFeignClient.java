@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @FeignClient(value = "emailClient",
-        url = "http://localhost:8092")
+        url = "${service.email.url}")
 public interface EmailFeignClient {
 
     @RequestMapping(

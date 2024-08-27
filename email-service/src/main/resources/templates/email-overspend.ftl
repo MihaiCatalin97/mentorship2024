@@ -15,18 +15,19 @@
                         style="background-color: #a0cccb; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; padding: 0px 15px 10px 15px;">
 
                         <div style="font-size: 48px; color:#000000;">
-                            <b>Overspend Sample</b>
+                            <b>Overspend Alert</b>
                         </div>
-
-                        <div style="font-size: 24px; color: #a0cccb;">
-                            <br> Sending Email using Spring Boot with FreeMarker <br>
+                        <div style="font-size: 24px; color: #000000;">
+                            <br> You are receiving this email because
+                            <br> the system has detected you have been
+                            <br> spending too much at once.
                         </div>
                         <div>
-                            <br> Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            <br> Duis semper orci blandit, tempor felis a, tristique libero.
-                            <br> Nulla ornare, quam vitae dapibus suscipit, risus erat rhoncus arcu, a sagittis ligula erat vitae massa.
-                            <br> "In hac habitasse platea dictumst. Sed feugiat scelerisque nisi, eget vulputate tellus lacinia sed.<br>
+                            <br> Hello, ${name}!
                             <br>
+                            <br> It seems like you have been enjoying spending money.
+                            <br> How about taking it easier with the spending.
+                            <br> So you don't use all your budget.
                             <br>
                             <br> <br> <b>Budget Tracker Team</b><br>
                             <br>

@@ -15,19 +15,24 @@
                         style="background-color: #a0cccb; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; padding: 0px 15px 10px 15px;">
 
                         <div style="font-size: 48px; color:#000000;">
-                            <b>Verificatrion Sample</b>
+                            <b>Verify email address</b>
                         </div>
 
-                        <div style="font-size: 24px; color: #a0cccb;">
-                            <br> Sending Email using Spring Boot with FreeMarker <br>
+                        <div style="font-size: 24px; color: #000000;">
+                            <br> You are receiving this mail because
+                            <br> you need to verify your email address
                         </div>
                         <div>
-                            <br> Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            <br> Duis semper orci blandit, tempor felis a, tristique libero.
-                            <br> Nulla ornare, quam vitae dapibus suscipit, risus erat rhoncus arcu, a sagittis ligula erat vitae massa.
-                            <br> "In hac habitasse platea dictumst. Sed feugiat scelerisque nisi, eget vulputate tellus lacinia sed.<br>
+                            <br> Hello, ${firstName} ${lastName}!
                             <br>
+                            <br> To finish creating your account and verify the email address
+                            <br> for ${email}, please click the link below.
                             <br>
+                            <a href="<#--link-->">
+                                <button>Verify address</button>
+                            </a>
+                            <br> if the button isn't working you can manually access the link
+                            <br> <#--link-->
                             <br> <br> <b>Budget Tracker Team</b><br>
                             <br>
                         </div>
