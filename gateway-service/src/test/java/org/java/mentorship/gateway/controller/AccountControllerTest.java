@@ -1,19 +1,26 @@
 package org.java.mentorship.gateway.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.java.mentorship.contracts.budget.client.AccountFeignClient;
 import org.java.mentorship.contracts.budget.dto.Account;
 import org.java.mentorship.contracts.budget.dto.AccountType;
+import org.java.mentorship.contracts.budget.dto.CurrencyType;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -26,8 +33,8 @@ class AccountControllerTest extends AbstractControllerTest {
     @ParameterizedTest
     @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})
     void testGetAccounts(final String sessionHeader) throws Exception {
-        Account account1 = Account.builder().id(1).userId(123).name("Account 1").type(AccountType.CHECKING).balance(100).currency("USD").build();
-        Account account2 = Account.builder().id(2).userId(123).name("Account 2").type(AccountType.SAVINGS).balance(200).currency("USD").build();
+        Account account1 = Account.builder().id(1).userId(123).name("Account 1").type(AccountType.CHECKING).balance(100).currency(CurrencyType.USD).build();
+        Account account2 = Account.builder().id(2).userId(123).name("Account 2").type(AccountType.SAVINGS).balance(200).currency(CurrencyType.USD).build();
 
         when(accountFeignClient.getAccounts()).thenReturn(Arrays.asList(account1, account2));
 
@@ -45,7 +52,7 @@ class AccountControllerTest extends AbstractControllerTest {
     @ParameterizedTest
     @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})
     void testGetAccountById(final String sessionHeader) throws Exception {
-        Account account = Account.builder().id(1).userId(123).name("Account 1").type(AccountType.CHECKING).balance(100).currency("USD").build();
+        Account account = Account.builder().id(1).userId(123).name("Account 1").type(AccountType.CHECKING).balance(100).currency(CurrencyType.USD).build();
         when(accountFeignClient.getAccountById(1)).thenReturn(account);
 
         mockMvc.perform(get("/accounts/1")
@@ -60,7 +67,7 @@ class AccountControllerTest extends AbstractControllerTest {
     @ParameterizedTest
     @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})
     void testCreateAccount(final String sessionHeader) throws Exception {
-        Account account = Account.builder().id(1).userId(123).name("Account 1").type(AccountType.CHECKING).balance(100).currency("USD").build();
+        Account account = Account.builder().id(1).userId(123).name("Account 1").type(AccountType.CHECKING).balance(100).currency(CurrencyType.USD).build();
         when(accountFeignClient.createAccount(any(Account.class))).thenReturn(account);
 
         mockMvc.perform(post("/accounts")
@@ -76,7 +83,7 @@ class AccountControllerTest extends AbstractControllerTest {
     @ParameterizedTest
     @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})
     void testUpdateAccount(final String sessionHeader) throws Exception {
-        Account account = Account.builder().id(1).userId(123).name("Updated Account").type(AccountType.SAVINGS).balance(150).currency("USD").build();
+        Account account = Account.builder().id(1).userId(123).name("Updated Account").type(AccountType.SAVINGS).balance(150).currency(CurrencyType.USD).build();
         when(accountFeignClient.updateAccount(eq(1), any(Account.class))).thenReturn(account);
 
         mockMvc.perform(put("/accounts/1")

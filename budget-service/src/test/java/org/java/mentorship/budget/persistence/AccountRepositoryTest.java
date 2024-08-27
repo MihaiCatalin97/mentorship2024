@@ -4,6 +4,7 @@ import org.h2.tools.Server;
 import org.java.mentorship.budget.domain.BankAccountEntity;
 import org.java.mentorship.budget.persistence.mapper.AccountRowMapper;
 import org.java.mentorship.contracts.budget.dto.AccountType;
+import org.java.mentorship.contracts.budget.dto.CurrencyType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ class AccountRepositoryTest {
         account.setName("New Checking Account");
         account.setType(AccountType.CHECKING);
         account.setBalance(1500);
-        account.setCurrency("USD");
+        account.setCurrency(CurrencyType.USD);
 
         // When
         accountRepository.save(account);

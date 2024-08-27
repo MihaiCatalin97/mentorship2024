@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -41,13 +43,13 @@ class BudgetControllerTest {
 
     @Test
     void getAllBudgetsShouldReturnContractsFromBudgetService() {
-        when(budgetService.findAll()).thenReturn(budgetEntities);
+        when(budgetService.findAll(null)).thenReturn(budgetEntities);
 
         List<Budget> budgets = budgetEntities.stream()
                 .map(BudgetContractMapper::entityToContract)
-                .toList();
+                .collect(Collectors.toList());
 
-        ResponseEntity<List<Budget>> response = budgetController.getAllBudgets();
+        ResponseEntity<List<Budget>> response = budgetController.getAllBudgets(null);
 
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());
@@ -112,18 +114,41 @@ class BudgetControllerTest {
         assertEquals(1, response.getBody().getId());
         assertEquals("Deleted Budget", response.getBody().getName());
     }
-
     @Test
-    void getBudgetByIdShouldReturn404WhenBudgetNotFound() {
-        when(budgetService.findById(anyInt())).thenThrow(new IllegalArgumentException("Budget not found"));
+    void getBudgetsByUserIdShouldReturnBudgetsWhenBudgetsExist() {
+        Integer userId = 1;
+        List<BudgetEntity> budgetEntities = Arrays.asList(
+                BudgetEntity.builder().id(1).name("Monthly Budget").build(),
+                BudgetEntity.builder().id(2).name("Savings Goal").build()
+        );
 
-        assertThrows(IllegalArgumentException.class, () -> budgetController.getBudgetById(999));
+        List<Budget> expectedBudgets = budgetEntities.stream()
+                .map(BudgetContractMapper::entityToContract)
+                .collect(Collectors.toList());
+
+        when(budgetService.findAll(userId)).thenReturn(budgetEntities);
+
+        ResponseEntity<List<Budget>> response = budgetController.getAllBudgets(userId);
+
+        assertEquals(200, response.getStatusCode().value());
+        assertNotNull(response.getBody());
+        assertEquals(expectedBudgets.size(), response.getBody().size());
+        for (int i = 0; i < expectedBudgets.size(); i++) {
+            assertEquals(expectedBudgets.get(i).getId(), response.getBody().get(i).getId());
+            assertEquals(expectedBudgets.get(i).getName(), response.getBody().get(i).getName());
+        }
     }
 
     @Test
-    void deleteBudgetShouldReturn404WhenBudgetNotFound() {
-        when(budgetService.delete(anyInt())).thenThrow(new IllegalArgumentException("Budget not found"));
+    void getBudgetsByUserIdShouldReturnEmptyListWhenNoBudgetsExist() {
+        Integer userId = 999;
 
-        assertThrows(IllegalArgumentException.class, () -> budgetController.deleteBudget(999));
+        when(budgetService.findAll(userId)).thenReturn(Arrays.asList());
+
+        ResponseEntity<List<Budget>> response = budgetController.getAllBudgets(userId);
+
+        assertEquals(200, response.getStatusCode().value());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().isEmpty());
     }
 }

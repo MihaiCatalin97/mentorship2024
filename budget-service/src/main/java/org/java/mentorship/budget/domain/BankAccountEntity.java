@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.java.mentorship.contracts.budget.dto.AccountType;
+import org.java.mentorship.contracts.budget.dto.CurrencyType;
 
 @Data
 @Builder
@@ -35,6 +36,6 @@ public class BankAccountEntity {
     @Min(value = 0, message = "Field 'balance' must be at least 0")
     private Integer balance;
 
-    @NotEmpty(message = "Field 'currency' must not be null or empty")
-    private String currency;
+    @NotNull(message = "Field 'currency' must not be null")
+    private CurrencyType currency;
 }

@@ -11,11 +11,14 @@ import org.springframework.http.MediaType;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 @WebMvcTest(BudgetController.class)
 class BudgetControllerTest extends AbstractControllerTest {
@@ -30,7 +33,7 @@ class BudgetControllerTest extends AbstractControllerTest {
                 new Budget(1, 123, "Budget 1", 1000, null, 1, 1),
                 new Budget(2, 123, "Budget 2", 2000, null, 2, 2)
         );
-        when(budgetFeignClient.getBudgets()).thenReturn(mockBudgets);
+        when(budgetFeignClient.getBudgets(null)).thenReturn(mockBudgets);
 
         mockMvc.perform(get("/budgets")
                         .contentType(MediaType.APPLICATION_JSON)

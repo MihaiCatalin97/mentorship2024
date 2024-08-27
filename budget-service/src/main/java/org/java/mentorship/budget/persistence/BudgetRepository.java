@@ -32,6 +32,10 @@ public class BudgetRepository {
         return jdbcTemplate.query("SELECT * FROM budgets", rowMapper);
     }
 
+    public List<BudgetEntity> findByUserId(Integer userId) {
+        return jdbcTemplate.query("SELECT * FROM budgets WHERE user_id = ?", new Object[]{userId}, rowMapper);
+    }
+
     public BudgetEntity findById(final Integer id) {
         return jdbcTemplate.queryForObject(
                 "SELECT * FROM budgets WHERE id = ?",

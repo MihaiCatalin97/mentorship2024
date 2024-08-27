@@ -18,7 +18,7 @@ public interface BudgetFeignClient {
             method = RequestMethod.GET,
             value = "/budgets"
     )
-    List<Budget> getBudgets();
+    List<Budget> getBudgets(@RequestParam(required = false, name = "userId") Integer userId);
 
     @RequestMapping(
             method = RequestMethod.GET,

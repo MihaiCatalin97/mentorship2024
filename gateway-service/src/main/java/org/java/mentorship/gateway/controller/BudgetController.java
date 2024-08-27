@@ -18,10 +18,10 @@ public class BudgetController {
     private final BudgetFeignClient budgetFeignClient;
 
     @GetMapping()
-    ResponseEntity<List<Budget>> getBudgets() {
+    ResponseEntity<List<Budget>> getBudgets(@RequestParam(required = false, name = "userId") Integer userId) {
         loggedInAsAnyUser();
 
-        return ResponseEntity.ok(filterResults(budgetFeignClient.getBudgets(), Budget::getUserId));
+        return ResponseEntity.ok(filterResults(budgetFeignClient.getBudgets(userId), Budget::getUserId));
     }
 
     @GetMapping("/{id}")

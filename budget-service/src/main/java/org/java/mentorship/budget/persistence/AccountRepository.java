@@ -22,7 +22,7 @@ public class AccountRepository {
                 bankAccountEntity.getName(),
                 bankAccountEntity.getType().name(),
                 bankAccountEntity.getBalance(),
-                bankAccountEntity.getCurrency()
+                bankAccountEntity.getCurrency().name()
         );
         return bankAccountEntity;
     }
@@ -45,7 +45,7 @@ public class AccountRepository {
                 accountEntity.getName(),
                 accountEntity.getType().name(),
                 accountEntity.getBalance(),
-                accountEntity.getCurrency(),
+                accountEntity.getCurrency().name(),
                 accountEntity.getId()
         );
         return accountEntity;
