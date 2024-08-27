@@ -7,6 +7,8 @@ import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,11 +49,12 @@ class UserRepositoryTest {
     void insertShouldInsertUser() {
         UserEntity user = UserEntity.builder()
                 .verificationToken("AA-BB-CC")
-                .verified(false)
+                .verifiedAt(OffsetDateTime.now())
                 .firstName("First Name")
                 .lastName("Last Name")
                 .email("email10@localhost.com")
                 .hashedPassword(MD5.getMd5("Secret"))
+                .createdAt(OffsetDateTime.now(ZoneOffset.UTC))
                 .build();
 
         userRepository.insert(user);

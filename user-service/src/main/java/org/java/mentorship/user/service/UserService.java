@@ -1,6 +1,7 @@
 package org.java.mentorship.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.java.mentorship.contracts.notification.client.NotificationFeignClient;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.exception.domain.AlreadyRegisteredException;
@@ -8,9 +9,9 @@ import org.java.mentorship.user.exception.domain.UserNotFoundException;
 import org.java.mentorship.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.*;
 
 import static org.java.mentorship.user.crypt.MD5.getMd5;
 
@@ -18,6 +19,7 @@ import static org.java.mentorship.user.crypt.MD5.getMd5;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository mapper;
+    private final TokenService tokenService;
 
     public List<UserEntity> getAllUsers() {
         return mapper.find();
@@ -40,11 +42,10 @@ public class UserService {
         user.setEmail(registrationRequest.getEmail());
         user.setFirstName(registrationRequest.getFirstName());
         user.setLastName(registrationRequest.getLastName());
-        user.setVerified(false);
         user.setHashedPassword(getMd5(registrationRequest.getPassword()));
-        user.setVerificationToken(UUID.randomUUID().toString());
+        user.setLastChangedPassword(OffsetDateTime.now(ZoneOffset.UTC));
+        user.setCreatedAt(OffsetDateTime.now(ZoneOffset.UTC));
 
-        // TODO: Call notification service with VERIFICATION message type
         mapper.insert(user);
 
         return Optional.of(user);
@@ -57,13 +58,46 @@ public class UserService {
                 .orElse(false);
     }
 
-    public boolean verifyUserUsingToken(Integer id, String token) {
-        Optional<UserEntity> user = getUserById(id);
-        if (user.isEmpty()) throw new UserNotFoundException();
-        if (!user.get().getVerificationToken().equals(token)) {
-            return false;
-        }
+    public boolean verifyUserUsingToken(String token) {
+        UserEntity user = mapper.findByVerificationToken(token).orElseThrow(UserNotFoundException::new);
 
-        return mapper.setUserVerifiedStatus(id, true);
+        if (!tokenService.verifyVerificationToken(user, token)) return false;
+
+        user.setVerifiedAt(OffsetDateTime.now(ZoneOffset.UTC));
+        mapper.update(user);
+
+        return true;
+    }
+
+    public Boolean resendVerificationToken(Integer userId) {
+        UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
+
+        return tokenService.generateVerificationToken(user);
+    }
+
+    private Boolean changePassword(Integer userId, String newPassword) {
+        UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
+
+        user.setHashedPassword(getMd5(newPassword));
+        user.setLastChangedPassword(OffsetDateTime.now(ZoneOffset.UTC));
+        user.setPasswordChangeToken(null);
+
+        mapper.update(user);
+
+        return true;
+    }
+
+    public Boolean changePasswordWithToken(String newPassword, String token) {
+        UserEntity user = mapper.findByPasswordChangeToken(token).orElseThrow(UserNotFoundException::new);
+
+        if (!tokenService.verifyPasswordChangeToken(user, token)) return false;
+
+        return changePassword(user.getId(), newPassword);
+    }
+
+    public Boolean requestChangePasswordToken(Integer userId) {
+        UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
+
+        return tokenService.generatePasswordChangeToken(user);
     }
 }

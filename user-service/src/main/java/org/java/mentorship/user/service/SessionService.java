@@ -11,6 +11,7 @@ import org.java.mentorship.user.repository.SessionRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,7 +26,7 @@ public class SessionService {
     private final UserService userService;
 
     public static boolean isExpired(SessionEntity session) {
-        return session.getExpiresAt().isBefore(OffsetDateTime.now());
+        return session.getExpiresAt().isBefore(OffsetDateTime.now(ZoneOffset.UTC));
     }
 
     public List<SessionEntity> find(Integer userId, Boolean isActive) {
@@ -58,7 +59,7 @@ public class SessionService {
         SessionEntity session = new SessionEntity();
         session.setSessionKey(String.valueOf(sessionKey));
         session.setUserId(user.getId());
-        session.setExpiresAt(OffsetDateTime.now().plusDays(30));
+        session.setExpiresAt(OffsetDateTime.now(ZoneOffset.UTC).plusDays(30));
 
         // TODO: Call notification service with NEW_LOGIN message type
         sessionRepository.insert(session);

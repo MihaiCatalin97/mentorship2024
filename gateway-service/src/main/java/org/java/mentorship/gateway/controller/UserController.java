@@ -3,7 +3,10 @@ package org.java.mentorship.gateway.controller;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.client.UserFeignClient;
 import org.java.mentorship.contracts.user.dto.User;
+import org.java.mentorship.contracts.user.dto.request.PasswordChangeRequest;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
+import org.java.mentorship.contracts.user.dto.request.SendPasswordChangeTokenRequest;
+import org.java.mentorship.contracts.user.dto.request.SendVerificationTokenRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +36,23 @@ public class UserController {
         return ResponseEntity.ok(userFeignClient.registerUser(registrationRequest));
     }
 
-    @PostMapping("/verify/{id}/{token}")
-    ResponseEntity<Boolean> verifyUser(@PathVariable(name = "id") Integer id, @PathVariable(name = "token") String token) {
-        return ResponseEntity.ok(userFeignClient.verifyUser(id, token));
+    @PutMapping("/verify/{token}")
+    ResponseEntity<Boolean> verifyUser(@PathVariable(name = "token") String token) {
+        return ResponseEntity.ok(userFeignClient.verifyUser(token));
+    }
+
+    @PostMapping("/verify")
+    ResponseEntity<Boolean> resendNotificationToken(@RequestBody SendVerificationTokenRequest sendVerificationTokenRequest) {
+        return ResponseEntity.ok(userFeignClient.resendVerificationToken(sendVerificationTokenRequest));
+    }
+
+    @PostMapping("/recovery")
+    ResponseEntity<Boolean> sendPasswordChangeRequest(@RequestBody SendPasswordChangeTokenRequest sendPasswordChangeTokenRequest) {
+        return ResponseEntity.ok(userFeignClient.sendPasswordChangeRequest(sendPasswordChangeTokenRequest));
+    }
+
+    @PutMapping("/recovery/{token}")
+    ResponseEntity<Boolean> resendNotificationToken(@PathVariable(name = "token") String token, @RequestBody PasswordChangeRequest passwordChangeRequest) {
+        return ResponseEntity.ok(userFeignClient.changePasswordWithToken(token, passwordChangeRequest));
     }
 }

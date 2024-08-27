@@ -93,7 +93,7 @@ class GeneralExceptionHandlerTest {
     }
 
     @Test
-    void feignExceptionHandleShouldReturnInvalidResponse() throws JsonProcessingException {
+    void feignExceptionHandleShouldReturnInvalidResponse() {
         // Given
         FeignException feignException = mock(FeignException.class);
         HttpServletRequest request = mock(HttpServletRequest.class);

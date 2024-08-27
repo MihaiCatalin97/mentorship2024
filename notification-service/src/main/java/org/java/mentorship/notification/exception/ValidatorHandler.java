@@ -3,15 +3,12 @@ package org.java.mentorship.notification.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.java.mentorship.contracts.common.dto.ErrorResponse;
-import org.java.mentorship.notification.exception.domain.NotificationServiceError;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
-import java.util.StringJoiner;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ValidatorHandler {

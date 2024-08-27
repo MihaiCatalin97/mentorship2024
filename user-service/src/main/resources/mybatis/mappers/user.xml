@@ -14,11 +14,42 @@
     </select>
 
     <insert id="insert" parameterType="UserEntity" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        INSERT INTO users(email, first_name, last_name, hashed_password, verification_token)
-        VALUES (#{email}, #{firstName}, #{lastName}, #{hashedPassword}, #{verificationToken})
+        INSERT INTO users(email,
+                          first_name,
+                          last_name,
+                          hashed_password,
+                          verification_token,
+                          created_at,
+                          verified_at,
+                          password_change_token,
+                          last_changed_password)
+        VALUES (#{email},
+                #{firstName},
+                #{lastName},
+                #{hashedPassword},
+                #{verificationToken},
+                #{createdAt},
+                #{verifiedAt},
+                #{passwordChangeToken},
+                #{lastChangedPassword})
     </insert>
 
-    <update id="setUserVerifiedStatus">
-        UPDATE users SET verified = #{verified} WHERE id = #{id}
+    <update id="update">
+        UPDATE users SET verification_token = #{verificationToken},
+                         verified_at = #{verifiedAt},
+                         password_change_token = #{passwordChangeToken},
+                         last_changed_password = #{lastChangedPassword},
+                         hashed_password = #{hashedPassword}
+                     WHERE id = #{id}
     </update>
+
+    <select id="findByPasswordChangeToken">
+        SELECT * FROM users
+        WHERE password_change_token=${token}
+    </select>
+
+    <select id="findByVerificationToken">
+        SELECT * FROM users
+        WHERE verification_token=${token}
+    </select>
 </mapper>

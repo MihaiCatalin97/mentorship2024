@@ -15,11 +15,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.time.ZoneOffset;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
@@ -33,13 +34,12 @@ class NotificationControllerTest {
     private NotificationController notificationController;
 
     private NotificationContractMapper mapper = new NotificationContractMapper();
+    private List<NotificationEntity> notifications = List.of(new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now(ZoneOffset.UTC)));
 
     @BeforeEach
     void setUp() {
         this.notificationController = new NotificationController(notificationService, mapper);
     }
-
-    private List<NotificationEntity> notifications = List.of(new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now()));
 
     @Test
     void getNotificationsShouldReturnContractsFromNotificationService() {
@@ -54,7 +54,7 @@ class NotificationControllerTest {
 
     @Test
     void postNotificationsShouldCreateContractFromNotificationServiceWhereChannelsAreNotNull() {
-        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now());
+        NotificationEntity notificationEntity = new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now(ZoneOffset.UTC));
 
         when(notificationService.createNotification(notificationEntity)).thenAnswer(invocationOnMock -> {
             notificationEntity.setChannels(List.of(NotificationChannel.WEB));
@@ -72,7 +72,7 @@ class NotificationControllerTest {
     void createNotificationShouldReturnContractAndPostFromNotificationService() {
         when(notificationService.createNotification(any())).thenReturn(notifications.get(0));
 
-        ResponseEntity<Notification> response = notificationController.postNotification(new Notification(1, 2, "a@gmail.com", null, org.java.mentorship.contracts.notification.dto.NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now()));
+        ResponseEntity<Notification> response = notificationController.postNotification(new Notification(1, 2, "a@gmail.com", null, org.java.mentorship.contracts.notification.dto.NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now(ZoneOffset.UTC)));
 
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());
@@ -83,7 +83,7 @@ class NotificationControllerTest {
     void updateNotificationShouldReturnContractAndUpdateFromNotificationService() {
         when(notificationService.updateNotification(any(), any())).thenReturn(notifications.get(0));
 
-        ResponseEntity<Notification> response = notificationController.putNotification(1, new Notification(1, 2, "a@gmail.com", null, org.java.mentorship.contracts.notification.dto.NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now()));
+        ResponseEntity<Notification> response = notificationController.putNotification(1, new Notification(1, 2, "a@gmail.com", null, org.java.mentorship.contracts.notification.dto.NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now(ZoneOffset.UTC)));
 
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());
