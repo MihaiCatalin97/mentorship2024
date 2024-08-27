@@ -54,12 +54,12 @@ public class UserController {
 
     @PostMapping("/verify")
     public ResponseEntity<Boolean> sendVerificationToken(@RequestBody SendVerificationTokenRequest sendVerificationTokenRequest) {
-        return ResponseEntity.ok(userService.resendVerificationToken(sendVerificationTokenRequest.getUserId()));
+        return ResponseEntity.ok(userService.sendVerificationToken(sendVerificationTokenRequest.getUserId()));
     }
 
     @PostMapping("/recovery")
-    public ResponseEntity<Boolean> requestChangePassword(@RequestBody SendPasswordChangeTokenRequest sendPasswordChangeTokenRequest) {
-        return ResponseEntity.ok(userService.requestChangePasswordToken(sendPasswordChangeTokenRequest.getUserId()));
+    public ResponseEntity<Boolean> sendPasswordChangeToken(@RequestBody SendPasswordChangeTokenRequest sendPasswordChangeTokenRequest) {
+        return ResponseEntity.ok(userService.sendPasswordChangeToken(sendPasswordChangeTokenRequest.getUserId()));
     }
 
     @PutMapping("/recovery/{token}")
@@ -72,8 +72,8 @@ public class UserController {
     }
 
     @PostMapping("/verify/{id}")
-    public ResponseEntity<Boolean> resendVerificationToken(@PathVariable(name = "id") Integer id) {
-        return ResponseEntity.ok(userService.resendVerificationToken(id));
+    public ResponseEntity<Boolean> sendVerificationToken(@PathVariable(name = "id") Integer id) {
+        return ResponseEntity.ok(userService.sendVerificationToken(id));
     }
 
 }

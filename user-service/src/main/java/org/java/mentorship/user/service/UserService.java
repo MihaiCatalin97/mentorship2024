@@ -1,7 +1,6 @@
 package org.java.mentorship.user.service;
 
 import lombok.RequiredArgsConstructor;
-import org.java.mentorship.contracts.notification.client.NotificationFeignClient;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.exception.domain.AlreadyRegisteredException;
@@ -70,7 +69,7 @@ public class UserService {
         return true;
     }
 
-    public Boolean resendVerificationToken(Integer userId) {
+    public Boolean sendVerificationToken(Integer userId) {
         UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
 
         return tokenService.generateVerificationToken(user);
@@ -96,7 +95,7 @@ public class UserService {
         return changePassword(user.getId(), newPassword);
     }
 
-    public Boolean requestChangePasswordToken(Integer userId) {
+    public Boolean sendPasswordChangeToken(Integer userId) {
         UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
 
         return tokenService.generatePasswordChangeToken(user);
