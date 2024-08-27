@@ -2,91 +2,103 @@ package org.java.mentorship.gateway.controller;
 
 import org.java.mentorship.contracts.budget.client.BudgetFeignClient;
 import org.java.mentorship.contracts.budget.dto.Budget;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class BudgetControllerTest {
+@WebMvcTest(BudgetController.class)
+class BudgetControllerTest extends AbstractControllerTest {
 
-    @Mock
+    @MockBean
     private BudgetFeignClient budgetFeignClient;
 
-    @InjectMocks
-    private BudgetController budgetController;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
-    @Test
-    void getBudgets_ShouldReturnListOfBudgets() {
+    @ParameterizedTest
+    @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})
+    void getBudgets_ShouldReturnListOfBudgets(final String sessionHeader) throws Exception {
         List<Budget> mockBudgets = Arrays.asList(
-                new Budget(1, 1, "Budget 1", 1000, null, 1, 1),
-                new Budget(2, 2, "Budget 2", 2000, null, 2, 2)
+                new Budget(1, 123, "Budget 1", 1000, null, 1, 1),
+                new Budget(2, 123, "Budget 2", 2000, null, 2, 2)
         );
         when(budgetFeignClient.getBudgets()).thenReturn(mockBudgets);
 
-        ResponseEntity<List<Budget>> response = budgetController.getBudgets();
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(mockBudgets, response.getBody());
-        verify(budgetFeignClient, times(1)).getBudgets();
+        mockMvc.perform(get("/budgets")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-SESSION", sessionHeader))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].name").value("Budget 1"))
+                .andExpect(jsonPath("$[1].id").value(2))
+                .andExpect(jsonPath("$[1].name").value("Budget 2"));
     }
 
-    @Test
-    void getBudgetById_ShouldReturnBudget_WhenBudgetExists() {
-        Budget mockBudget = new Budget(1, 1, "Budget 1", 1000, null, 1, 1);
+    @ParameterizedTest
+    @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})
+    void getBudgetById_ShouldReturnBudget_WhenBudgetExists(final String sessionHeader) throws Exception {
+        Budget mockBudget = new Budget(1, 123, "Budget 1", 1000, null, 1, 1);
         when(budgetFeignClient.getBudgetById(1)).thenReturn(mockBudget);
 
-        ResponseEntity<Budget> response = budgetController.getBudgetById(1);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(mockBudget, response.getBody());
-        verify(budgetFeignClient, times(1)).getBudgetById(1);
+        mockMvc.perform(get("/budgets/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-SESSION", sessionHeader))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Budget 1"));
     }
 
-    @Test
-    void createBudget_ShouldReturnCreatedBudget() {
-        Budget budgetToCreate = new Budget(null, 1, "Budget 1", 1000, null, 1, 1);
-        Budget createdBudget = new Budget(1, 1, "Budget 1", 1000, null, 1, 1);
-        when(budgetFeignClient.createBudget(any(Budget.class))).thenReturn(createdBudget);
+    @ParameterizedTest
+    @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})
+    void createBudget_ShouldReturnCreatedBudget(final String sessionHeader) throws Exception {
+        Budget budget = new Budget(1, 123, "Budget 1", 1000, null, 1, 1);
+        when(budgetFeignClient.createBudget(any(Budget.class))).thenReturn(budget);
 
-        ResponseEntity<Budget> response = budgetController.createBudget(budgetToCreate);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(createdBudget, response.getBody());
-        verify(budgetFeignClient, times(1)).createBudget(budgetToCreate);
+        mockMvc.perform(post("/budgets")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(budget))
+                        .header("X-SESSION", sessionHeader))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Budget 1"));
     }
 
-    @Test
-    void updateBudget_ShouldReturnUpdatedBudget() {
-        Budget budgetToUpdate = new Budget(1, 1, "Updated Budget", 1500, null, 1, 1);
+    @ParameterizedTest
+    @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})
+    void updateBudget_ShouldReturnUpdatedBudget(final String sessionHeader) throws Exception {
+        Budget budgetToUpdate = new Budget(1, 123, "Updated Budget", 1500, null, 1, 1);
         when(budgetFeignClient.updateBudget(eq(1), any(Budget.class))).thenReturn(budgetToUpdate);
 
-        ResponseEntity<Budget> response = budgetController.updateBudget(1, budgetToUpdate);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(budgetToUpdate, response.getBody());
-        verify(budgetFeignClient, times(1)).updateBudget(1, budgetToUpdate);
+        mockMvc.perform(put("/budgets/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(budgetToUpdate))
+                        .header("X-SESSION", sessionHeader))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Updated Budget"));
     }
 
-    @Test
-    void deleteBudget_ShouldReturnNoContent() {
-        ResponseEntity<Void> response = budgetController.deleteBudget(1);
+    @ParameterizedTest
+    @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})
+    void deleteBudget_ShouldReturnNoContent(final String sessionHeader) throws Exception {
+        Budget mockBudget = new Budget(1, 123, "Budget 1", 1000, null, 1, 1);
+        when(budgetFeignClient.getBudgetById(1)).thenReturn(mockBudget);
 
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        verify(budgetFeignClient, times(1)).deleteBudget(1);
+        mockMvc.perform(delete("/budgets/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-SESSION", sessionHeader))
+                .andExpect(status().isNoContent());
     }
 }
