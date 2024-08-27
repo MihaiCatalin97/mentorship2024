@@ -30,6 +30,8 @@ public class SecurityConfig {
                 .addFilterBefore(new SecurityFilter(sessionFeignClient, userFeignClient),
                         UsernamePasswordAuthenticationFilter.class)  // Add your custom filter
                 .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers(HttpMethod.PUT, "/users/verify/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/users/recovery/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/sessions").permitAll()
                         .anyRequest().authenticated());  // Other endpoints require authentication

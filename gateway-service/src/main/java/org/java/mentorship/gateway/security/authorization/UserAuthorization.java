@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 @UtilityClass
-public class UserIdAuthorization {
+public class UserAuthorization {
 
     public static void loggedInAsUser(Integer userId) {
         AppAuthentication authentication = (AppAuthentication) SecurityContextHolder.getContext().getAuthentication();

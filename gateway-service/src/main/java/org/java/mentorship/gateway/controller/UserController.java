@@ -7,7 +7,7 @@ import org.java.mentorship.contracts.user.dto.request.PasswordChangeRequest;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.contracts.user.dto.request.SendPasswordChangeTokenRequest;
 import org.java.mentorship.contracts.user.dto.request.SendVerificationTokenRequest;
-import org.java.mentorship.gateway.security.authorization.UserIdAuthorization;
+import org.java.mentorship.gateway.security.authorization.UserAuthorization;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +22,13 @@ public class UserController {
 
     @GetMapping()
     ResponseEntity<List<User>> getUsers() {
-        // TODO: Restrict to admin users
+        UserAuthorization.loggedInAsUser(null);
         return ResponseEntity.ok(userFeignClient.getUsers());
     }
 
     @GetMapping("/{id}")
     ResponseEntity<User> getUserById(@PathVariable(name = "id") Integer id) {
-        UserIdAuthorization.loggedInAsUser(id);
+        UserAuthorization.loggedInAsUser(id);
         return ResponseEntity.ok(userFeignClient.getUser(id));
     }
 
@@ -43,8 +43,8 @@ public class UserController {
     }
 
     @PostMapping("/verify")
-    ResponseEntity<Boolean> changePasswordWithToken(@RequestBody SendVerificationTokenRequest sendVerificationTokenRequest) {
-        UserIdAuthorization.loggedInAsUser(sendVerificationTokenRequest.getUserId());
+    ResponseEntity<Boolean> sendVerificationToken(@RequestBody SendVerificationTokenRequest sendVerificationTokenRequest) {
+        UserAuthorization.loggedInAsUser(sendVerificationTokenRequest.getUserId());
         return ResponseEntity.ok(userFeignClient.sendNotificationToken(sendVerificationTokenRequest));
     }
 
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @PutMapping("/recovery/{token}")
-    ResponseEntity<Boolean> changePasswordWithToken(@PathVariable(name = "token") String token, @RequestBody PasswordChangeRequest passwordChangeRequest) {
+    ResponseEntity<Boolean> sendVerificationToken(@PathVariable(name = "token") String token, @RequestBody PasswordChangeRequest passwordChangeRequest) {
         return ResponseEntity.ok(userFeignClient.changePasswordWithToken(token, passwordChangeRequest));
     }
 }

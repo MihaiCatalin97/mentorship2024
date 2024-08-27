@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.java.mentorship.gateway.security.authorization.UserIdAuthorization.*;
+import static org.java.mentorship.gateway.security.authorization.UserAuthorization.*;
 
 @RestController
 @RequiredArgsConstructor
