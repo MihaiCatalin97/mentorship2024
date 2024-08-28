@@ -68,10 +68,8 @@ public class TokenService {
     public OffsetDateTime getLastSentVerificationNotificationDate(UserEntity user) {
         List<Notification> notifications = notificationFeignClient.getNotifications(
                 user.getId(), user.getEmail(), null,
-                NotificationType.PASSWORD_CHANGE, null
+                NotificationType.VERIFICATION, null
         );
-
-        System.out.println(notifications.getFirst());
 
         if (!notifications.isEmpty()) {
             return notifications.getLast().getCreatedAt();
