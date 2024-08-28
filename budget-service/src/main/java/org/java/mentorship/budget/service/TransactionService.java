@@ -53,8 +53,6 @@ public class TransactionService {
         return updatedTransaction;
     }
 
-
-
     @Transactional
     public TransactionEntity delete(final Integer id) {
         try {
