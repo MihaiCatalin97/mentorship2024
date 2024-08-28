@@ -5,6 +5,7 @@ import org.java.mentorship.budget.domain.CategoryEntity;
 import org.java.mentorship.budget.exception.UnauthorizedException;
 import org.java.mentorship.budget.persistence.CategoryRepository;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,16 +26,18 @@ public class CategoryService {
     }
 
     public CategoryEntity findById(final Integer id) {
-        CategoryEntity categoryEntity = repository.findById(id);
-        if (categoryEntity == null) {
+        try {
+            return repository.findById(id);
+        } catch (EmptyResultDataAccessException e) {
             throw new NoEntityFoundException("Category with id " + id + " not found");
         }
-        return categoryEntity;
     }
 
     public CategoryEntity update(final CategoryEntity categoryEntity) {
-        CategoryEntity existingCategory = repository.findById(categoryEntity.getId());
-        if (existingCategory == null) {
+        try {
+            CategoryEntity existingCategory = repository.findById(categoryEntity.getId());
+            return repository.update(categoryEntity);
+        } catch (EmptyResultDataAccessException e) {
             throw new NoEntityFoundException("Category with id " + categoryEntity.getId() + " not found");
         }
         if (!Objects.equals(categoryEntity.getUserId(), existingCategory.getUserId())) {
@@ -44,11 +47,12 @@ public class CategoryService {
     }
 
     public CategoryEntity delete(final Integer id) {
-        CategoryEntity categoryEntity = repository.findById(id);
-        if (categoryEntity == null) {
+        try {
+            CategoryEntity categoryEntity = repository.findById(id);
+            repository.delete(id);
+            return categoryEntity;
+        } catch (EmptyResultDataAccessException e) {
             throw new NoEntityFoundException("Category with id " + id + " not found");
         }
-        repository.delete(id);
-        return categoryEntity;
     }
 }

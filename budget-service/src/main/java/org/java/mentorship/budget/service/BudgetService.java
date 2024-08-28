@@ -5,6 +5,7 @@ import org.java.mentorship.budget.domain.BudgetEntity;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
 import org.java.mentorship.budget.exception.UnauthorizedException;
 import org.java.mentorship.budget.persistence.BudgetRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,17 +31,19 @@ public class BudgetService {
     }
 
     public BudgetEntity findById(final Integer id) {
-        BudgetEntity budgetEntity = repository.findById(id);
-        if (budgetEntity == null) {
+        try {
+            return repository.findById(id);
+        } catch (EmptyResultDataAccessException e) {
             throw new NoEntityFoundException("Budget with id " + id + " not found");
         }
-        return budgetEntity;
     }
 
     @Transactional
     public BudgetEntity update(final BudgetEntity budgetEntity) {
-        BudgetEntity existingBudget = repository.findById(budgetEntity.getId());
-        if (existingBudget == null) {
+        try {
+            BudgetEntity existingBudget = repository.findById(budgetEntity.getId());
+            return repository.update(budgetEntity);
+        } catch (EmptyResultDataAccessException e) {
             throw new NoEntityFoundException("Budget with id " + budgetEntity.getId() + " not found");
         }
         if (!Objects.equals(budgetEntity.getUserId(), existingBudget.getUserId())) {
@@ -51,12 +54,12 @@ public class BudgetService {
 
     @Transactional
     public BudgetEntity delete(final Integer id) {
-        BudgetEntity budgetEntity = repository.findById(id);
-        if (budgetEntity == null) {
+        try {
+            BudgetEntity budgetEntity = repository.findById(id);
+            repository.delete(id);
+            return budgetEntity;
+        } catch (EmptyResultDataAccessException e) {
             throw new NoEntityFoundException("Budget with id " + id + " not found");
         }
-        repository.delete(id);
-        return budgetEntity;
     }
-
 }

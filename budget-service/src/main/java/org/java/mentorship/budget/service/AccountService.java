@@ -1,11 +1,13 @@
 package org.java.mentorship.budget.service;
 
-import lombok.RequiredArgsConstructor;
 import org.java.mentorship.budget.domain.BankAccountEntity;
 import org.java.mentorship.budget.exception.UnauthorizedException;
 import org.java.mentorship.budget.persistence.AccountRepository;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
+import org.java.mentorship.budget.persistence.AccountRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,16 +27,18 @@ public class AccountService {
     }
 
     public BankAccountEntity findById(final Integer id) {
-        BankAccountEntity bankAccountEntity = repository.findById(id);
-        if (bankAccountEntity == null) {
+        try {
+            return repository.findById(id);
+        } catch (EmptyResultDataAccessException e) {
             throw new NoEntityFoundException("Account with id " + id + " not found");
         }
-        return bankAccountEntity;
     }
 
     public BankAccountEntity update(final BankAccountEntity bankAccountEntity) {
-        BankAccountEntity existingAccount = repository.findById(bankAccountEntity.getId());
-        if (existingAccount == null) {
+        try {
+            BankAccountEntity existingAccount = repository.findById(bankAccountEntity.getId());
+            return repository.update(bankAccountEntity);
+        } catch (EmptyResultDataAccessException e) {
             throw new NoEntityFoundException("Account with id " + bankAccountEntity.getId() + " not found");
         }
         if (!Objects.equals(bankAccountEntity.getUserId(), existingAccount.getUserId())) {
@@ -44,11 +48,12 @@ public class AccountService {
     }
 
     public BankAccountEntity delete(final Integer id) {
-        BankAccountEntity bankAccountEntity = repository.findById(id);
-        if (bankAccountEntity == null) {
+        try {
+            BankAccountEntity bankAccountEntity = repository.findById(id);
+            repository.delete(id);
+            return bankAccountEntity;
+        } catch (EmptyResultDataAccessException e) {
             throw new NoEntityFoundException("Account with id " + id + " not found");
         }
-        repository.delete(id);
-        return bankAccountEntity;
     }
 }
