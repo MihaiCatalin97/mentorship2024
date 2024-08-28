@@ -40,18 +40,19 @@ public class TransactionService {
 
     @Transactional
     public TransactionEntity update(final TransactionEntity transactionEntity) {
+        TransactionEntity existingTransaction;
         try {
-            TransactionEntity existingTransaction = repository.findById(transactionEntity.getId());
-
-            TransactionEntity updatedTransaction = repository.update(transactionEntity);
-
-            adjustAccountBalanceForUpdate(existingTransaction, updatedTransaction);
-
-            return updatedTransaction;
+            existingTransaction = repository.findById(transactionEntity.getId());
         } catch (EmptyResultDataAccessException e) {
             throw new NoEntityFoundException("Transaction with id " + transactionEntity.getId() + " not found");
         }
+
+        TransactionEntity updatedTransaction = repository.update(transactionEntity);
+        adjustAccountBalanceForUpdate(existingTransaction, updatedTransaction);
+
+        return updatedTransaction;
     }
+
 
     @Transactional
     public TransactionEntity delete(final Integer id) {
