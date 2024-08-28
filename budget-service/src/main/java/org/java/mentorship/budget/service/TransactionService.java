@@ -36,14 +36,13 @@ public class TransactionService {
     public TransactionEntity update(final TransactionEntity transactionEntity) {
         try {
             TransactionEntity existingTransaction = repository.findById(transactionEntity.getId());
+            if (!Objects.equals(transactionEntity.getUserId(), existingTransaction.getUserId())) {
+                throw new UnauthorizedException("You can't edit the user id field of this entity");
+            }
             return repository.update(transactionEntity);
         } catch (EmptyResultDataAccessException e) {
             throw new NoEntityFoundException("Transaction with id " + transactionEntity.getId() + " not found");
         }
-        if (!Objects.equals(transactionEntity.getUserId(), existingTransaction.getUserId())) {
-            throw new UnauthorizedException("You can't edit the user id field of this entity");
-        }
-        return repository.update(transactionEntity);
     }
 
     public TransactionEntity delete(final Integer id) {

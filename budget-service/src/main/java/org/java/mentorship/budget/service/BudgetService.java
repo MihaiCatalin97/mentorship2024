@@ -42,14 +42,13 @@ public class BudgetService {
     public BudgetEntity update(final BudgetEntity budgetEntity) {
         try {
             BudgetEntity existingBudget = repository.findById(budgetEntity.getId());
+            if (!Objects.equals(budgetEntity.getUserId(), existingBudget.getUserId())) {
+                throw new UnauthorizedException("You can't edit the user id field of this entity");
+            }
             return repository.update(budgetEntity);
         } catch (EmptyResultDataAccessException e) {
             throw new NoEntityFoundException("Budget with id " + budgetEntity.getId() + " not found");
         }
-        if (!Objects.equals(budgetEntity.getUserId(), existingBudget.getUserId())) {
-            throw new UnauthorizedException("You can't edit the user id field of this entity");
-        }
-        return repository.update(budgetEntity);
     }
 
     @Transactional
