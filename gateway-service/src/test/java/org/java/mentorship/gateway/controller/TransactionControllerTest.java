@@ -57,7 +57,7 @@ class TransactionControllerTest extends AbstractControllerTest {
                 .timestamp(OffsetDateTime.now())
                 .build();
 
-        when(transactionFeignClient.getTransactions()).thenReturn(Arrays.asList(transaction1, transaction2));
+        when(transactionFeignClient.getTransactions(null)).thenReturn(Arrays.asList(transaction1, transaction2));
 
         mockMvc.perform(get("/transactions")
                         .header("X-SESSION", sessionHeader)
@@ -68,7 +68,19 @@ class TransactionControllerTest extends AbstractControllerTest {
                 .andExpect(jsonPath("$[0].description").value("Salary"))
                 .andExpect(jsonPath("$[1].id").value(2))
                 .andExpect(jsonPath("$[1].description").value("Dinner"));
+
+        when(transactionFeignClient.getTransactions(true)).thenReturn(Arrays.asList(transaction1));
+
+        mockMvc.perform(get("/transactions")
+                        .header("X-SESSION", sessionHeader)
+                        .param("recent", "true")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].description").value("Salary"));
     }
+
 
     @ParameterizedTest
     @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})

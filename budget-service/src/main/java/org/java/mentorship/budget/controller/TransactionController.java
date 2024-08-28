@@ -23,8 +23,10 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping
-    public ResponseEntity<List<Transaction>> getAllTransactions() {
-        List<Transaction> transactions = transactionService.findAll().stream()
+    public ResponseEntity<List<Transaction>> getAllTransactions(
+            @RequestParam(required = false, name = "recent") Boolean recent
+    ) {
+        List<Transaction> transactions = transactionService.findAllWithFilters(recent).stream()
                 .map(TransactionContractMapper::entityToContract)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(transactions);

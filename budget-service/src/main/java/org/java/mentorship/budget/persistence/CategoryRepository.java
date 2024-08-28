@@ -25,7 +25,7 @@ public class CategoryRepository {
     }
 
     public List<CategoryEntity> findAll() {
-        return jdbcTemplate.query("SELECT * FROM categories", rowMapper);
+        return jdbcTemplate.query("SELECT * FROM categories ORDER BY id", rowMapper);
     }
 
     public CategoryEntity findById(final Integer id) {

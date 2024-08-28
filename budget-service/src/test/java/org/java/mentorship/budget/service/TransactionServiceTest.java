@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -62,7 +63,7 @@ class TransactionServiceTest {
         TransactionEntity transaction = new TransactionEntity();
         when(repository.findAll()).thenReturn(Collections.singletonList(transaction));
 
-        var transactions = transactionService.findAll();
+        List<TransactionEntity> transactions = transactionService.findAll();
 
         assertNotNull(transactions);
         assertFalse(transactions.isEmpty());
@@ -160,6 +161,32 @@ class TransactionServiceTest {
 
         NoEntityFoundException thrown = assertThrows(NoEntityFoundException.class, () -> transactionService.delete(1));
         assertEquals("Transaction with id 1 not found", thrown.getMessage());
+    }
+
+    @Test
+    void findAllWithFiltersShouldReturnRecentTransactions() {
+        TransactionEntity transaction = new TransactionEntity();
+        when(repository.findTransactionsFromLast7Days()).thenReturn(Collections.singletonList(transaction));
+
+        List<TransactionEntity> transactions = transactionService.findAllWithFilters(true);
+
+        assertNotNull(transactions);
+        assertFalse(transactions.isEmpty());
+        assertEquals(1, transactions.size());
+        verify(repository, times(1)).findTransactionsFromLast7Days();
+    }
+
+    @Test
+    void findAllWithFiltersShouldReturnAllTransactions() {
+        TransactionEntity transaction = new TransactionEntity();
+        when(repository.findAll()).thenReturn(Collections.singletonList(transaction));
+
+        List<TransactionEntity> transactions = transactionService.findAllWithFilters(false);
+
+        assertNotNull(transactions);
+        assertFalse(transactions.isEmpty());
+        assertEquals(1, transactions.size());
+        verify(repository, times(1)).findAll();
     }
 
     @Test

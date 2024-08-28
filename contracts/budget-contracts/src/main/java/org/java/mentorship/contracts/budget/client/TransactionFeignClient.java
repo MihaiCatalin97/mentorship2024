@@ -13,7 +13,7 @@ public interface TransactionFeignClient {
             method = RequestMethod.GET,
             value = "/transactions"
     )
-    List<Transaction> getTransactions();
+    List<Transaction> getTransactions(@RequestParam(required = false, name = "recent") Boolean recent);
 
     @RequestMapping(
             method = RequestMethod.GET,
