@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.java.mentorship.gateway.security.authorization.UserAuthorization.*;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/budgets")
@@ -15,34 +17,45 @@ public class BudgetController {
 
     private final BudgetFeignClient budgetFeignClient;
 
-    @GetMapping
+    @GetMapping()
     ResponseEntity<List<Budget>> getBudgets(@RequestParam(required = false, name = "userId") Integer userId) {
-        // TODO: Add any necessary restrictions or filters for retrieving budgets
-        return ResponseEntity.ok(budgetFeignClient.getBudgets(userId));
+        loggedInAsAnyUser();
+
+        return ResponseEntity.ok(filterResults(budgetFeignClient.getBudgets(userId), Budget::getUserId));
     }
 
     @GetMapping("/{id}")
     ResponseEntity<Budget> getBudgetById(@PathVariable(name = "id") Integer id) {
-        // TODO: Add any necessary authorization checks or validations
-        return ResponseEntity.ok(budgetFeignClient.getBudgetById(id));
+        loggedInAsAnyUser();
+
+        Budget budget = budgetFeignClient.getBudgetById(id);
+
+        return filterResult(budget, Budget::getUserId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping()
     ResponseEntity<Budget> createBudget(@RequestBody Budget budget) {
-        // TODO: Add any necessary validation or pre-processing before creating the budget
+        loggedInAsUser(budget.getUserId());
+
         return ResponseEntity.ok(budgetFeignClient.createBudget(budget));
     }
 
     @PutMapping("/{id}")
     ResponseEntity<Budget> updateBudget(@PathVariable(name = "id") Integer id, @RequestBody Budget budget) {
-        // TODO: Add any necessary validation or pre-processing before updating the budget
+        loggedInAsUser(budget.getUserId());
+
         return ResponseEntity.ok(budgetFeignClient.updateBudget(id, budget));
     }
 
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteBudget(@PathVariable(name = "id") Integer id) {
-        // TODO: Add any necessary checks or processing before deleting the budget
+        Budget budget = budgetFeignClient.getBudgetById(id);
+
+        loggedInAsUser(budget.getUserId());
         budgetFeignClient.deleteBudget(id);
+
         return ResponseEntity.noContent().build();
     }
 }

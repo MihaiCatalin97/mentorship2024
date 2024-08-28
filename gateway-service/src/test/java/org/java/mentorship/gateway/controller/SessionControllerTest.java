@@ -5,61 +5,78 @@ import org.java.mentorship.contracts.user.dto.Session;
 import org.java.mentorship.contracts.user.dto.SessionWithKey;
 import org.java.mentorship.contracts.user.dto.request.LoginRequest;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 
 import java.util.Collections;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
-class SessionControllerTest {
+@WebMvcTest(SessionController.class)
+class SessionControllerTest extends AbstractControllerTest {
 
-    @Mock
+    @Autowired
     private SessionFeignClient sessionFeignClient;
 
-    @InjectMocks
-    private SessionController sessionController;
-
     @Test
-    void createSessionShouldReturnDataFromFeign() {
+    void createSessionShouldReturnDataFromFeign() throws Exception {
         when(sessionFeignClient.createSession(any(LoginRequest.class)))
-                .thenReturn(SessionWithKey.builder().build());
+                .thenReturn(SessionWithKey.builder()
+                        .userId(123).build());
 
-        ResponseEntity<SessionWithKey> response = sessionController.createSession(new LoginRequest());
+        mockMvc.perform(post("/sessions")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(
+                                LoginRequest.builder()
+                                        .email("email@email.com")
+                                        .password("password")
+                                        .build()
+                        )))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value(123));
+    }
 
-        assertEquals(200, response.getStatusCode().value());
-        assertNotNull(response.getBody());
+    @ParameterizedTest
+    @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})
+    void getSessionShouldReturnDataFromFeign(final String sessionHeader) throws Exception {
+        mockMvc.perform(get(String.format("/sessions/%s", sessionHeader))
+                        .header("X-SESSION", sessionHeader)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void getSessionShouldReturnDataFromFeign() {
-        when(sessionFeignClient.getSession(anyString()))
-                .thenReturn(Session.builder().build());
+    void getSessionsShouldReturnDataFromFeignWhenAdmin() throws Exception {
+        when(sessionFeignClient.find(any(), any())).thenReturn(
+                Collections.singletonList(
+                        Session.builder()
+                                .userId(1)
+                                .build()
+                )
+        );
 
-        ResponseEntity<Session> response = sessionController.getSession(anyString());
-
-        assertEquals(200, response.getStatusCode().value());
-        assertNotNull(response.getBody());
+        mockMvc.perform(get("/sessions")
+                        .header("X-SESSION", ADMIN_HEADER)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].userId").value(1));
     }
 
     @Test
-    void getSessionsShouldReturnDataFromFeign() {
-        when(sessionFeignClient.find(1, true)).thenReturn(Collections.singletonList(Session.builder().build()));
-
-        ResponseEntity<List<Session>> response = sessionController.findSessions(1, true);
-
-        assertEquals(200, response.getStatusCode().value());
-        assertNotNull(response.getBody());
-        assertEquals(1, response.getBody().size());
+    void getSessionsShouldReturnUnauthorizedWhenUser() throws Exception {
+        mockMvc.perform(get("/sessions")
+                        .header("X-SESSION", USER_HEADER)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
     }
 }
 

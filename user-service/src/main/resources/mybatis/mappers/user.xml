@@ -45,11 +45,11 @@
 
     <select id="findByPasswordChangeToken">
         SELECT * FROM users
-        WHERE password_change_token=${token}
+        WHERE password_change_token=#{token}
     </select>
 
     <select id="findByVerificationToken">
         SELECT * FROM users
-        WHERE verification_token=${token}
+        WHERE verification_token=#{token}
     </select>
 </mapper>

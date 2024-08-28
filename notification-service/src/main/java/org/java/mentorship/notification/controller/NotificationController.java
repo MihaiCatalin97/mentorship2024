@@ -27,22 +27,22 @@ public class NotificationController {
     @GetMapping("/notifications")
     public ResponseEntity<List<Notification>> getNotifications(@RequestParam(required = false, name = "userId") Integer userId,
                                                                @RequestParam(required = false, name = "email") String email,
-                                                               @RequestParam(required = false, name = "channel") NotificationChannel channel,
-                                                               @RequestParam(required = false, name = "type") NotificationType type,
+                                                               @RequestParam(required = false, name = "channel") String channel,
+                                                               @RequestParam(required = false, name = "type") String type,
                                                                @RequestParam(required = false, name = "marked") Boolean marked
     ) {
         Map<String, Object> map = new HashMap<>();
-        map.put("userId", userId);
+        map.put("user_id", userId);
         map.put("email", email);
         map.put("channel", channel);
-        map.put("types", type);
+        map.put("type", type);
         map.put("marked_as_read", marked);
         map.values().removeAll(Collections.singleton(null));
 
         return ResponseEntity.ok(
                 notificationService.getNotifications(map)
                         .stream()
-                        .map(it -> notificationContractMapper.map(it))
+                        .map(notificationContractMapper::map)
                         .toList());
     }
 

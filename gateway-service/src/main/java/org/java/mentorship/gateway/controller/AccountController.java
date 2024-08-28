@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.java.mentorship.gateway.security.authorization.UserAuthorization.*;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/accounts")
@@ -17,32 +19,45 @@ public class AccountController {
 
     @GetMapping()
     ResponseEntity<List<Account>> getAccounts() {
-        // TODO: Add any necessary restrictions or filters for retrieving accounts
-        return ResponseEntity.ok(accountFeignClient.getAccounts());
+        loggedInAsAnyUser();
+
+        List<Account> results = accountFeignClient.getAccounts();
+
+        return ResponseEntity.ok(filterResults(results, Account::getUserId));
     }
 
     @GetMapping("/{id}")
     ResponseEntity<Account> getAccountById(@PathVariable(name = "id") Integer id) {
-        // TODO: Add any necessary authorization checks or validations
-        return ResponseEntity.ok(accountFeignClient.getAccountById(id));
+        loggedInAsAnyUser();
+
+        Account account = accountFeignClient.getAccountById(id);
+
+        return filterResult(account, Account::getUserId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping()
     ResponseEntity<Account> createAccount(@RequestBody Account account) {
-        // TODO: Add any necessary validation or pre-processing before creating the account
+        loggedInAsUser(account.getUserId());
+
         return ResponseEntity.ok(accountFeignClient.createAccount(account));
     }
 
     @PutMapping("/{id}")
     ResponseEntity<Account> updateAccount(@PathVariable(name = "id") Integer id, @RequestBody Account account) {
-        // TODO: Add any necessary validation or pre-processing before updating the account
+        loggedInAsUser(account.getUserId());
+
         return ResponseEntity.ok(accountFeignClient.updateAccount(id, account));
     }
 
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteAccount(@PathVariable(name = "id") Integer id) {
-        // TODO: Add any necessary checks or processing before deleting the account
+        Account account = accountFeignClient.getAccountById(id);
+
+        loggedInAsUser(account.getUserId());
         accountFeignClient.deleteAccount(id);
+
         return ResponseEntity.noContent().build();
     }
 }
