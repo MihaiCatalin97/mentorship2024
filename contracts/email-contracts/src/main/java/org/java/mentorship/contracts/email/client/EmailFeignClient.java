@@ -13,19 +13,8 @@ public interface EmailFeignClient {
 
     @RequestMapping(
             method = RequestMethod.POST,
-            value = "/test"
-    )
-    EmailResponse sendTest(@RequestBody EmailRequest emailRequest);
-
-    @RequestMapping(
-            method = RequestMethod.POST,
             value = "/verify"
     )
     EmailResponse sendVerification(@RequestBody EmailRequest emailRequest);
 
-    @RequestMapping(
-            method = RequestMethod.POST,
-            value = "/overspend"
-    )
-    EmailResponse sendOverSpend(@RequestBody EmailRequest emailRequest);
 }

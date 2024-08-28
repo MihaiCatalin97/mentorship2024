@@ -4,10 +4,12 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.java.mentorship.email.dto.EmailRequest;
 import org.java.mentorship.email.dto.EmailResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -19,37 +21,14 @@ import java.util.Map;
 @Service
 public class EmailService {
 
+    @Value("${spring.mail.username}")
+    private String username;
+
     @Autowired
     private JavaMailSender sender;
 
     @Autowired
     private Configuration config;
-
-    public EmailResponse sendTest(EmailRequest request, Map<String, Object> model) {
-
-        EmailResponse response = new EmailResponse();
-        MimeMessage message = sender.createMimeMessage();
-
-        try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED);
-
-            Template template = config.getTemplate("email-test.ftl");
-            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-
-            helper.setTo(request.getTo());
-            helper.setFrom("budget.tracker@dfourmusic.com");
-            helper.setText(html, true);
-            helper.setSubject(request.getSubject());
-            sender.send(message);
-
-            response.setMessage("Mail sent to " + request.getTo());
-            response.setConfirmation(Boolean.TRUE);
-        } catch (MessagingException | IOException | TemplateException e) {
-            response.setMessage("Failed! " + e.getMessage());
-            response.setConfirmation(Boolean.FALSE);
-        }
-        return response;
-    }
 
     public EmailResponse sendVerification(EmailRequest request, Map<String, Object> model) {
 
@@ -63,43 +42,14 @@ public class EmailService {
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
 
             helper.setTo(request.getTo());
-            helper.setFrom("budget.tracker@dfourmusic.com");
+            helper.setFrom(username);
             helper.setText(html, true);
             helper.setSubject(request.getSubject());
             sender.send(message);
 
             response.setMessage("Mail sent to " + request.getTo());
             response.setConfirmation(Boolean.TRUE);
-        } catch (MessagingException | IOException | TemplateException e) {
-            response.setMessage("Failed! " + e.getMessage());
-            response.setConfirmation(Boolean.FALSE);
-        }
-        return response;
-    }
-
-    public EmailResponse sendOverSpend(EmailRequest request, Map<String, Object> model) {
-
-        EmailResponse response = new EmailResponse();
-        MimeMessage message = sender.createMimeMessage();
-
-        try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED);
-
-            Template template = config.getTemplate("email-overspend.ftl");
-            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-
-            helper.setTo(request.getTo());
-            helper.setFrom("budget.tracker@dfourmusic.com");
-            helper.setText(html, true);
-            helper.setSubject(request.getSubject());
-            sender.send(message);
-
-            response.setMessage("Mail sent to " + request.getTo());
-            response.setConfirmation(Boolean.TRUE);
-        } catch (MessagingException | IOException | TemplateException e) {
-            response.setMessage("Failed! " + e.getMessage());
-            response.setConfirmation(Boolean.FALSE);
-        }
+        } catch (MessagingException | IOException | TemplateException e) {}
         return response;
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 @Configuration
 public class ApiConfig {
-
+    @Primary
     @Bean
     public FreeMarkerConfigurationFactoryBean factoryBean() {
         FreeMarkerConfigurationFactoryBean bean = new FreeMarkerConfigurationFactoryBean();

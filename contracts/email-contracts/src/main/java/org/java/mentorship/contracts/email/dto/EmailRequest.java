@@ -6,10 +6,13 @@ import jakarta.validation.constraints.NotNull;
 @Data
 public class EmailRequest {
 
-    @NotNull(message = "to cannot be null")
+    @NotNull(message = "Type cannot be null")
+    private EmailType type;
+
+    @NotNull(message = "Recipient cannot be null")
     private String to;
 
-    @NotNull(message = "subject cannot be null")
+    @NotNull(message = "Subject cannot be null")
     private String subject;
 
 }
