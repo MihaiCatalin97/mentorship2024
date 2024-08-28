@@ -44,7 +44,7 @@ public interface UserFeignClient {
             method = RequestMethod.POST,
             value = "/verify"
     )
-    Boolean resendVerificationToken(@RequestBody SendVerificationTokenRequest sendVerificationTokenRequest);
+    Boolean sendNotificationToken(@RequestBody SendVerificationTokenRequest sendVerificationTokenRequest);
 
     @RequestMapping(
             method = RequestMethod.POST,

@@ -13,10 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.TestPropertySource;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,7 +24,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-    private UserService userService;
 
     @Mock
     private UserRepository userRepository;
@@ -36,8 +33,11 @@ class UserServiceTest {
 
     @Captor
     private ArgumentCaptor<UserEntity> userArgumentCaptor;
+
     @Captor
     private ArgumentCaptor<Notification> notificationArgumentCaptor;
+
+    private UserService userService;
 
     @BeforeEach
     void setUp() {
@@ -200,7 +200,7 @@ class UserServiceTest {
     }
 
     @Test
-    void resendVerificationTokenShouldSetVerificationToken() {
+    void sendVerificationTokenShouldSetVerificationToken() {
         when(userRepository.findById(1)).thenReturn(Optional.of(
                 UserEntity.builder()
                         .firstName("first")
@@ -210,7 +210,7 @@ class UserServiceTest {
                         .build()
         ));
 
-        Boolean result = userService.resendVerificationToken(1);
+        Boolean result = userService.sendVerificationToken(1);
 
         verify(notificationFeignClient).postNotification(notificationArgumentCaptor.capture());
         verify(userRepository).update(userArgumentCaptor.capture());
@@ -223,7 +223,7 @@ class UserServiceTest {
     }
 
     @Test
-    void resendVerificationTokenShouldReturnFalseWhenUserAlreadyRequestedAToken() {
+    void sendVerificationTokenShouldReturnFalseWhenUserAlreadyRequestedAToken() {
         Notification notification = new Notification();
         notification.setCreatedAt(OffsetDateTime.now());
 
@@ -240,7 +240,7 @@ class UserServiceTest {
                 Collections.singletonList(notification)
         );
 
-        Boolean result = userService.resendVerificationToken(1);
+        Boolean result = userService.sendVerificationToken(1);
 
         assertFalse(result);
     }
@@ -289,7 +289,7 @@ class UserServiceTest {
     }
 
     @Test
-    void requestChangePasswordTokenShouldCallNotification() {
+    void sendPasswordChangeTokenShouldCallNotification() {
         when(userRepository.findById(1)).thenReturn(Optional.of(
                 UserEntity.builder()
                         .firstName("First name")
@@ -297,7 +297,7 @@ class UserServiceTest {
                         .build()
         ));
 
-        boolean result = userService.requestChangePasswordToken(1);
+        boolean result = userService.sendPasswordChangeToken(1);
 
         verify(notificationFeignClient).postNotification(notificationArgumentCaptor.capture());
         verify(userRepository).update(userArgumentCaptor.capture());

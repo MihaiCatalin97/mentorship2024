@@ -26,4 +26,5 @@ public class UserEntity {
     private String hashedPassword;
     private String passwordChangeToken;
     private String verificationToken;
+    private Boolean isAdmin;
 }

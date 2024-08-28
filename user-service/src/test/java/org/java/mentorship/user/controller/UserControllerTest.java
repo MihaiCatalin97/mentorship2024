@@ -22,6 +22,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -111,7 +113,7 @@ class UserControllerTest {
 
     @Test
     void resendNotificationTokenShouldReturnFromService() {
-        when(userService.resendVerificationToken(anyInt()))
+        when(userService.sendVerificationToken(anyInt()))
                 .thenReturn(true);
 
         ResponseEntity<Boolean> response = userController.sendVerificationToken(
@@ -126,11 +128,11 @@ class UserControllerTest {
     }
 
     @Test
-    void requestChangePasswordShouldReturnFromService() {
-        when(userService.requestChangePasswordToken(anyInt()))
+    void sendPasswordChangeTokenShouldReturnFromService() {
+        when(userService.sendPasswordChangeToken(anyInt()))
                 .thenReturn(true);
 
-        ResponseEntity<Boolean> response = userController.requestChangePassword(
+        ResponseEntity<Boolean> response = userController.sendPasswordChangeToken(
             SendPasswordChangeTokenRequest.builder()
                     .userId(1)
                     .build()

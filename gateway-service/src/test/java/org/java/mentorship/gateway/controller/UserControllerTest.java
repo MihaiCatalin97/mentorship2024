@@ -5,84 +5,101 @@ import org.java.mentorship.contracts.user.dto.User;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
 import org.java.mentorship.contracts.user.dto.request.SendVerificationTokenRequest;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 
 import java.util.Collections;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
-class UserControllerTest {
-    @Mock
+@WebMvcTest(UserController.class)
+class UserControllerTest extends AbstractControllerTest {
+    @Autowired
     private UserFeignClient userFeignClient;
 
-    @InjectMocks
-    private UserController userController;
-
     @Test
-    void getUsersShouldReturnDataFromFeign() {
+    void getUsersShouldReturnDataFromFeignWhenAdmin() throws Exception {
         when(userFeignClient.getUsers())
                 .thenReturn(Collections.singletonList(new User()));
-        ResponseEntity<List<User>> response = userController.getUsers();
 
-        assertEquals(200, response.getStatusCode().value());
-        assertNotNull(response.getBody());
-        assertEquals(1, response.getBody().size());
+        mockMvc.perform(get("/users")
+                        .header("X-SESSION", ADMIN_HEADER))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void getUserByIdShouldReturnDataFromFeign() {
-        when(userFeignClient.getUser(anyInt()))
-                .thenReturn(new User());
+    void getUsersShouldReturnUnauthorizedWhenUser() throws Exception {
+        mockMvc.perform(get("/users")
+                        .header("X-SESSION", USER_HEADER))
+                .andExpect(status().isUnauthorized());
+    }
 
-        ResponseEntity<User> response = userController.getUserById(1);
-
-        assertEquals(200, response.getStatusCode().value());
-        assertNotNull(response.getBody());
+    @ParameterizedTest
+    @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})
+    void getUserByIdShouldReturnDataFromFeign(final String sessionHeader) throws Exception {
+        mockMvc.perform(get("/users/123")
+                        .header("X-SESSION", sessionHeader))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void registerUserShouldReturnDataFromFeign() {
+    void registerUserShouldReturnDataFromFeign() throws Exception {
         when(userFeignClient.registerUser(any(RegistrationRequest.class)))
                 .thenReturn(new User());
 
-        ResponseEntity<User> response = userController.registerUser(RegistrationRequest.builder().build());
 
-        assertEquals(200, response.getStatusCode().value());
-        assertNotNull(response.getBody());
+        mockMvc.perform(post("/users/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                objectMapper.writeValueAsString(
+                                        RegistrationRequest.builder()
+                                                .email("email@email.com")
+                                                .firstName("First name")
+                                                .lastName("Last name")
+                                                .password("Password")
+                                                .build()
+                                )
+                        )
+                )
+                .andExpect(status().isOk());
     }
 
     @Test
-    void verifyUserShouldReturnDataFromFeign() {
+    void verifyUserShouldReturnDataFromFeign() throws Exception {
         when(userFeignClient.verifyUser(anyString()))
                 .thenReturn(true);
 
-        ResponseEntity<Boolean> response = userController.verifyUser("AA-BB-CC");
-
-        assertEquals(200, response.getStatusCode().value());
-        assertNotNull(response.getBody());
-        assertTrue(response.getBody());
+        mockMvc.perform(put("/users/verify/AAA"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("true"));
     }
 
-    @Test
-    void resendNotificationTokenShouldCallFeign() {
-        when(userFeignClient.resendVerificationToken(any(SendVerificationTokenRequest.class)))
+    @ParameterizedTest
+    @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})
+    void sendNotificationTokenShouldCallFeign(final String sessionHeader) throws Exception {
+        when(userFeignClient.sendNotificationToken(any(SendVerificationTokenRequest.class)))
                 .thenReturn(true);
 
-        ResponseEntity<Boolean> response = userController.resendNotificationToken(SendVerificationTokenRequest.builder()
-                .userId(1)
-                .build());
-
-        assertEquals(200, response.getStatusCode().value());
-        assertNotNull(response.getBody());
-        assertTrue(response.getBody());
+        mockMvc.perform(post("/users/verify")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-SESSION", sessionHeader)
+                        .content(
+                                objectMapper.writeValueAsString(
+                                        SendVerificationTokenRequest.builder()
+                                                .userId(123)
+                                                .build()
+                                )
+                        ))
+                .andExpect(status().isOk())
+                .andExpect(content().string("true"));
     }
 
 }

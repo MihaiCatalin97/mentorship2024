@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.java.mentorship.gateway.security.authorization.UserAuthorization.*;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/categories")
@@ -17,32 +19,43 @@ public class CategoryController {
 
     @GetMapping()
     ResponseEntity<List<Category>> getCategories() {
-        // TODO: Add any necessary restrictions or filters for retrieving categories
-        return ResponseEntity.ok(categoryFeignClient.getCategories());
+        loggedInAsAnyUser();
+
+        return ResponseEntity.ok(filterResults(categoryFeignClient.getCategories(), Category::getUserId));
     }
 
     @GetMapping("/{id}")
     ResponseEntity<Category> getCategoryById(@PathVariable(name = "id") Integer id) {
-        // TODO: Add any necessary authorization checks or validations
-        return ResponseEntity.ok(categoryFeignClient.getCategoryById(id));
+        loggedInAsAnyUser();
+
+        Category category = categoryFeignClient.getCategoryById(id);
+
+        return filterResult(category, Category::getUserId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping()
     ResponseEntity<Category> createCategory(@RequestBody Category category) {
-        // TODO: Add any necessary validation or pre-processing before creating the category
+        loggedInAsUser(category.getUserId());
+
         return ResponseEntity.ok(categoryFeignClient.createCategory(category));
     }
 
     @PutMapping("/{id}")
     ResponseEntity<Category> updateCategory(@PathVariable(name = "id") Integer id, @RequestBody Category category) {
-        // TODO: Add any necessary validation or pre-processing before updating the category
+        loggedInAsUser(category.getUserId());
+
         return ResponseEntity.ok(categoryFeignClient.updateCategory(id, category));
     }
 
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteCategory(@PathVariable(name = "id") Integer id) {
-        // TODO: Add any necessary checks or processing before deleting the category
+        Category category = categoryFeignClient.getCategoryById(id);
+
+        loggedInAsUser(category.getUserId());
         categoryFeignClient.deleteCategory(id);
+
         return ResponseEntity.noContent().build();
     }
 }

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.java.mentorship.gateway.security.authorization.UserAuthorization.*;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/notifications")
@@ -24,12 +26,17 @@ public class NotificationController {
                                                                @RequestParam(required = false, name = "email") String email,
                                                                @RequestParam(required = false, name = "channel") NotificationChannel channel,
                                                                @RequestParam(required = false, name = "type") NotificationType type,
-                                                               @RequestParam(required = false, name = "marked") Boolean marked) {
-        return ResponseEntity.ok(notificationFeignClient.getNotifications(userId, email, channel, type, marked));
+                                                               @RequestParam(required = false, name = "markedAsRead") Boolean markedAsRead) {
+        loggedInAsAnyUser();
+
+        return ResponseEntity.ok(filterResults(notificationFeignClient.getNotifications(userId, email, channel, type, markedAsRead),
+                Notification::getUserId));
     }
 
     @PutMapping("/read/{id}")
-    public ResponseEntity<Notification> markNotificationMarkAsRead(@PathVariable Integer id, @RequestBody @Valid Notification notification) {
+    public ResponseEntity<Notification> markNotificationMarkAsRead(@PathVariable(name = "id") Integer id, @RequestBody @Valid Notification notification) {
+        loggedInAsUser(notification.getUserId());
+
         return ResponseEntity.ok(notificationFeignClient.markNotificationMarkAsRead(id, notification));
     }
 }

@@ -2,54 +2,65 @@ package org.java.mentorship.gateway.controller;
 
 import org.java.mentorship.contracts.notification.client.NotificationFeignClient;
 import org.java.mentorship.contracts.notification.dto.Notification;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 
-import java.util.Collections;
-import java.util.List;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
+import static org.java.mentorship.contracts.notification.dto.NotificationChannel.EMAIL;
+import static org.java.mentorship.contracts.notification.dto.NotificationType.VERIFICATION;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(MockitoExtension.class)
-class NotificationControllerTest {
+@WebMvcTest(NotificationController.class)
+class NotificationControllerTest extends AbstractControllerTest {
 
-    @Mock
+    @MockBean
     private NotificationFeignClient notificationFeignClient;
 
-    @InjectMocks
-    private NotificationController notificationController;
+    @ParameterizedTest
+    @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})
+    void getNotificationsShouldReturnDataFromFeign(final String sessionHeader) throws Exception {
+        Notification notification = Notification.builder().id(1).userId(123).build();
+        when(notificationFeignClient.getNotifications(any(), any(), any(), any(), any())).thenReturn(singletonList(notification));
 
-    @Test
-    void getNotificationsShouldReturnDataFromFeign() {
-        when(notificationFeignClient.getNotifications(any(), any(), any(), any(), any())).thenReturn(Collections.singletonList(new Notification()));
-
-        ResponseEntity<List<Notification>> response = notificationController.getNotifications(null, null, null, null, null);
-
-        verify(notificationFeignClient).getNotifications(null, null, null, null, null);
-
-        assertNotNull(response.getBody());
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(1, response.getBody().size());
+        mockMvc.perform(get("/notifications")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header("X-SESSION", sessionHeader))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id").value(1));
     }
 
-    @Test
-    void markNotificationAsReadShouldCallFeign() {
-        when(notificationFeignClient.markNotificationMarkAsRead(anyInt(), any())).thenReturn(new Notification());
+    @ParameterizedTest
+    @ValueSource(strings = {USER_HEADER, ADMIN_HEADER})
+    void markNotificationAsReadShouldCallFeign(final String sessionHeader) throws Exception {
+        Notification notification = Notification.builder().id(1)
+                .email("mail@mail.com")
+                .channels(singletonList(EMAIL))
+                .type(VERIFICATION)
+                .payload(singletonMap("firstName", "Test"))
+                .markedAsRead(false)
+                .createdAt(OffsetDateTime.now(ZoneId.of("UTC")))
+                .userId(123).build();
+        when(notificationFeignClient.markNotificationMarkAsRead(1, notification)).thenReturn(notification);
 
-        ResponseEntity<Notification> response = notificationController.markNotificationMarkAsRead(1, new Notification());
-
-        assertNotNull(response.getBody());
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        mockMvc.perform(put("/notifications/read/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(notification))
+                        .header("X-SESSION", sessionHeader))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1));
     }
 
 }

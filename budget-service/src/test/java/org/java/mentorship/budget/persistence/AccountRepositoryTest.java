@@ -31,12 +31,6 @@ class AccountRepositoryTest {
     @Autowired
     private AccountRepository accountRepository;
 
-    @BeforeAll
-    public static void initTest() throws SQLException {
-        Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8082")
-                .start();
-    }
-
     @Test
     void findAllShouldReturnAllDatabaseEntries() {
         // When

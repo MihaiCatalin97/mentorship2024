@@ -46,7 +46,7 @@ class NotificationControllerTest {
 
         when(notificationService.getNotifications(any())).thenReturn(notifications);
 
-        ResponseEntity<List<Notification>> response = notificationController.getNotifications(2, "a@gmail.com", null, NotificationType.OVER_SPENDING, true);
+        ResponseEntity<List<Notification>> response = notificationController.getNotifications(2, "a@gmail.com", null, String.valueOf(NotificationType.OVER_SPENDING), true);
 
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());

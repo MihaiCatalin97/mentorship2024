@@ -3,12 +3,14 @@ package org.java.mentorship.budget.service;
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.budget.domain.BudgetEntity;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
+import org.java.mentorship.budget.exception.UnauthorizedException;
 import org.java.mentorship.budget.persistence.BudgetRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +42,9 @@ public class BudgetService {
     public BudgetEntity update(final BudgetEntity budgetEntity) {
         try {
             BudgetEntity existingBudget = repository.findById(budgetEntity.getId());
+            if (!Objects.equals(budgetEntity.getUserId(), existingBudget.getUserId())) {
+                throw new UnauthorizedException("You can't edit the user id field of this entity");
+            }
             return repository.update(budgetEntity);
         } catch (EmptyResultDataAccessException e) {
             throw new NoEntityFoundException("Budget with id " + budgetEntity.getId() + " not found");
