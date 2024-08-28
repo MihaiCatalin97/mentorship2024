@@ -1,115 +1,272 @@
 package org.java.mentorship.budget.service;
 
+import org.java.mentorship.budget.domain.BankAccountEntity;
 import org.java.mentorship.budget.domain.TransactionEntity;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
 import org.java.mentorship.budget.persistence.TransactionRepository;
+import org.java.mentorship.contracts.budget.dto.TransactionType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 class TransactionServiceTest {
-
-    @InjectMocks
-    private TransactionService transactionService;
 
     @Mock
     private TransactionRepository repository;
 
-    @Test
-    void saveShouldValidateAndSaveTransaction() {
-        TransactionEntity transactionEntity = new TransactionEntity();
-        when(repository.save(any(TransactionEntity.class))).thenReturn(transactionEntity);
+    @Mock
+    private AccountService bankAccountService;
 
-        TransactionEntity result = transactionService.save(transactionEntity);
+    @InjectMocks
+    private TransactionService transactionService;
 
-        assertEquals(transactionEntity, result);
-        verify(repository).save(transactionEntity);
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void findAllShouldCallRepository() {
-        List<TransactionEntity> transactions = Arrays.asList(new TransactionEntity(), new TransactionEntity());
-        when(repository.findAll()).thenReturn(transactions);
+    void saveShouldSaveTransactionAndUpdateAccountBalance() {
+        TransactionEntity transaction = new TransactionEntity();
+        transaction.setId(1);
+        transaction.setAccountId(1);
+        transaction.setValue(100);
+        transaction.setType(TransactionType.INCOME);
 
-        List<TransactionEntity> result = transactionService.findAll();
+        BankAccountEntity account = new BankAccountEntity();
+        account.setId(1);
+        account.setBalance(1000);
 
-        assertEquals(transactions, result);
-        verify(repository).findAll();
+        when(repository.save(transaction)).thenReturn(transaction);
+        when(bankAccountService.findById(transaction.getAccountId())).thenReturn(account);
+
+        TransactionEntity result = transactionService.save(transaction);
+
+        assertNotNull(result);
+        assertEquals(transaction, result);
+        assertEquals(1100, account.getBalance());
+        verify(repository, times(1)).save(transaction);
+        verify(bankAccountService, times(1)).update(account);
     }
 
     @Test
-    void findByIdShouldReturnTransactionWhenExists() {
-        TransactionEntity transactionEntity = new TransactionEntity();
-        when(repository.findById(1)).thenReturn(transactionEntity);
+    void findAllShouldReturnAllTransactions() {
+        TransactionEntity transaction = new TransactionEntity();
+        when(repository.findAll()).thenReturn(Collections.singletonList(transaction));
+
+        var transactions = transactionService.findAll();
+
+        assertNotNull(transactions);
+        assertFalse(transactions.isEmpty());
+        assertEquals(1, transactions.size());
+    }
+
+    @Test
+    void findByIdShouldReturnTransaction() {
+        TransactionEntity transaction = new TransactionEntity();
+        when(repository.findById(1)).thenReturn(transaction);
 
         TransactionEntity result = transactionService.findById(1);
 
-        assertEquals(transactionEntity, result);
-        verify(repository).findById(1);
+        assertNotNull(result);
+        assertEquals(transaction, result);
     }
 
     @Test
-    void findByIdShouldThrowExceptionWhenNotFound() {
-        when(repository.findById(1)).thenThrow(EmptyResultDataAccessException.class);
+    void findByIdShouldThrowNoEntityFoundExceptionWhenNotFound() {
+        when(repository.findById(1)).thenThrow(new EmptyResultDataAccessException(1));
 
-        assertThrows(NoEntityFoundException.class, () -> transactionService.findById(1));
-        verify(repository).findById(1);
+        NoEntityFoundException thrown = assertThrows(NoEntityFoundException.class, () -> transactionService.findById(1));
+        assertEquals("Transaction with id 1 not found", thrown.getMessage());
     }
 
     @Test
-    void updateShouldValidateAndUpdateTransactionWhenExists() {
-        TransactionEntity transactionEntity = new TransactionEntity();
-        transactionEntity.setId(1);
-        when(repository.findById(1)).thenReturn(transactionEntity);
-        when(repository.update(any(TransactionEntity.class))).thenReturn(transactionEntity);
+    void updateShouldUpdateTransactionAndAdjustAccountBalance() {
+        TransactionEntity oldTransaction = new TransactionEntity();
+        oldTransaction.setId(1);
+        oldTransaction.setAccountId(1);
+        oldTransaction.setValue(100);
+        oldTransaction.setType(TransactionType.INCOME);
 
-        TransactionEntity result = transactionService.update(transactionEntity);
+        TransactionEntity newTransaction = new TransactionEntity();
+        newTransaction.setId(1);
+        newTransaction.setAccountId(1);
+        newTransaction.setValue(200);
+        newTransaction.setType(TransactionType.EXPENSE);
 
-        assertEquals(transactionEntity, result);
-        verify(repository).findById(1);
-        verify(repository).update(transactionEntity);
+        BankAccountEntity account = new BankAccountEntity();
+        account.setId(1);
+        account.setBalance(1000);
+
+        when(repository.findById(1)).thenReturn(oldTransaction);
+        when(repository.update(newTransaction)).thenReturn(newTransaction);
+        when(bankAccountService.findById(1)).thenReturn(account);
+
+        TransactionEntity result = transactionService.update(newTransaction);
+
+        assertNotNull(result);
+        assertEquals(newTransaction, result);
+        assertEquals(700, account.getBalance());
+        verify(repository, times(1)).update(newTransaction);
+        verify(bankAccountService, times(1)).update(account);
     }
 
     @Test
-    void updateShouldThrowExceptionWhenTransactionNotFound() {
-        TransactionEntity transactionEntity = new TransactionEntity();
-        transactionEntity.setId(1);
-        when(repository.findById(1)).thenThrow(EmptyResultDataAccessException.class);
+    void updateShouldThrowNoEntityFoundExceptionWhenNotFound() {
+        TransactionEntity newTransaction = new TransactionEntity();
+        newTransaction.setId(1);
 
-        assertThrows(NoEntityFoundException.class, () -> transactionService.update(transactionEntity));
-        verify(repository).findById(1);
-        verify(repository, never()).update(any(TransactionEntity.class));
+        when(repository.findById(1)).thenThrow(new EmptyResultDataAccessException(1));
+
+        NoEntityFoundException thrown = assertThrows(NoEntityFoundException.class, () -> transactionService.update(newTransaction));
+        assertEquals("Transaction with id 1 not found", thrown.getMessage());
     }
 
     @Test
-    void deleteShouldReturnDeletedTransactionWhenExists() {
-        TransactionEntity transactionEntity = new TransactionEntity();
-        when(repository.findById(1)).thenReturn(transactionEntity);
-        when(repository.delete(1)).thenReturn(transactionEntity);
+    void deleteShouldDeleteTransactionAndUpdateAccountBalance() {
+        TransactionEntity transaction = new TransactionEntity();
+        transaction.setId(1);
+        transaction.setAccountId(1);
+        transaction.setValue(100);
+        transaction.setType(TransactionType.INCOME);
+
+        BankAccountEntity account = new BankAccountEntity();
+        account.setId(1);
+        account.setBalance(1000);
+
+        when(repository.findById(1)).thenReturn(transaction);
+        when(bankAccountService.findById(1)).thenReturn(account);
 
         TransactionEntity result = transactionService.delete(1);
 
-        assertEquals(transactionEntity, result);
-        verify(repository).findById(1);
-        verify(repository).delete(1);
+        assertNotNull(result);
+        assertEquals(transaction, result);
+        assertEquals(900, account.getBalance());
+        verify(repository, times(1)).delete(1);
+        verify(bankAccountService, times(1)).update(account);
     }
 
     @Test
-    void deleteShouldThrowExceptionWhenTransactionNotFound() {
-        when(repository.findById(1)).thenThrow(EmptyResultDataAccessException.class);
+    void deleteShouldThrowNoEntityFoundExceptionWhenNotFound() {
+        when(repository.findById(1)).thenThrow(new EmptyResultDataAccessException(1));
 
-        assertThrows(NoEntityFoundException.class, () -> transactionService.delete(1));
-        verify(repository).findById(1);
-        verify(repository, never()).delete(1);
+        NoEntityFoundException thrown = assertThrows(NoEntityFoundException.class, () -> transactionService.delete(1));
+        assertEquals("Transaction with id 1 not found", thrown.getMessage());
+    }
+
+    @Test
+    void adjustAccountBalanceForUpdateShouldHandleIncomeToIncome() {
+        TransactionEntity oldTransaction = new TransactionEntity();
+        oldTransaction.setId(1);
+        oldTransaction.setAccountId(1);
+        oldTransaction.setValue(100);
+        oldTransaction.setType(TransactionType.INCOME);
+
+        TransactionEntity newTransaction = new TransactionEntity();
+        newTransaction.setId(1);
+        newTransaction.setAccountId(1);
+        newTransaction.setValue(200);
+        newTransaction.setType(TransactionType.INCOME);
+
+        BankAccountEntity account = new BankAccountEntity();
+        account.setId(1);
+        account.setBalance(1000);
+
+        when(repository.findById(1)).thenReturn(oldTransaction);
+        when(repository.update(newTransaction)).thenReturn(newTransaction);
+        when(bankAccountService.findById(1)).thenReturn(account);
+
+        transactionService.update(newTransaction);
+
+        assertEquals(1100, account.getBalance());
+    }
+
+    @Test
+    void adjustAccountBalanceForUpdateShouldHandleExpenseToExpense() {
+        TransactionEntity oldTransaction = new TransactionEntity();
+        oldTransaction.setId(1);
+        oldTransaction.setAccountId(1);
+        oldTransaction.setValue(100);
+        oldTransaction.setType(TransactionType.EXPENSE);
+
+        TransactionEntity newTransaction = new TransactionEntity();
+        newTransaction.setId(1);
+        newTransaction.setAccountId(1);
+        newTransaction.setValue(200);
+        newTransaction.setType(TransactionType.EXPENSE);
+
+        BankAccountEntity account = new BankAccountEntity();
+        account.setId(1);
+        account.setBalance(1000);
+
+        when(repository.findById(1)).thenReturn(oldTransaction);
+        when(repository.update(newTransaction)).thenReturn(newTransaction);
+        when(bankAccountService.findById(1)).thenReturn(account);
+
+        transactionService.update(newTransaction);
+
+        assertEquals(900, account.getBalance());
+    }
+
+    @Test
+    void adjustAccountBalanceForUpdateShouldHandleIncomeToExpense() {
+        TransactionEntity oldTransaction = new TransactionEntity();
+        oldTransaction.setId(1);
+        oldTransaction.setAccountId(1);
+        oldTransaction.setValue(100);
+        oldTransaction.setType(TransactionType.INCOME);
+
+        TransactionEntity newTransaction = new TransactionEntity();
+        newTransaction.setId(1);
+        newTransaction.setAccountId(1);
+        newTransaction.setValue(200);
+        newTransaction.setType(TransactionType.EXPENSE);
+
+        BankAccountEntity account = new BankAccountEntity();
+        account.setId(1);
+        account.setBalance(1000);
+
+        when(repository.findById(1)).thenReturn(oldTransaction);
+        when(repository.update(newTransaction)).thenReturn(newTransaction);
+        when(bankAccountService.findById(1)).thenReturn(account);
+
+        transactionService.update(newTransaction);
+
+        assertEquals(700, account.getBalance());
+    }
+
+    @Test
+    void adjustAccountBalanceForUpdateShouldHandleExpenseToIncome() {
+        TransactionEntity oldTransaction = new TransactionEntity();
+        oldTransaction.setId(1);
+        oldTransaction.setAccountId(1);
+        oldTransaction.setValue(100);
+        oldTransaction.setType(TransactionType.EXPENSE);
+
+        TransactionEntity newTransaction = new TransactionEntity();
+        newTransaction.setId(1);
+        newTransaction.setAccountId(1);
+        newTransaction.setValue(200);
+        newTransaction.setType(TransactionType.INCOME);
+
+        BankAccountEntity account = new BankAccountEntity();
+        account.setId(1);
+        account.setBalance(1000);
+
+        when(repository.findById(1)).thenReturn(oldTransaction);
+        when(repository.update(newTransaction)).thenReturn(newTransaction);
+        when(bankAccountService.findById(1)).thenReturn(account);
+
+        transactionService.update(newTransaction);
+
+        assertEquals(1300, account.getBalance());
     }
 }
