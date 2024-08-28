@@ -38,23 +38,19 @@ public class SecurityFilter extends OncePerRequestFilter {
             return;
         }
 
-        try {
-            // Validate the session
-            Session session = sessionClient.getSession(sessionHeader);
-            if (session == null) {
-                chain.doFilter(request, response);
-                return;
-            }
-            // Retrieve user details using the session
-            User user = userClient.getUser(session.getUserId());
-            AppAuthentication auth = new AppAuthentication(user);
-
-            // Set the authentication in the context
-            SecurityContextHolder.getContext().setAuthentication(auth);
-        } catch (Exception e) {
+        // Validate the session
+        Session session = sessionClient.getSession(sessionHeader);
+        if (session == null) {
             chain.doFilter(request, response);
             return;
         }
+        // Retrieve user details using the session
+        User user = userClient.getUser(session.getUserId());
+        AppAuthentication auth = new AppAuthentication(user);
+
+        // Set the authentication in the context
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
 
         chain.doFilter(request, response);
     }
