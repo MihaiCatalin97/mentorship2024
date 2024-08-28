@@ -31,6 +31,8 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         String sessionHeader = request.getHeader("X-SESSION");
 
+        SecurityContextHolder.getContext().setAuthentication(null);
+
         if (sessionHeader == null || sessionHeader.isEmpty()) {
             chain.doFilter(request, response);
             return;
@@ -50,8 +52,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             // Set the authentication in the context
             SecurityContextHolder.getContext().setAuthentication(auth);
         } catch (Exception e) {
-            // Handle exceptions (e.g., session invalid, user not found)
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            chain.doFilter(request, response);
             return;
         }
 

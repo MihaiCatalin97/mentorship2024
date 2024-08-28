@@ -2,6 +2,7 @@ package org.java.mentorship.budget.service;
 
 import org.java.mentorship.budget.domain.BankAccountEntity;
 import org.java.mentorship.budget.exception.NoEntityFoundException;
+import org.java.mentorship.budget.exception.UnauthorizedException;
 import org.java.mentorship.budget.persistence.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -84,6 +85,22 @@ class AccountServiceTest {
         when(repository.findById(1)).thenReturn(null);
 
         assertThrows(NoEntityFoundException.class, () -> accountService.update(bankAccountEntity));
+        verify(repository).findById(1);
+        verify(repository, never()).update(any(BankAccountEntity.class));
+    }
+
+    @Test
+    void updateShouldThrowWhenChangingOwnershipOfAccount() {
+        BankAccountEntity bankAccountEntity = new BankAccountEntity();
+        bankAccountEntity.setId(1);
+        bankAccountEntity.setUserId(123);
+        BankAccountEntity updatedBankAccountEntity = new BankAccountEntity();
+        updatedBankAccountEntity.setId(1);
+        updatedBankAccountEntity.setUserId(999);
+
+        when(repository.findById(1)).thenReturn(bankAccountEntity);
+
+        assertThrows(UnauthorizedException.class, () -> accountService.update(updatedBankAccountEntity));
         verify(repository).findById(1);
         verify(repository, never()).update(any(BankAccountEntity.class));
     }

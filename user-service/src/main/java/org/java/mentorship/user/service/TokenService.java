@@ -71,6 +71,8 @@ public class TokenService {
                 NotificationType.PASSWORD_CHANGE, null
         );
 
+        System.out.println(notifications.getFirst());
+
         if (!notifications.isEmpty()) {
             return notifications.getLast().getCreatedAt();
         }
