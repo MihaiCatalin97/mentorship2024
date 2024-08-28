@@ -23,16 +23,13 @@
                             <br> you need to verify your email address
                         </div>
                         <div>
-                            <br> Hello<#--, ${firstName} ${lastName}!-->
+                            <br> Hello ${firstName} ${lastName}
                             <br>
                             <br> To finish creating your account and verify the email address
-                            <br> for <#--${email}-->, please click the link below.
+                            <br> for ${email}, please use the token below.
                             <br>
-                            <a href="<#--link-->">
-                                <button>Verify address</button>
-                            </a>
-                            <br> if the button isn't working you can manually access the link
-                            <br> <#--link-->
+                            <br> Verification token:
+                            <br> ${token}
                             <br> <br> <b>Budget Tracker Team</b><br>
                             <br>
                         </div>
