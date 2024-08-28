@@ -23,7 +23,13 @@ public class NotificationService {
     private NotificationChannelRepository notificationChannelRepository;
 
     public List<NotificationEntity> getNotifications(Map<String, Object> params) {
-        return notificationRepository.getNotifications(params);
+        return notificationRepository.getNotifications(params).stream().peek(notificationEntity -> {
+            Map<String, Object> filter = new HashMap<>();
+            filter.put("notification_id", notificationEntity.getId());
+            notificationEntity.setChannels(
+                    notificationChannelRepository.getNotificationsChannels(filter)
+            );
+        }).toList();
     }
 
     public NotificationEntity createNotification(NotificationEntity notification) {
@@ -52,7 +58,7 @@ public class NotificationService {
     public NotificationEntity getById(Integer id) {
         NotificationEntity notification = notificationRepository.getNotificationById(id);
         Map<String, Object> filter = new HashMap<>();
-        filter.put("id", notification.getId());
+        filter.put("notification_id", notification.getId());
         notification.setChannels(
                 notificationChannelRepository.getNotificationsChannels(filter)
         );
