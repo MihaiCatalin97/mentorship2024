@@ -28,6 +28,7 @@ public abstract class AbstractEmailService {
     private final AbstractPayloadEmailValidator validator;
 
     public void send(final EmailRequest request) {
+        log.info("Sending email {}", request);
         validator.validate(request.getPayload());
 
         MimeMessage message = sender.createMimeMessage();

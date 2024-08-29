@@ -29,7 +29,7 @@
                             <br> for ${email}, please use the token below.
                             <br>
                             <br> Verification token:
-                            <br> ${token}
+                            <br> ${tokenUrl}
                             <br> <br> <b>Budget Tracker Team</b><br>
                             <br>
                         </div>

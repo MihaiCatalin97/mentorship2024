@@ -1,9 +1,11 @@
 package org.java.mentorship.notification.service;
 
 
+import org.java.mentorship.contracts.email.client.EmailFeignClient;
 import org.java.mentorship.notification.domain.NotificationEntity;
 import org.java.mentorship.notification.domain.enums.NotificationChannel;
 import org.java.mentorship.notification.domain.enums.NotificationType;
+import org.java.mentorship.notification.mapper.NotificationEmailMapper;
 import org.java.mentorship.notification.repository.NotificationChannelRepository;
 import org.java.mentorship.notification.repository.NotificationRepository;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,12 @@ class NotificationServiceTest {
     @Mock
     private NotificationChannelRepository notificationChannelRepository;
 
+    @Mock
+    private EmailFeignClient emailFeignClient;
+
+    @Mock
+    private NotificationEmailMapper mapper;
+
     @InjectMocks
     private NotificationService notificationService;
 
@@ -47,11 +55,10 @@ class NotificationServiceTest {
     void getNotificationsShouldReturnAllNotifications() {
         Map<String, Object> params = new HashMap<>();
 
-        when(notificationRepository.getNotifications(params)).thenAnswer(invocationOnMock -> {
-            List<NotificationEntity> notifications = List.of(new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"), true, OffsetDateTime.now(ZoneOffset.UTC)));
-
-            return notifications;
-        });
+        when(notificationRepository.getNotifications(params)).thenAnswer(invocationOnMock ->
+                List.of(new NotificationEntity(1, 2, "a@gmail.com", null,
+                        NotificationType.valueOf("OVER_SPENDING"), Map.of("firstName", "Sorana"),
+                        true, OffsetDateTime.now(ZoneOffset.UTC))));
 
         List<NotificationEntity> result = notificationService.getNotifications(params);
         verify(notificationRepository, times(1)).getNotifications(params);
@@ -94,7 +101,7 @@ class NotificationServiceTest {
 //    }
 
     @Test
-    public void createShoudAddANewNotification() {
+    public void createShouldAddANewNotification() {
         List<NotificationChannel> channels = Arrays.asList(NotificationChannel.WEB, NotificationChannel.EMAIL);
         NotificationEntity notification = new NotificationEntity();
         notification.setChannels(channels);
@@ -119,7 +126,7 @@ class NotificationServiceTest {
 
         assertEquals(2, capturedIds.size());
         assertEquals(2, capturedChannels.size());
-        assertEquals(savedNotification.getId(), capturedIds.get(0));
+        assertEquals(savedNotification.getId(), capturedIds.getFirst());
         assertEquals("WEB", String.valueOf(capturedChannels.get(0)));
         assertEquals("EMAIL", String.valueOf(capturedChannels.get(1)));
     }

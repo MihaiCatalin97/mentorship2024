@@ -1,10 +1,14 @@
 package org.java.mentorship.notification.service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.java.mentorship.contracts.email.client.EmailFeignClient;
 import org.java.mentorship.notification.domain.NotificationEntity;
+import org.java.mentorship.notification.mapper.NotificationEmailMapper;
 import org.java.mentorship.notification.repository.NotificationChannelRepository;
 import org.java.mentorship.notification.repository.NotificationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -12,15 +16,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class NotificationService {
 
-    @Autowired
-    private NotificationRepository notificationRepository;
+    private final NotificationRepository notificationRepository;
 
-    @Autowired
-    private NotificationChannelRepository notificationChannelRepository;
+    private final NotificationChannelRepository notificationChannelRepository;
+
+    private final EmailFeignClient emailFeignClient;
+
+    private final NotificationEmailMapper mapper;
 
     public List<NotificationEntity> getNotifications(Map<String, Object> params) {
         return notificationRepository.getNotifications(params).stream().peek(notificationEntity -> {
@@ -32,13 +39,17 @@ public class NotificationService {
         }).toList();
     }
 
+    @Transactional
     public NotificationEntity createNotification(NotificationEntity notification) {
+        log.info("Creating notification {}", notification);
         NotificationEntity entity = notificationRepository.create(notification);
         notification.setCreatedAt(OffsetDateTime.now(ZoneOffset.UTC));
-        notification.getChannels().forEach(channel -> {
-            notificationChannelRepository.createNotificationChannel(entity.getId(), channel);
-        });
+        notification.getChannels()
+                .forEach(channel -> notificationChannelRepository.createNotificationChannel(entity.getId(), channel));
         entity.setChannels(notification.getChannels());
+
+        emailFeignClient.sendEmail(mapper.map(notification));
+
         return entity;
     }
 
@@ -68,6 +79,4 @@ public class NotificationService {
     public boolean deleteNotification(Integer id) {
         return notificationRepository.deleteNotification(id);
     }
-
-
 }
