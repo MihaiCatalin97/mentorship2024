@@ -306,7 +306,7 @@ class UserServiceTest {
         UserEntity savedEntity = userArgumentCaptor.getValue();
 
         assertTrue(result);
-        assertNotNull(notification.getPayload().get("passwordChangeToken"));
+        assertNotNull(notification.getPayload().get("token"));
         assertNotNull(savedEntity.getPasswordChangeToken());
     }
 }

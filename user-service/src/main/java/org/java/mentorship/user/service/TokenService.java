@@ -100,7 +100,7 @@ public class TokenService {
                 Map.of(
                         "firstName", user.getFirstName(),
                         "lastName", user.getLastName(),
-                        "verificationToken", user.getVerificationToken(),
+                        "token", user.getVerificationToken(),
                         "requestedAt", OffsetDateTime.now(ZoneOffset.UTC)
                 )
         ));
@@ -120,7 +120,7 @@ public class TokenService {
                 Map.of(
                         "firstName", user.getFirstName(),
                         "lastName", user.getLastName(),
-                        "passwordChangeToken", user.getPasswordChangeToken(),
+                        "token", user.getPasswordChangeToken(),
                         "requestedAt", OffsetDateTime.now(ZoneOffset.UTC)
                 )
         ));

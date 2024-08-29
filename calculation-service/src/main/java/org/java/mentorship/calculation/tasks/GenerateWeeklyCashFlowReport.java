@@ -1,7 +1,6 @@
 package org.java.mentorship.calculation.tasks;
 
 import lombok.RequiredArgsConstructor;
-import org.java.mentorship.contracts.budget.client.BudgetFeignClient;
 import org.java.mentorship.contracts.budget.client.CategoryFeignClient;
 import org.java.mentorship.contracts.budget.client.TransactionFeignClient;
 import org.java.mentorship.contracts.budget.dto.Category;
@@ -24,8 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Component
 @RequiredArgsConstructor
@@ -44,7 +41,8 @@ public class GenerateWeeklyCashFlowReport {
         List<String> report = new ArrayList<>();
 
         categories.forEach(category -> {
-            List<Transaction> transactions = transactionFeignClient.getTransactions().stream()
+            List<Transaction> transactions = transactionFeignClient.getTransactions(null)
+                    .stream()
                     .filter(transaction -> Objects.equals(transaction.getUserId(), user.getId()) &&
                             Objects.equals(transaction.getCategoryId(), category.getId()))
                     .toList();
@@ -59,13 +57,13 @@ public class GenerateWeeklyCashFlowReport {
         });
 
         notificationFeignClient.postNotification(Notification.builder()
-                        .userId(user.getId())
-                        .channels(List.of(NotificationChannel.EMAIL, NotificationChannel.WEB))
-                        .email(user.getEmail())
-                        .payload(Map.of("report", report))
-                        .markedAsRead(false)
-                        .createdAt(OffsetDateTime.now(ZoneOffset.UTC))
-                        .type(NotificationType.WEEKLY_REPORT)
+                .userId(user.getId())
+                .channels(List.of(NotificationChannel.EMAIL, NotificationChannel.WEB))
+                .email(user.getEmail())
+                .payload(Map.of("report", report))
+                .markedAsRead(false)
+                .createdAt(OffsetDateTime.now(ZoneOffset.UTC))
+                .type(NotificationType.WEEKLY_REPORT)
                 .build());
     }
 

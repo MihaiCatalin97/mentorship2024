@@ -12,7 +12,7 @@ public class VerificationEmailValidator extends AbstractPayloadEmailValidator {
             "firstName",
             "lastName",
             "email",
-            "token"
+            "tokenUrl"
     );
 
     public VerificationEmailValidator() {

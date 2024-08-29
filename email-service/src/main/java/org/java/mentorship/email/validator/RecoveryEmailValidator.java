@@ -12,7 +12,7 @@ public class RecoveryEmailValidator extends AbstractPayloadEmailValidator {
             "firstName",
             "lastName",
             "email",
-            "token"
+            "tokenUrl"
     );
 
     public RecoveryEmailValidator() {
