@@ -41,7 +41,7 @@ public class GenerateWeeklyCashFlowReport {
         List<String> report = new ArrayList<>();
 
         categories.forEach(category -> {
-            List<Transaction> transactions = transactionFeignClient.getTransactions(null)
+            List<Transaction> transactions = transactionFeignClient.getTransactions(false)
                     .stream()
                     .filter(transaction -> Objects.equals(transaction.getUserId(), user.getId()) &&
                             Objects.equals(transaction.getCategoryId(), category.getId()))

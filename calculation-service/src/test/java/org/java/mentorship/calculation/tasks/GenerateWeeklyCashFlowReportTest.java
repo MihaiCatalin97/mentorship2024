@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -46,6 +47,8 @@ class GenerateWeeklyCashFlowReportTest {
                         User.builder()
                                 .id(123)
                                 .email("handrei@dfourmusic.com")
+                                .firstName("First Name")
+                                .lastName("Last Name")
                                 .build()
                 )
         );
@@ -60,7 +63,7 @@ class GenerateWeeklyCashFlowReportTest {
                 )
         );
 
-        when(transactionFeignClient.getTransactions(null)).thenReturn(
+        when(transactionFeignClient.getTransactions(false)).thenReturn(
                 Collections.singletonList(
                         Transaction.builder()
                                 .id(1)
