@@ -60,7 +60,7 @@ class GenerateWeeklyCashFlowReportTest {
                 )
         );
 
-        when(transactionFeignClient.getTransactions()).thenReturn(
+        when(transactionFeignClient.getTransactions(null)).thenReturn(
                 Collections.singletonList(
                         Transaction.builder()
                                 .id(1)

@@ -18,9 +18,9 @@ jobs:
         distribution: 'zulu'
         cache: maven
     - name: Build
-      run: mvn compile
+      run: mvn compile -B --no-transfer-progress
     - name: Test
-      run: mvn test
+      run: mvn test -B --no-transfer-progress
     - name: Add coverage to PR
       id: jacoco
       uses: madrapps/jacoco-report@v1.6.1
@@ -31,4 +31,4 @@ jobs:
         min-coverage-overall: 85
         min-coverage-changed-files: 85
     - name: Coverage check
-      run: mvn install -DskipTests
+      run: mvn install -DskipTests -B --no-transfer-progress
