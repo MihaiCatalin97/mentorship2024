@@ -15,18 +15,18 @@
                         style="background-color: #a0cccb; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; padding: 0px 15px 10px 15px;">
 
                         <div style="font-size: 48px; color:#000000;">
-                            <b>Verify email address</b>
+                            <b>Password Recovery</b>
                         </div>
 
                         <div style="font-size: 24px; color: #000000;">
                             <br> You are receiving this mail because
-                            <br> you need to verify your email address
+                            <br> you got locked out of your account
                         </div>
                         <div>
                             <br> Hello ${firstName} ${lastName}
                             <br>
-                            <br> To finish creating your account and verify the email address
-                            <br> for ${email}, please use the token below.
+                            <br> To recover your password for the email address
+                            <br> ${email}, please use the token below.
                             <br>
                             <br> Verification token:
                             <br> ${token}
