@@ -28,7 +28,7 @@ public class AccountRepository {
     }
 
     public List<BankAccountEntity> findAll() {
-        return jdbcTemplate.query("SELECT * FROM accounts", rowMapper);
+        return jdbcTemplate.query("SELECT * FROM accounts ORDER BY id", rowMapper);
     }
 
     public BankAccountEntity findById(final Integer id) {

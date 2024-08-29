@@ -29,11 +29,11 @@ public class BudgetRepository {
     }
 
     public List<BudgetEntity> findAll() {
-        return jdbcTemplate.query("SELECT * FROM budgets", rowMapper);
+        return jdbcTemplate.query("SELECT * FROM budgets ORDER BY id", rowMapper);
     }
 
     public List<BudgetEntity> findByUserId(Integer userId) {
-        return jdbcTemplate.query("SELECT * FROM budgets WHERE user_id = ?", new Object[]{userId}, rowMapper);
+        return jdbcTemplate.query("SELECT * FROM budgets WHERE user_id = ? ORDER BY id", new Object[]{userId}, rowMapper);
     }
 
     public BudgetEntity findById(final Integer id) {

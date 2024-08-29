@@ -5,6 +5,7 @@ import org.java.mentorship.budget.domain.TransactionEntity;
 import org.java.mentorship.budget.persistence.mapper.TransactionRowMapper;
 import org.java.mentorship.contracts.budget.dto.TransactionType;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
@@ -13,6 +14,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.sql.SQLException;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,6 +37,10 @@ class TransactionRepositoryTest {
     static void initTest() throws SQLException {
         Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8083")
                 .start();
+    }
+
+    @BeforeEach
+    void setup() {
     }
 
     @Test
@@ -116,5 +122,66 @@ class TransactionRepositoryTest {
         assertEquals(1, results.size(), "Should return 1 transaction after deletion");
         assertFalse(results.stream().anyMatch(t -> t.getId().equals(deletedTransaction.getId())),
                 "Deleted transaction should not be present in the results");
+    }
+
+    @Test
+    void findTransactionsFromLast7DaysShouldReturnRecentTransactions() {
+        // Given
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+        TransactionEntity recentTransaction = TransactionEntity.builder()
+                .id(3)
+                .userId(1)
+                .type(TransactionType.INCOME)
+                .value(500)
+                .description("Recent transaction")
+                .categoryId(1)
+                .accountId(1)
+                .timestamp(now)
+                .build();
+        transactionRepository.save(recentTransaction);
+
+        TransactionEntity oldTransaction = TransactionEntity.builder()
+                .id(4)
+                .userId(1)
+                .type(TransactionType.EXPENSE)
+                .value(-100)
+                .description("Old transaction")
+                .categoryId(1)
+                .accountId(1)
+                .timestamp(now.minusDays(10))
+                .build();
+        transactionRepository.save(oldTransaction);
+
+        // When
+        List<TransactionEntity> recentTransactions = transactionRepository.findTransactionsFromLast7Days();
+
+        // Then
+        assertNotNull(recentTransactions, "Recent transactions should not be null");
+        assertEquals(3, recentTransactions.size(), "Should return 1 recent transaction");
+        assertEquals(1, recentTransactions.get(0).getId(), "Transaction ID should match");
+        assertEquals("Initial deposit", recentTransactions.get(0).getDescription(), "Transaction description should match");
+    }
+
+    @Test
+    void findTransactionsFromLast7DaysShouldReturnEmptyWhenNoRecentTransactions() {
+        // Given
+        TransactionEntity oldTransaction = TransactionEntity.builder()
+                .id(5)
+                .userId(1)
+                .type(TransactionType.EXPENSE)
+                .value(-200)
+                .description("Older transaction")
+                .categoryId(1)
+                .accountId(1)
+                .timestamp(OffsetDateTime.now(ZoneOffset.UTC).minusDays(10))
+                .build();
+        transactionRepository.save(oldTransaction);
+
+        // When
+        List<TransactionEntity> recentTransactions = transactionRepository.findTransactionsFromLast7Days();
+
+        // Then
+        assertNotNull(recentTransactions, "Recent transactions should not be null");
+        assertFalse(recentTransactions.isEmpty(), "Should return no recent transactions");
     }
 }

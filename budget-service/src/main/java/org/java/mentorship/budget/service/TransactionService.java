@@ -110,4 +110,16 @@ public class TransactionService {
         }
         bankAccountService.update(account);
     }
+
+    public List<TransactionEntity> findTransactionsFromLast7Days() {
+        return repository.findTransactionsFromLast7Days();
+    }
+
+    public List<TransactionEntity> findAllWithFilters(Boolean recent) {
+        if (Boolean.TRUE.equals(recent)) {
+            return findTransactionsFromLast7Days();
+        } else {
+            return findAll();
+        }
+    }
 }

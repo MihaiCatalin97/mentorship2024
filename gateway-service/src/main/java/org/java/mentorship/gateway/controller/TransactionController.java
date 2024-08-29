@@ -16,11 +16,13 @@ public class TransactionController {
 
     private final TransactionFeignClient transactionFeignClient;
 
-    @GetMapping()
-    ResponseEntity<List<Transaction>> getTransactions() {
+    @GetMapping
+    ResponseEntity<List<Transaction>> getTransactions(@RequestParam(required = false, name = "recent") Boolean recent) {
         // TODO: Add any necessary restrictions or filters for retrieving transactions
-        return ResponseEntity.ok(transactionFeignClient.getTransactions());
+        return ResponseEntity.ok(transactionFeignClient.getTransactions(recent));
     }
+
+
 
     @GetMapping("/{id}")
     ResponseEntity<Transaction> getTransactionById(@PathVariable(name = "id") Integer id) {
