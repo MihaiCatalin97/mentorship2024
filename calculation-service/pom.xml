@@ -36,6 +36,18 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.java.mentorship</groupId>
+            <artifactId>notification-contracts</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.java.mentorship</groupId>
+            <artifactId>budget-contracts</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.java.mentorship</groupId>
+            <artifactId>user-contracts</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
