@@ -37,4 +37,10 @@ public class SessionController {
                 .map(session -> ResponseEntity.ok(SessionContractMapper.sessionToContract(session)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @DeleteMapping("/sessions/{key}")
+    public ResponseEntity<Boolean> deleteSession(@PathVariable(name = "key") String key) {
+        sessionService.deleteSession(key);
+        return ResponseEntity.ok(true);
+    }
 }

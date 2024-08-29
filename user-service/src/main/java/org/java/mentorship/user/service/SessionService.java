@@ -73,4 +73,10 @@ public class SessionService {
         if (isExpired(session.get())) return Optional.empty();
         return session;
     }
+
+    public void deleteSession(String sessionKey) {
+        Optional<SessionEntity> session = sessionRepository.getByKey(sessionKey);
+        if (session.isEmpty()) return;
+        sessionRepository.delete(session.get().getId());
+    }
 }
