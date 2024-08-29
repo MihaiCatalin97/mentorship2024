@@ -28,4 +28,10 @@ public interface SessionFeignClient {
             value = "/sessions"
     )
     List<Session> find(@RequestParam(name = "userId") Integer userId, @RequestParam(name = "isActive") Boolean isActive);
+
+    @RequestMapping(
+            method = RequestMethod.DELETE,
+            value = "/sessions/{key}"
+    )
+    List<Boolean> delete(@PathVariable(name = "key") String key);
 }

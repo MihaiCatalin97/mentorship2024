@@ -13,4 +13,6 @@ public interface SessionRepository {
     void insert(SessionEntity session);
 
     Optional<SessionEntity> getByKey(String key);
+
+    void delete(Integer id);
 }
