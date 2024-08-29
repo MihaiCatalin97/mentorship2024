@@ -17,6 +17,7 @@
         <module>calculation-contracts</module>
         <module>notification-contracts</module>
         <module>common-contracts</module>
+        <module>email-contracts</module>
     </modules>
 
     <dependencies>

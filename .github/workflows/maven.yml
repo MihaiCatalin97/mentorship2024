@@ -28,7 +28,7 @@ jobs:
         paths: |
           ${{ github.workspace }}/aggregate-coverage-report/target/site/jacoco/jacoco.xml
         token: ${{ secrets.TOKEN }}
-        min-coverage-overall: 40
-        min-coverage-changed-files: 60
+        min-coverage-overall: 85
+        min-coverage-changed-files: 85
     - name: Coverage check
       run: mvn install -DskipTests

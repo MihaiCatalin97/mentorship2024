@@ -8,3 +8,6 @@ andrei-ureche/
 
 ### Mac OS ###
 .DS_Store
+
+### Secrets ###
+email-service/src/main/resources/email.properties
