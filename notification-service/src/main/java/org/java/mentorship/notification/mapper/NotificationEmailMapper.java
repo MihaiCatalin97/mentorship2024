@@ -32,6 +32,7 @@ public class NotificationEmailMapper {
         switch (notification.getType()) {
             case VERIFICATION -> emailType = EmailType.VERIFICATION;
             case PASSWORD_CHANGE -> emailType = EmailType.RECOVERY;
+            case WEEKLY_REPORT -> emailType = EmailType.WEEKLY_REPORT;
         }
 
         return emailType;
@@ -40,7 +41,8 @@ public class NotificationEmailMapper {
     private Map<String, Object> mapPayload(final NotificationEntity notification) {
         Map<String, Object> payload = new HashMap<>(notification.getPayload());
 
-        payload.put("tokenUrl", mapURL(notification));
+        if (notification.getPayload().containsKey("token"))
+            payload.put("tokenUrl", mapURL(notification));
         payload.put("email", notification.getEmail());
 
         return payload;
