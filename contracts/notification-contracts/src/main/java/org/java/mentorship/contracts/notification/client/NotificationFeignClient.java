@@ -45,6 +45,6 @@ public interface NotificationFeignClient {
             method = RequestMethod.PUT,
             value = "/notifications/read/{id}"
     )
-    Notification markNotificationMarkAsRead(@PathVariable("id") Integer id, @RequestBody @Valid Notification notification);
+    Notification markNotificationMarkAsRead(@PathVariable("id") Integer id);
 
 }

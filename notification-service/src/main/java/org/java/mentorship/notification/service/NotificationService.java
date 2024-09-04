@@ -56,7 +56,6 @@ public class NotificationService {
     public NotificationEntity updateNotification(Integer id, NotificationEntity notification) {
         notification.setChannels(notificationChannelRepository.getNotificationsById(id));
         return notificationRepository.update(id, notification);
-
     }
 
     public NotificationEntity markAsRead(Integer id) {

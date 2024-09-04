@@ -33,8 +33,8 @@ class NotificationControllerTest {
     @InjectMocks
     private NotificationController notificationController;
 
-    private NotificationContractMapper mapper = new NotificationContractMapper();
-    private List<NotificationEntity> notifications = List.of(new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now(ZoneOffset.UTC)));
+    private final NotificationContractMapper mapper = new NotificationContractMapper();
+    private final List<NotificationEntity> notifications = List.of(new NotificationEntity(1, 2, "a@gmail.com", null, NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now(ZoneOffset.UTC)));
 
     @BeforeEach
     void setUp() {
@@ -70,7 +70,7 @@ class NotificationControllerTest {
 
     @Test
     void createNotificationShouldReturnContractAndPostFromNotificationService() {
-        when(notificationService.createNotification(any())).thenReturn(notifications.get(0));
+        when(notificationService.createNotification(any())).thenReturn(notifications.getFirst());
 
         ResponseEntity<Notification> response = notificationController.postNotification(new Notification(1, 2, "a@gmail.com", null, org.java.mentorship.contracts.notification.dto.NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now(ZoneOffset.UTC)));
 
@@ -81,7 +81,7 @@ class NotificationControllerTest {
 
     @Test
     void updateNotificationShouldReturnContractAndUpdateFromNotificationService() {
-        when(notificationService.updateNotification(any(), any())).thenReturn(notifications.get(0));
+        when(notificationService.updateNotification(any(), any())).thenReturn(notifications.getFirst());
 
         ResponseEntity<Notification> response = notificationController.putNotification(1, new Notification(1, 2, "a@gmail.com", null, org.java.mentorship.contracts.notification.dto.NotificationType.OVER_SPENDING, Map.of("firstName", "Sorana"), true, OffsetDateTime.now(ZoneOffset.UTC)));
 
@@ -92,7 +92,7 @@ class NotificationControllerTest {
 
     @Test
     void getNotificationByIdShouldReturnContractFromNotificationServiceById() {
-        when(notificationService.getById(any())).thenReturn(notifications.get(0));
+        when(notificationService.getById(any())).thenReturn(notifications.getFirst());
 
         ResponseEntity<Notification> response = notificationController.getNotificationById(1);
 
@@ -104,9 +104,9 @@ class NotificationControllerTest {
 
     @Test
     void postMarkAsReadNotificationShouldReturnContractFromNotificationService() {
-        when(notificationService.markAsRead(any())).thenReturn(notifications.get(0));
+        when(notificationService.markAsRead(any())).thenReturn(notifications.getFirst());
 
-        ResponseEntity<Notification> response = notificationController.postNotificationMarkAsRead(1, new Notification());
+        ResponseEntity<Notification> response = notificationController.postNotificationMarkAsRead(1);
 
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());
@@ -114,7 +114,7 @@ class NotificationControllerTest {
     }
 
     @Test
-    void deleteNotificationsShouldReturnABooleanIfNotifiactionIsDeleted() {
+    void deleteNotificationsShouldReturnABooleanIfNotificationIsDeleted() {
         when(notificationService.deleteNotification(any())).thenReturn(true);
 
         ResponseEntity<Boolean> response = notificationController.deleteNotification(any());

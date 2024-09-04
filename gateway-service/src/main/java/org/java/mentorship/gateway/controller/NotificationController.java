@@ -34,9 +34,9 @@ public class NotificationController {
     }
 
     @PutMapping("/read/{id}")
-    public ResponseEntity<Notification> markNotificationMarkAsRead(@PathVariable(name = "id") Integer id, @RequestBody @Valid Notification notification) {
-        loggedInAsUser(notification.getUserId());
+    public ResponseEntity<Notification> markNotificationMarkAsRead(@PathVariable(name = "id") Integer id) {
+        loggedInAsAnyUser();
 
-        return ResponseEntity.ok(notificationFeignClient.markNotificationMarkAsRead(id, notification));
+        return ResponseEntity.ok(notificationFeignClient.markNotificationMarkAsRead(id));
     }
 }

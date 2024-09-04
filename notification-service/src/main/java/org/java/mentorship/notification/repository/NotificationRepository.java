@@ -80,8 +80,12 @@ public class NotificationRepository {
     }
 
     public NotificationEntity update(Integer id, NotificationEntity notification) {
-        jdbcTemplate.update("UPDATE notifications SET user_id = ? ,email = ? , marked_as_read = ? , created_at= ? , payload = ?, type = ? WHERE id = ?",
-                notification.getUserId(), notification.getEmail(), notification.getMarkedAsRead(), notification.getCreatedAt(), String.valueOf(notification.getPayload()), String.valueOf(notification.getType()), id);
+        try {
+            jdbcTemplate.update("UPDATE notifications SET user_id = ? ,email = ? , marked_as_read = ? , created_at= ? , payload = ?, type = ? WHERE id = ?",
+                    notification.getUserId(), notification.getEmail(), notification.getMarkedAsRead(), notification.getCreatedAt(), objectMapper.writeValueAsString(notification.getPayload()), String.valueOf(notification.getType()), id);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         return notification;
     }
 

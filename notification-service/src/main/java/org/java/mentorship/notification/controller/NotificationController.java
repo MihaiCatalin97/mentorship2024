@@ -63,7 +63,7 @@ public class NotificationController {
     }
 
     @PutMapping("/notifications/read/{id}")
-    public ResponseEntity<Notification> postNotificationMarkAsRead(@PathVariable(name = "id") Integer id, @RequestBody @Valid Notification notification) {
+    public ResponseEntity<Notification> postNotificationMarkAsRead(@PathVariable(name = "id") Integer id) {
         return ResponseEntity.ok(notificationContractMapper.map(notificationService.markAsRead(id)));
     }
 

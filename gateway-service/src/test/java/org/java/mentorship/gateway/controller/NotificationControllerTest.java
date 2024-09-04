@@ -49,14 +49,13 @@ class NotificationControllerTest extends AbstractControllerTest {
                 .channels(singletonList(EMAIL))
                 .type(VERIFICATION)
                 .payload(singletonMap("firstName", "Test"))
-                .markedAsRead(false)
+                .markedAsRead(true)
                 .createdAt(OffsetDateTime.now(ZoneId.of("UTC")))
                 .userId(123).build();
-        when(notificationFeignClient.markNotificationMarkAsRead(1, notification)).thenReturn(notification);
+        when(notificationFeignClient.markNotificationMarkAsRead(1)).thenReturn(notification);
 
         mockMvc.perform(put("/notifications/read/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(notification))
                         .header("X-SESSION", sessionHeader))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
