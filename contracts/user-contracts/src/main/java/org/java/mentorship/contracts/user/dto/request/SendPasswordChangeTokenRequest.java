@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class SendPasswordChangeTokenRequest {
 
     private Integer userId;
+    private String email;
 
 }

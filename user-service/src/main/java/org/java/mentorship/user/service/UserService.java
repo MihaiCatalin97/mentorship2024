@@ -2,12 +2,14 @@ package org.java.mentorship.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.java.mentorship.contracts.user.dto.request.RegistrationRequest;
+import org.java.mentorship.contracts.user.dto.request.SendPasswordChangeTokenRequest;
 import org.java.mentorship.user.domain.UserEntity;
 import org.java.mentorship.user.exception.domain.AlreadyRegisteredException;
 import org.java.mentorship.user.exception.domain.UserNotFoundException;
 import org.java.mentorship.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
@@ -95,9 +97,12 @@ public class UserService {
         return changePassword(user.getId(), newPassword);
     }
 
-    public Boolean sendPasswordChangeToken(Integer userId) {
-        UserEntity user = this.getUserById(userId).orElseThrow(UserNotFoundException::new);
+    public Boolean sendPasswordChangeToken(SendPasswordChangeTokenRequest request) {
+        Optional<UserEntity> user;
 
-        return tokenService.generatePasswordChangeToken(user);
+        if (!Objects.isNull(request.getEmail())) user = getUserByEmail(request.getEmail());
+        else user = getUserById(request.getUserId());
+
+        return tokenService.generatePasswordChangeToken(user.orElseThrow(UserNotFoundException::new));
     }
 }

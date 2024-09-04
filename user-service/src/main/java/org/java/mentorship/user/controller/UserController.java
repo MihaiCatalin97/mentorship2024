@@ -59,7 +59,7 @@ public class UserController {
 
     @PostMapping("/recovery")
     public ResponseEntity<Boolean> sendPasswordChangeToken(@RequestBody SendPasswordChangeTokenRequest sendPasswordChangeTokenRequest) {
-        return ResponseEntity.ok(userService.sendPasswordChangeToken(sendPasswordChangeTokenRequest.getUserId()));
+        return ResponseEntity.ok(userService.sendPasswordChangeToken(sendPasswordChangeTokenRequest));
     }
 
     @PutMapping("/recovery/{token}")
