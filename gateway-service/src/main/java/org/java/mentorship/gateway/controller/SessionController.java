@@ -33,4 +33,10 @@ public class SessionController {
     public ResponseEntity<Session> getSession(@PathVariable(name = "key") String key) {
         return ResponseEntity.ok(sessionFeignClient.getSession(key));
     }
+
+    @DeleteMapping("/{key}")
+    public ResponseEntity<Boolean> delete(@PathVariable(name = "key") String key) {
+        sessionFeignClient.delete(key);
+        return ResponseEntity.ok(true);
+    }
 }

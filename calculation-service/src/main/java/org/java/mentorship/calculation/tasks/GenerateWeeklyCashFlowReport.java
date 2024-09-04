@@ -41,7 +41,7 @@ public class GenerateWeeklyCashFlowReport {
         List<String> report = new ArrayList<>();
 
         categories.forEach(category -> {
-            List<Transaction> transactions = transactionFeignClient.getTransactions(null)
+            List<Transaction> transactions = transactionFeignClient.getTransactions(false)
                     .stream()
                     .filter(transaction -> Objects.equals(transaction.getUserId(), user.getId()) &&
                             Objects.equals(transaction.getCategoryId(), category.getId()))
@@ -60,7 +60,7 @@ public class GenerateWeeklyCashFlowReport {
                 .userId(user.getId())
                 .channels(List.of(NotificationChannel.EMAIL, NotificationChannel.WEB))
                 .email(user.getEmail())
-                .payload(Map.of("report", report))
+                .payload(Map.of("report", report, "firstName", user.getFirstName(), "lastName", user.getLastName()))
                 .markedAsRead(false)
                 .createdAt(OffsetDateTime.now(ZoneOffset.UTC))
                 .type(NotificationType.WEEKLY_REPORT)
