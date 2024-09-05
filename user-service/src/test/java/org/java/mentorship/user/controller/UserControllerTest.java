@@ -129,7 +129,9 @@ class UserControllerTest {
 
     @Test
     void sendPasswordChangeTokenShouldReturnFromService() {
-        when(userService.sendPasswordChangeToken(anyInt()))
+        when(userService.sendPasswordChangeToken(SendPasswordChangeTokenRequest.builder()
+                        .userId(1)
+                .build()))
                 .thenReturn(true);
 
         ResponseEntity<Boolean> response = userController.sendPasswordChangeToken(
